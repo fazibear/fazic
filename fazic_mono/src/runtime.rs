@@ -34,6 +34,7 @@ fn eval(node: NodeElement) -> NodeElement {
 
 fn command_print(mut params: Vec<NodeElement>) {
     let param = params.pop();
+
     match param {
         Some(NodeElement::Value(Value::String(s))) => println!("print: {}", s),
         Some(NodeElement::Value(Value::Integer(i))) => println!("print: {}", i),
@@ -47,6 +48,10 @@ fn command_print(mut params: Vec<NodeElement>) {
 fn operator_add(mut params: Vec<NodeElement>) -> NodeElement {
     let right = params.pop();
     let left = params.pop();
+
+    if params.len() != 0 {
+        return NodeElement::Error("?SYNTAX ERROR".to_string());
+    }
 
     match (left, right) {
         (
@@ -65,6 +70,10 @@ fn operator_sub(mut params: Vec<NodeElement>) -> NodeElement {
     let right = params.pop();
     let left = params.pop();
 
+    if params.len() != 0 {
+        return NodeElement::Error("?SYNTAX ERROR".to_string());
+    }
+
     match (left, right) {
         (
             Some(NodeElement::Value(Value::Integer(l))),
@@ -78,6 +87,10 @@ fn operator_mul(mut params: Vec<NodeElement>) -> NodeElement {
     let right = params.pop();
     let left = params.pop();
 
+    if params.len() != 0 {
+        return NodeElement::Error("?SYNTAX ERROR".to_string());
+    }
+
     match (left, right) {
         (
             Some(NodeElement::Value(Value::Integer(l))),
@@ -90,6 +103,10 @@ fn operator_mul(mut params: Vec<NodeElement>) -> NodeElement {
 fn operator_div(mut params: Vec<NodeElement>) -> NodeElement {
     let right = params.pop();
     let left = params.pop();
+
+    if params.len() != 0 {
+        return NodeElement::Error("?SYNTAX ERROR".to_string());
+    }
 
     match (left, right) {
         (
