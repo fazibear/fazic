@@ -1,9 +1,22 @@
 pub mod parser;
 pub mod ast;
 pub mod node_builder;
+pub mod runtime;
 
 fn main() {
-    println!("Hello!")
+    // println!(
+    //     "{:?}",
+    //     parser::parse_all("(5*(ABS(3)*3))").unwrap()
+    // );
+    // println!(
+    //     "{:?}",
+    //     parser::parse_all("PRINT '123'").unwrap()
+    // );
+    //
+    runtime::run(
+        parser::parse_all("PRINT 10+10-2*67/2").unwrap()
+    );
+
 }
 
 #[test]

@@ -1,36 +1,36 @@
-use ast::{Node, Opcode};
+use ast::{NodeElement, Opcode};
 use node_builder::*;
 
 grammar;
 
-pub all: Node = {
+pub all: NodeElement = {
     command,
     expression
 };
 
-expression: Node = {
+expression: NodeElement = {
     <l:expression> "OR" <r:prec_1> => param_2_node(Opcode::Or, l, r),
     <l:expression> "AND" <r:prec_1> => param_2_node(Opcode::And, l, r),
     prec_1
 };
 
-prec_1: Node = {
+prec_1: NodeElement = {
     prec_2
 };
 
-prec_2: Node = {
+prec_2: NodeElement = {
     <l:prec_2> "+" <r:prec_3> => param_2_node(Opcode::Add, l, r),
     <l:prec_2> "-" <r:prec_3> => param_2_node(Opcode::Sub, l, r),
     prec_3,
 };
 
-prec_3: Node = {
+prec_3: NodeElement = {
     <l:prec_3> "*" <r:term> => param_2_node(Opcode::Mul, l, r),
     <l:prec_3> "/" <r:term> => param_2_node(Opcode::Div, l, r),
     term,
 };
 
-term: Node = {
+term: NodeElement = {
     function,
     integer,
     string,
@@ -38,20 +38,20 @@ term: Node = {
 };
 
 
-function: Node = {
+function: NodeElement = {
     "ABS(" <expression> ")" => param_1_node(Opcode::Abs, <>),
 };
 
-command: Node = {
+command: NodeElement = {
     "?" <expression> => param_1_node(Opcode::Print, <>),
     "PRINT" <expression> => param_1_node(Opcode::Print, <>),
 };
 
-string: Node = {
+string: NodeElement = {
     <r"'.*'"> => string_node(<>),
     <r#"".*""#> => string_node(<>),
 };
 
-integer: Node = {
+integer: NodeElement = {
     r"[0-9]+" => integer_node(<>),
 };
