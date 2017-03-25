@@ -10,7 +10,6 @@ pub fn run(node: NodeElement) {
 }
 
 fn evaluate(nodes: Vec<NodeElement>) -> Vec<NodeElement> {
-
     nodes
         .into_iter()
         .map(eval)
@@ -18,7 +17,6 @@ fn evaluate(nodes: Vec<NodeElement>) -> Vec<NodeElement> {
 }
 
 fn eval(node: NodeElement) -> NodeElement {
-    println!("{:?} ->", node);
     let x = match node {
         NodeElement::Node(Node(Opcode::Add, params)) => operator_add(evaluate(params)),
         NodeElement::Node(Node(Opcode::Sub, params)) => operator_sub(evaluate(params)),
@@ -28,7 +26,6 @@ fn eval(node: NodeElement) -> NodeElement {
         NodeElement::Value(_) => node,
         NodeElement::Error(_) => node
     };
-    println!("-> {:?}", x);
     return x;
 }
 
