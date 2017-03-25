@@ -1,0 +1,5 @@
+image: rustdocker/rust:stable
+
+test:
+  script:
+    - cargo test --verbose --jobs 1
