@@ -17,16 +17,15 @@ fn evaluate(nodes: Vec<NodeElement>) -> Vec<NodeElement> {
 }
 
 fn eval(node: NodeElement) -> NodeElement {
-    let x = match node {
+    return match node {
         NodeElement::Node(Node(Opcode::Add, params)) => operator_add(evaluate(params)),
         NodeElement::Node(Node(Opcode::Sub, params)) => operator_sub(evaluate(params)),
         NodeElement::Node(Node(Opcode::Mul, params)) => operator_mul(evaluate(params)),
         NodeElement::Node(Node(Opcode::Div, params)) => operator_div(evaluate(params)),
         NodeElement::Node(_) => NodeElement::Error("Not implemented".to_string()),
         NodeElement::Value(_) => node,
-        NodeElement::Error(_) => node
+        NodeElement::Error(_) => node,
     };
-    return x;
 }
 
 // -------------------
@@ -39,11 +38,12 @@ fn command_print(mut params: Vec<NodeElement>) {
         Some(NodeElement::Value(Value::String(s))) => println!("print: {}", s),
         Some(NodeElement::Value(Value::Integer(i))) => println!("print: {}", i),
         Some(NodeElement::Value(Value::Float(f))) => println!("print: {}", f),
-
-        Some(_) => println!("error"),
-        None => println!(""),
+        Some(NodeElement::Error(e)) => println!("ERROR: {}", e),
+        _ => unreachable!()
     }
 }
+
+// ------------------
 
 fn operator_add(mut params: Vec<NodeElement>) -> NodeElement {
     let right = params.pop();
@@ -57,11 +57,19 @@ fn operator_add(mut params: Vec<NodeElement>) -> NodeElement {
         (
             Some(NodeElement::Value(Value::Integer(l))),
             Some(NodeElement::Value(Value::Integer(r)))
-        ) => NodeElement::Value(Value::Integer(l+r)),
+        ) => NodeElement::Value(Value::Integer(l + r)),
         (
-            Some(NodeElement::Value(Value::String(l))),
-            Some(NodeElement::Value(Value::String(r)))
-        ) => NodeElement::Value(Value::String(format!("{}{}", l, r))),
+            Some(NodeElement::Value(Value::Float(l))),
+            Some(NodeElement::Value(Value::Float(r)))
+        ) => NodeElement::Value(Value::Float(l + r)),
+        (
+            Some(NodeElement::Value(Value::Float(l))),
+            Some(NodeElement::Value(Value::Integer(r)))
+        ) => NodeElement::Value(Value::Float(l + r as f64)),
+        (
+            Some(NodeElement::Value(Value::Integer(l))),
+            Some(NodeElement::Value(Value::Float(r)))
+        ) => NodeElement::Value(Value::Float(l as f64 + r)),
         _ => NodeElement::Error("?TYPE MISMATCH".to_string()),
     }
 }
@@ -78,7 +86,19 @@ fn operator_sub(mut params: Vec<NodeElement>) -> NodeElement {
         (
             Some(NodeElement::Value(Value::Integer(l))),
             Some(NodeElement::Value(Value::Integer(r)))
-        ) => NodeElement::Value(Value::Integer(l-r)),
+        ) => NodeElement::Value(Value::Integer(l - r)),
+        (
+            Some(NodeElement::Value(Value::Float(l))),
+            Some(NodeElement::Value(Value::Float(r)))
+        ) => NodeElement::Value(Value::Float(l - r)),
+        (
+            Some(NodeElement::Value(Value::Float(l))),
+            Some(NodeElement::Value(Value::Integer(r)))
+        ) => NodeElement::Value(Value::Float(l - r as f64)),
+        (
+            Some(NodeElement::Value(Value::Integer(l))),
+            Some(NodeElement::Value(Value::Float(r)))
+        ) => NodeElement::Value(Value::Float(l as f64 - r)),
         _ => NodeElement::Error("?TYPE MISMATCH".to_string()),
     }
 }
@@ -95,7 +115,19 @@ fn operator_mul(mut params: Vec<NodeElement>) -> NodeElement {
         (
             Some(NodeElement::Value(Value::Integer(l))),
             Some(NodeElement::Value(Value::Integer(r)))
-        ) => NodeElement::Value(Value::Integer(l*r)),
+        ) => NodeElement::Value(Value::Integer(l * r)),
+        (
+            Some(NodeElement::Value(Value::Float(l))),
+            Some(NodeElement::Value(Value::Float(r)))
+        ) => NodeElement::Value(Value::Float(l * r)),
+        (
+            Some(NodeElement::Value(Value::Float(l))),
+            Some(NodeElement::Value(Value::Integer(r)))
+        ) => NodeElement::Value(Value::Float(l * r as f64)),
+        (
+            Some(NodeElement::Value(Value::Integer(l))),
+            Some(NodeElement::Value(Value::Float(r)))
+        ) => NodeElement::Value(Value::Float(l as f64 * r)),
         _ => NodeElement::Error("?TYPE MISMATCH".to_string()),
     }
 }
@@ -109,10 +141,28 @@ fn operator_div(mut params: Vec<NodeElement>) -> NodeElement {
     }
 
     match (left, right) {
+        (   _,
+            Some(NodeElement::Value(Value::Integer(0)))
+        ) => NodeElement::Error("?DIVISION BY ZERO".to_string()),
+        (   _,
+            Some(NodeElement::Value(Value::Float(0.0_f64)))
+        ) => NodeElement::Error("?DIVISION BY ZERO".to_string()),
         (
             Some(NodeElement::Value(Value::Integer(l))),
             Some(NodeElement::Value(Value::Integer(r)))
-        ) => NodeElement::Value(Value::Integer(l/r)),
+        ) => NodeElement::Value(Value::Float(l as f64 / r as f64)),
+        (
+            Some(NodeElement::Value(Value::Float(l))),
+            Some(NodeElement::Value(Value::Float(r)))
+        ) => NodeElement::Value(Value::Float(l as f64 / r as f64)),
+        (
+            Some(NodeElement::Value(Value::Float(l))),
+            Some(NodeElement::Value(Value::Integer(r)))
+        ) => NodeElement::Value(Value::Float(l as f64 / r as f64)),
+        (
+            Some(NodeElement::Value(Value::Integer(l))),
+            Some(NodeElement::Value(Value::Float(r)))
+        ) => NodeElement::Value(Value::Float(l as f64 / r as f64)),
         _ => NodeElement::Error("?TYPE MISMATCH".to_string()),
     }
 }

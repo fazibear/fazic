@@ -17,6 +17,17 @@ fn main() {
         parser::parse_all("PRINT 10+10-2*67/2").unwrap()
     );
 
+    runtime::run(
+        parser::parse_all("PRINT 2.2*2").unwrap()
+    );
+
+    runtime::run(
+        parser::parse_all("PRINT 4/3").unwrap()
+    );
+    runtime::run(
+        parser::parse_all("PRINT 4/0").unwrap()
+    );
+
 }
 
 #[test]
