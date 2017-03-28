@@ -9,4 +9,5 @@ lalrpop = "0.12.5"
 
 [dependencies]
 lalrpop-util = "0.12.5"
+sdl2 = "0.29"
 regex = "0.2.1"
