@@ -1,8 +1,7 @@
 extern crate sdl2;
 
-use std::path::Path;
-use sdl2::event::{Event,WindowEvent};
-use sdl2::surface::{Surface};
+use sdl2::event::{Event};
+//use sdl2::surface::{Surface};
 use sdl2::keyboard::Keycode;
 use sdl2::rect::{Rect};
 
@@ -39,43 +38,32 @@ pub fn main() {
             Err(err) => panic!("failed to create renderer: {}", err)
         };
 
-    let string = "Hello world from console".to_string();
+    let string = "elo elo 320 !!!".to_string();
     let mut text = text::Text::new(&string);
-
-    let _ = renderer.set_scale(SCREEN_SCALE, SCREEN_SCALE);
-    let _ = renderer.set_draw_color(colors::LIGHT_BLUE);
-    let _ = renderer.clear();
-
-    let _ = renderer.set_draw_color(colors::BLUE);
-    let screen_rect = Rect::new(SCREEN_X, SCREEN_Y, SCREEN_WIDTH, SCREEN_HEIGHT);
-    let _ = renderer.fill_rect(screen_rect);
-
-    text.render(&mut renderer);
-
-    let _ = renderer.present();
 
     let mut events = ctx.event_pump().unwrap();
 
-    // loop until we receive a QuitEvent or press escape.
-    'event : loop {
-        for event in events.wait_iter() {
+    let mut running = true;
+    while running {
+        for event in events.poll_iter() {
             match event {
-                Event::Quit{..} => break 'event,
-                Event::Window {win_event, ..} => {
-                    match win_event {
-                        // refresh our window, for example if it is no longer
-                        // covered by other windows.
-                        //WindowEvent::Exposed => renderer.present(),
-                        _ => (),
-                    }
-                }
-                Event::KeyDown {keycode: Some(keycode), ..} => {
-                    if keycode == Keycode::Escape {
-                        break 'event
-                    }
-                }
-                _               => continue
+                Event::Quit {..} | Event::KeyDown {keycode: Some(Keycode::Escape), ..} => {
+                    running = false;
+                },
+                _ => {}
             }
         }
+
+        let _ = renderer.set_scale(SCREEN_SCALE, SCREEN_SCALE);
+        let _ = renderer.set_draw_color(colors::LIGHT_BLUE);
+        let _ = renderer.clear();
+
+        let _ = renderer.set_draw_color(colors::BLUE);
+
+        let screen_rect = Rect::new(SCREEN_X, SCREEN_Y, SCREEN_WIDTH, SCREEN_HEIGHT);
+        let _ = renderer.fill_rect(screen_rect);
+
+        text.render(&mut renderer);
+        let _ = renderer.present();
     }
 }
