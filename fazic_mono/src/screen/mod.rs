@@ -1,13 +1,13 @@
 extern crate sdl2;
 
-pub mod colors;
-use self::colors::*;
-
 use std::path::Path;
 use sdl2::event::{Event,WindowEvent};
 use sdl2::surface::{Surface};
 use sdl2::keyboard::Keycode;
 use sdl2::rect::{Rect};
+
+pub mod colors;
+pub mod text;
 
 const SCREEN_SCALE: f32 = 2.0;
 
@@ -18,7 +18,6 @@ const SCREEN_Y: i32 = 42;
 const SCREEN_X: i32 = 42;
 const SCREEN_WIDTH: u32 = 320;
 const SCREEN_HEIGHT: u32 = 200;
-
 
 pub fn main() {
     let ctx = sdl2::init().unwrap();
@@ -40,38 +39,20 @@ pub fn main() {
             Err(err) => panic!("failed to create renderer: {}", err)
         };
 
-    // Load a surface.
-    // Surfaces live in system RAM, so they aren't ideal for performance.
-    let mut surface = match Surface::load_bmp(&Path::new("assets/chars.bmp")) {
-        Ok(surface) => surface,
-        Err(err)    => panic!("failed to load surface: {}", err)
-    };
-
-    let _ = surface.set_color_key(true, BLACK);
-    let _ = surface.set_color_mod(MAGENTA);
-
-    // Convert a surface to a texture.
-    // Textures can be used more efficiently by the GPU. (If one is available.)
-    let texture = match renderer.create_texture_from_surface(&surface) {
-        Ok(texture) => texture,
-        Err(err)    => panic!("failed to convert surface: {:?}", err)
-    };
+    let mut text = text::Text::new();
 
     let _ = renderer.set_scale(SCREEN_SCALE, SCREEN_SCALE);
-    let _ = renderer.set_draw_color(LIGHT_BLUE);
+    let _ = renderer.set_draw_color(colors::LIGHT_BLUE);
     let _ = renderer.clear();
-    // Display the texture.
-    // Omitting the src & dst Rect arguments will cause our image to stretch across the entire buffer.
-    // Try passing Some(surface.rect()) for src & dst instead of None & see how things change.
 
-    let _ = renderer.set_draw_color(BLUE);
-    let inner_rect = Rect::new(SCREEN_X, SCREEN_Y, SCREEN_WIDTH, SCREEN_HEIGHT);
-    let _ = renderer.fill_rect(inner_rect);
+    let _ = renderer.set_draw_color(colors::BLUE);
+    let screen_rect = Rect::new(SCREEN_X, SCREEN_Y, SCREEN_WIDTH, SCREEN_HEIGHT);
+    let _ = renderer.fill_rect(screen_rect);
 
-    let char = Rect::new(0, 0, 8, 8);
-    let pos = Rect::new(SCREEN_X, SCREEN_Y, 8, 8);
+    let string = "Hello world from console".to_string();
 
-    let _ = renderer.copy(&texture, Some(char), Some(pos));
+    text.render(string, &mut renderer);
+
     let _ = renderer.present();
 
     let mut events = ctx.event_pump().unwrap();
