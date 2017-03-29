@@ -1,12 +1,14 @@
 extern crate sdl2;
 
-use sdl2::event::{Event};
-//use sdl2::surface::{Surface};
-use sdl2::keyboard::Keycode;
-use sdl2::rect::{Rect};
-use runtime::text_buffer::{TextBuffer};
 pub mod colors;
 pub mod text_display;
+
+use sdl2::event::{Event};
+use sdl2::keyboard::Keycode;
+use sdl2::rect::{Rect};
+
+use runtime::text_buffer::{TextBuffer};
+use seld::text_display::{Text};
 
 const SCREEN_SCALE: f32 = 2.0;
 
@@ -40,7 +42,7 @@ pub fn main() {
 
     let text_buffer = TextBuffer::new();
 
-    let mut text = text_display::Text::new(&text_buffer);
+    let mut text = Text::new(&text_buffer);
 
     let mut events = ctx.event_pump().unwrap();
 
