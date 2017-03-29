@@ -1,5 +1,5 @@
 use ast::{NodeElement, Opcode};
-use node_builder::*;
+use parser::node_builder::*;
 
 grammar;
 

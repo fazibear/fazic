@@ -6,7 +6,7 @@ use sdl2::keyboard::Keycode;
 use sdl2::rect::{Rect};
 
 pub mod colors;
-pub mod text;
+pub mod text_display;
 
 const SCREEN_SCALE: f32 = 2.0;
 
@@ -38,8 +38,8 @@ pub fn main() {
             Err(err) => panic!("failed to create renderer: {}", err)
         };
 
-    let string = "elo elo 320 !!!".to_string();
-    let mut text = text::Text::new(&string);
+    let string = "                                                     **** FAZIC ****                                                    READY.".to_string();
+    let mut text = text_display::Text::new(&string);
 
     let mut events = ctx.event_pump().unwrap();
 

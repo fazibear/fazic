@@ -23,7 +23,7 @@ impl<'t> Text<'t> {
 
         let _ = surface.set_color_key(true, colors::BLACK);
 
-        let chars_string = "@abcdefghijklmnopqrstuvwxyz[£]^@ !\"#$%&'()*+,-./0123456789:;<=>?ABCDEFGHIJKLMNOPQRSTUVWXYZ".to_string();
+        let chars_string = "@abcdefghijklmnopqrstuvwxyz[£]^@ !\"#$%&'()*+,-./0123456789:;<=>?@ABCDEFGHIJKLMNOPQRSTUVWXYZ".to_string();
 
         Text {
             surface: surface,
@@ -33,7 +33,7 @@ impl<'t> Text<'t> {
     }
 
     pub fn render(&mut self, renderer: &mut Renderer) {
-        for i in 0..80 {
+        for i in 0..1040 {
             match self.string.chars().nth(i) {
                 Some(c) => self.render_char(i, c, renderer),
                 None => self.render_char(i, ' ', renderer),
@@ -43,7 +43,7 @@ impl<'t> Text<'t> {
     }
 
     fn render_char(&mut self, pos: usize, char: char, renderer: &mut Renderer) {
-            self.surface.set_color_mod(colors::MAGENTA);
+            self.surface.set_color_mod(colors::LIGHT_BLUE);
 
             let texture = match renderer.create_texture_from_surface(&self.surface) {
                 Ok(texture) => texture,

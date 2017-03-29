@@ -1,4 +1,5 @@
 mod grammar;
+mod node_builder;
 
 use ast::{NodeElement};
 
