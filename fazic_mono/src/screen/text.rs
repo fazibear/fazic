@@ -7,25 +7,27 @@ use screen::{colors};
 
 pub struct Text<'t> {
     surface: Surface<'t>,
+    string: &'t String,
 }
 
 impl<'t> Text<'t> {
-    pub fn new() -> Text<'t> {
+    pub fn new(string: &'t String) -> Text<'t> {
         let mut surface = match Surface::load_bmp(&Path::new("assets/chars.bmp")) {
             Ok(surface) => surface,
             Err(err)    => panic!("failed to load surface: {}", err)
         };
         Text {
             surface: surface,
+            string: string,
         }
     }
 
-    pub fn render(&mut self, string: String, renderer: &mut Renderer) {
+    pub fn render(&mut self, renderer: &mut Renderer) {
         for i in 0..80 {
             self.surface.set_color_key(true, colors::BLACK);
             self.surface.set_color_mod(colors::MAGENTA);
 
-            let char: char = match string.chars().nth(i) {
+            let char: char = match self.string.chars().nth(i) {
                 Some(c) => c,
                 None => ' ',
             };

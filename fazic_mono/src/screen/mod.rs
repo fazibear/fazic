@@ -39,7 +39,8 @@ pub fn main() {
             Err(err) => panic!("failed to create renderer: {}", err)
         };
 
-    let mut text = text::Text::new();
+    let string = "Hello world from console".to_string();
+    let mut text = text::Text::new(&string);
 
     let _ = renderer.set_scale(SCREEN_SCALE, SCREEN_SCALE);
     let _ = renderer.set_draw_color(colors::LIGHT_BLUE);
@@ -49,9 +50,7 @@ pub fn main() {
     let screen_rect = Rect::new(SCREEN_X, SCREEN_Y, SCREEN_WIDTH, SCREEN_HEIGHT);
     let _ = renderer.fill_rect(screen_rect);
 
-    let string = "Hello world from console".to_string();
-
-    text.render(string, &mut renderer);
+    text.render(&mut renderer);
 
     let _ = renderer.present();
 
