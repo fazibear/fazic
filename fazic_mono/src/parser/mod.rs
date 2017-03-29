@@ -1,8 +1,9 @@
-use grammar::{parse_all};
+mod grammar;
+
 use ast::{NodeElement};
 
 pub fn parse(str: &str) -> Result<NodeElement, String> {
-    let ast = parse_all(str);
+    let ast = grammar::parse_all(str);
     if ast.is_ok(){
         Ok(ast.unwrap())
     } else {
