@@ -5,15 +5,16 @@ use sdl2::rect::{Rect};
 use sdl2::render::{Renderer};
 
 use screen::{colors};
+use runtime::text_buffer::{TextBuffer};
 
 pub struct Text<'t> {
     surface: Surface<'t>,
-    string: &'t String,
     chars: String,
+    buffer: &'t TextBuffer,
 }
 
 impl<'t> Text<'t> {
-    pub fn new(string: &'t String) -> Text<'t> {
+    pub fn new(buffer: &'t TextBuffer) -> Text<'t> {
         let mut surface = match Surface::load_bmp(&Path::new("assets/chars.bmp")) {
             Ok(surface) => {
                 surface
@@ -27,14 +28,14 @@ impl<'t> Text<'t> {
 
         Text {
             surface: surface,
-            string: string,
             chars: chars_string,
+            buffer: buffer,
         }
     }
 
     pub fn render(&mut self, renderer: &mut Renderer) {
         for i in 0..1040 {
-            match self.string.chars().nth(i) {
+            match self.buffer.string.chars().nth(i) {
                 Some(c) => self.render_char(i, c, renderer),
                 None => self.render_char(i, ' ', renderer),
             };

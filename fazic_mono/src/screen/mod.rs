@@ -4,7 +4,7 @@ use sdl2::event::{Event};
 //use sdl2::surface::{Surface};
 use sdl2::keyboard::Keycode;
 use sdl2::rect::{Rect};
-
+use runtime::text_buffer::{TextBuffer};
 pub mod colors;
 pub mod text_display;
 
@@ -38,8 +38,9 @@ pub fn main() {
             Err(err) => panic!("failed to create renderer: {}", err)
         };
 
-    let string = "                                                     **** FAZIC ****                                                    READY.".to_string();
-    let mut text = text_display::Text::new(&string);
+    let text_buffer = TextBuffer::new();
+
+    let mut text = text_display::Text::new(&text_buffer);
 
     let mut events = ctx.event_pump().unwrap();
 
