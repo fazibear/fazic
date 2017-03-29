@@ -1,5 +1,4 @@
 use std::path::Path;
-use std::str::Chars;
 use sdl2::surface::{Surface};
 use sdl2::rect::{Rect};
 use sdl2::render::{Renderer};
@@ -41,7 +40,6 @@ impl<'t> Text<'t> {
                 None => self.render_char(i, ' ', renderer),
             };
         };
-
     }
 
     fn render_char(&mut self, pos: usize, char: char, renderer: &mut Renderer) {
@@ -55,17 +53,19 @@ impl<'t> Text<'t> {
 
         let _ = renderer.copy(
             &texture,
-            Some(self.get_char_rect(char)),
+            Some(self.get_char_rect(char, pos == self.buffer.cursor)),
             Some(self.get_position_rect(pos)),
         );
     }
 
-    fn get_char_rect(&self, char: char) -> Rect {
+    fn get_char_rect(&self, char: char, rev: bool) -> Rect {
         let pos = self.chars.chars().position(|x| x == char).unwrap();
 
         let h = 16;
         let x = (pos % h * 8) as i32;
-        let y = 128 + (pos / h * 8) as i32;
+        let mut y = 128 + (pos / h * 8) as i32;
+
+        if rev { y += 64 }
 
         Rect::new(x, y, 8, 8)
     }
