@@ -14,6 +14,8 @@ const SCREEN_SCALE: f32 = 2.0;
 const WINDOW_WIDTH: u32 = (404 as f32 * SCREEN_SCALE) as u32;
 const WINDOW_HEIGHT: u32 = (284 as f32 * SCREEN_SCALE) as u32;
 
+const SCREEN_Y: i32 = 42;
+const SCREEN_X: i32 = 42;
 const SCREEN_WIDTH: u32 = 320;
 const SCREEN_HEIGHT: u32 = 200;
 
@@ -40,10 +42,13 @@ pub fn main() {
 
     // Load a surface.
     // Surfaces live in system RAM, so they aren't ideal for performance.
-    let surface = match Surface::load_bmp(&Path::new("assets/chars.bmp")) {
+    let mut surface = match Surface::load_bmp(&Path::new("assets/chars.bmp")) {
         Ok(surface) => surface,
         Err(err)    => panic!("failed to load surface: {}", err)
     };
+
+    let _ = surface.set_color_key(true, BLACK);
+    let _ = surface.set_color_mod(MAGENTA);
 
     // Convert a surface to a texture.
     // Textures can be used more efficiently by the GPU. (If one is available.)
@@ -60,10 +65,13 @@ pub fn main() {
     // Try passing Some(surface.rect()) for src & dst instead of None & see how things change.
 
     let _ = renderer.set_draw_color(BLUE);
-    let inner_rect = Rect::new(42, 42, SCREEN_WIDTH, SCREEN_HEIGHT);
+    let inner_rect = Rect::new(SCREEN_X, SCREEN_Y, SCREEN_WIDTH, SCREEN_HEIGHT);
     let _ = renderer.fill_rect(inner_rect);
 
-//    let _ = renderer.copy(&texture, None, None);
+    let char = Rect::new(0, 0, 8, 8);
+    let pos = Rect::new(SCREEN_X, SCREEN_Y, 8, 8);
+
+    let _ = renderer.copy(&texture, Some(char), Some(pos));
     let _ = renderer.present();
 
     let mut events = ctx.event_pump().unwrap();
