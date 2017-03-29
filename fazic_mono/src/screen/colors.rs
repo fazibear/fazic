@@ -16,3 +16,45 @@ pub const GREY:        sdl2::pixels::Color = sdl2::pixels::Color::RGB(136, 136, 
 pub const LIGHT_GREEN: sdl2::pixels::Color = sdl2::pixels::Color::RGB(160, 255, 160);
 pub const LIGHT_BLUE:  sdl2::pixels::Color = sdl2::pixels::Color::RGB(160, 160, 255);
 pub const LIGHT_GREY:  sdl2::pixels::Color = sdl2::pixels::Color::RGB(192, 192, 192);
+
+pub enum Color {
+    Black,
+    White,
+    Red,
+    Cyan,
+    Magenta,
+    Green,
+    Blue,
+    Yellow,
+    Orange,
+    Brown,
+    Pink,
+    DarkGrey,
+    Grey,
+    LightGreen,
+    LightBlue,
+    LightGrey
+}
+
+impl Color {
+    pub fn value(&self) -> sdl2::pixels::Color {
+        match *self {
+            Color::Black      => BLACK,
+            Color::White      => WHITE,
+            Color::Red        => RED,
+            Color::Cyan       => CYAN,
+            Color::Magenta    => MAGENTA,
+            Color::Green      => GREEN,
+            Color::Blue       => BLUE,
+            Color::Yellow     => YELLOW,
+            Color::Orange     => ORNAGE,
+            Color::Brown      => BROWN,
+            Color::Pink       => PINK,
+            Color::DarkGrey   => DARK_GREY,
+            Color::Grey       => GREY,
+            Color::LightGreen => LIGHT_GREEN,
+            Color::LightBlue  => LIGHT_BLUE,
+            Color::LightGrey  => LIGHT_GREY
+        }
+    }
+}

@@ -8,7 +8,7 @@ use sdl2::keyboard::Keycode;
 use sdl2::rect::{Rect};
 
 use runtime::text_buffer::{TextBuffer};
-use seld::text_display::{Text};
+use self::text_display::{Text};
 
 const SCREEN_SCALE: f32 = 2.0;
 
