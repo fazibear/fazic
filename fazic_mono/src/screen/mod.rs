@@ -33,7 +33,7 @@ pub fn main() {
             Err(err)   => panic!("failed to create window: {}", err)
         };
 
-    let mut renderer = match window
+    let renderer = match window
         .renderer()
         .build() {
             Ok(renderer) => renderer,
@@ -41,7 +41,7 @@ pub fn main() {
         };
 
     let mut text_buffer = TextBuffer::new();
-    let mut text = Text::new(&mut text_buffer);
+    let mut text = Text::new(Box::new(renderer), &mut text_buffer);
     let mut events = ctx.event_pump().unwrap();
     let mut running = true;
 
@@ -67,16 +67,16 @@ pub fn main() {
             }
         }
 
-        let _ = renderer.set_scale(SCREEN_SCALE, SCREEN_SCALE);
-        let _ = renderer.set_draw_color(colors::LIGHT_BLUE);
-        //let _ = renderer.clear();
+        let _ = text.renderer.set_scale(SCREEN_SCALE, SCREEN_SCALE);
+        let _ = text.renderer.set_draw_color(colors::LIGHT_BLUE);
+        let _ = text.renderer.clear();
 
-        let _ = renderer.set_draw_color(colors::BLUE);
+        let _ = text.renderer.set_draw_color(colors::BLUE);
 
         let screen_rect = Rect::new(SCREEN_X, SCREEN_Y, SCREEN_WIDTH, SCREEN_HEIGHT);
-        let _ = renderer.fill_rect(screen_rect);
+        let _ = text.renderer.fill_rect(screen_rect);
 
-        text.render(&mut renderer);
-        let _ = renderer.present();
+        let _ = text.render();
+        let _ = text.renderer.present();
     }
 }

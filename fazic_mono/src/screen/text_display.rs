@@ -9,13 +9,14 @@ use screen::colors::{Color};
 use runtime::text_buffer::{TextBuffer};
 
 pub struct Text<'t> {
-    surface: Surface<'t>,
     chars: String,
     pub buffer: &'t mut TextBuffer,
+    pub renderer: Box<Renderer<'t>>,
+    texture: Texture,
 }
 
 impl<'t> Text<'t> {
-    pub fn new(buffer: &'t mut TextBuffer) -> Text<'t> {
+    pub fn new(renderer: Box<Renderer<'t>>, buffer: &'t mut TextBuffer) -> Text<'t> {
         let mut surface = match Surface::load_bmp(&Path::new("assets/chars.bmp")) {
             Ok(surface) => {
                 surface
@@ -25,40 +26,43 @@ impl<'t> Text<'t> {
 
         let _ = surface.set_color_key(true, colors::BLACK);
 
+        let texture = match renderer.create_texture_from_surface(surface) {
+            Ok(texture) => texture,
+            Err(err)    => panic!("failed to convert surface: {:?}", err)
+        };
+
         let chars_string = "@abcdefghijklmnopqrstuvwxyz[£]^@ !\"#$%&'()*+,-./0123456789:;<=>?@ABCDEFGHIJKLMNOPQRSTUVWXYZ".to_string();
 
         Text {
-            surface: surface,
             chars: chars_string,
             buffer: buffer,
+            renderer: renderer,
+            texture: texture,
         }
     }
 
-    pub fn render(&mut self, renderer: &mut Renderer) {
+    pub fn render(&mut self) {
         for i in 0..1000 {
             match self.buffer.string.chars().nth(i) {
-                 Some(c) => self.render_char(i, c, renderer),
-                 None => self.render_char(i, ' ', renderer),
+                 Some(c) => self.render_char(i, c),
+                 None => self.render_char(i, ' '),
             };
         };
     }
 
-    fn render_char(&mut self, pos: usize, char: char, renderer: &mut Renderer) {
+    fn render_char(&mut self, pos: usize, char: char) {
         let color = self.get_color(pos).value();
 
-        let mut texture = match renderer.create_texture_from_surface(&self.surface) {
-            Ok(texture) => texture,
-            Err(err)    => panic!("failed to convert surface: {:?}", err)
-        };
         match color {
-            sdl2::pixels::Color::RGB(r, g, b) => texture.set_color_mod(r,g,b),
-            sdl2::pixels::Color::RGBA(r, g, b, _) => texture.set_color_mod(r,g,b),
+            sdl2::pixels::Color::RGB(r, g, b) => self.texture.set_color_mod(r,g,b),
+            sdl2::pixels::Color::RGBA(r, g, b, _) => self.texture.set_color_mod(r,g,b),
         }
 
-        let _ = renderer.copy(
-            &texture,
-            Some(self.get_char_rect(char, pos == self.buffer.cursor)),
-            Some(self.get_position_rect(pos)),
+        let a = self.get_char_rect(char, pos == self.buffer.cursor);
+        let b = self.get_position_rect(pos);
+
+        let _ = self.renderer.copy(
+            &self.texture, Some(a), Some(b)
         );
     }
 
