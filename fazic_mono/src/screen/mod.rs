@@ -3,6 +3,7 @@ extern crate sdl2;
 pub mod colors;
 pub mod text_display;
 
+use std::process;
 use sdl2::event::{Event};
 use sdl2::keyboard::Keycode;
 use sdl2::rect::{Rect};
@@ -43,13 +44,12 @@ pub fn main() {
     let mut text_buffer = TextBuffer::new();
     let mut text = Text::new(Box::new(renderer), &mut text_buffer);
     let mut events = ctx.event_pump().unwrap();
-    let mut running = true;
 
-    while running {
+    let mut main_loop = || {
         for event in events.poll_iter() {
             match event {
                 Event::Quit {..} | Event::KeyDown {keycode: Some(Keycode::Escape), ..} => {
-                    running = false;
+                    process::exit(1);
                 },
                 Event::KeyDown { keycode: Some(Keycode::Left), ..} => {
                     text.buffer.left();
@@ -78,5 +78,14 @@ pub fn main() {
 
         let _ = text.render();
         let _ = text.renderer.present();
-    }
+    };
+
+    #[cfg(target_os = "emscripten")]
+    use emscripten::{emscripten};
+
+    #[cfg(target_os = "emscripten")]
+    emscripten::set_main_loop_callback(main_loop);
+
+    #[cfg(not(target_os = "emscripten"))]
+    loop { main_loop(); }
 }
