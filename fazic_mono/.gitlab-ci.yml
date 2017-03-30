@@ -5,7 +5,7 @@ variables:
 
 test:
   before_script:
-    - apt-get install libsdl2-2.0
+    - apt-get install libsdl2-2.0-0
   script:
     - cargo test --verbose --jobs 1
   cache:
