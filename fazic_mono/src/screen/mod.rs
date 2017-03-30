@@ -40,18 +40,28 @@ pub fn main() {
             Err(err) => panic!("failed to create renderer: {}", err)
         };
 
-    let text_buffer = TextBuffer::new();
-
-    let mut text = Text::new(&text_buffer);
-
+    let mut text_buffer = TextBuffer::new();
+    let mut text = Text::new(&mut text_buffer);
     let mut events = ctx.event_pump().unwrap();
-
     let mut running = true;
+
     while running {
         for event in events.poll_iter() {
             match event {
                 Event::Quit {..} | Event::KeyDown {keycode: Some(Keycode::Escape), ..} => {
                     running = false;
+                },
+                Event::KeyDown { keycode: Some(Keycode::Left), ..} => {
+                    text.buffer.left();
+                },
+                Event::KeyDown { keycode: Some(Keycode::Right), ..} => {
+                    text.buffer.right();
+                },
+                Event::KeyDown { keycode: Some(Keycode::Up), ..} => {
+                    text.buffer.up();
+                },
+                Event::KeyDown { keycode: Some(Keycode::Down), ..} => {
+                    text.buffer.down();
                 },
                 _ => {}
             }
@@ -59,7 +69,7 @@ pub fn main() {
 
         let _ = renderer.set_scale(SCREEN_SCALE, SCREEN_SCALE);
         let _ = renderer.set_draw_color(colors::LIGHT_BLUE);
-        let _ = renderer.clear();
+        //let _ = renderer.clear();
 
         let _ = renderer.set_draw_color(colors::BLUE);
 

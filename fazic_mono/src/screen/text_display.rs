@@ -1,7 +1,8 @@
+extern crate sdl2;
 use std::path::Path;
 use sdl2::surface::{Surface};
 use sdl2::rect::{Rect};
-use sdl2::render::{Renderer};
+use sdl2::render::{Renderer, Texture};
 
 use screen::{colors};
 use screen::colors::{Color};
@@ -10,11 +11,11 @@ use runtime::text_buffer::{TextBuffer};
 pub struct Text<'t> {
     surface: Surface<'t>,
     chars: String,
-    buffer: &'t TextBuffer,
+    pub buffer: &'t mut TextBuffer,
 }
 
 impl<'t> Text<'t> {
-    pub fn new(buffer: &'t TextBuffer) -> Text<'t> {
+    pub fn new(buffer: &'t mut TextBuffer) -> Text<'t> {
         let mut surface = match Surface::load_bmp(&Path::new("assets/chars.bmp")) {
             Ok(surface) => {
                 surface
@@ -34,22 +35,25 @@ impl<'t> Text<'t> {
     }
 
     pub fn render(&mut self, renderer: &mut Renderer) {
-        for i in 0..1040 {
+        for i in 0..1000 {
             match self.buffer.string.chars().nth(i) {
-                Some(c) => self.render_char(i, c, renderer),
-                None => self.render_char(i, ' ', renderer),
+                 Some(c) => self.render_char(i, c, renderer),
+                 None => self.render_char(i, ' ', renderer),
             };
         };
     }
 
     fn render_char(&mut self, pos: usize, char: char, renderer: &mut Renderer) {
         let color = self.get_color(pos).value();
-        self.surface.set_color_mod(color);
 
-        let texture = match renderer.create_texture_from_surface(&self.surface) {
+        let mut texture = match renderer.create_texture_from_surface(&self.surface) {
             Ok(texture) => texture,
             Err(err)    => panic!("failed to convert surface: {:?}", err)
         };
+        match color {
+            sdl2::pixels::Color::RGB(r, g, b) => texture.set_color_mod(r,g,b),
+            sdl2::pixels::Color::RGBA(r, g, b, _) => texture.set_color_mod(r,g,b),
+        }
 
         let _ = renderer.copy(
             &texture,
