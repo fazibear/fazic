@@ -11,6 +11,7 @@ variables:
 
 test:
   before_script:
+    - apt-get update -yq
     - apt-get -o dir::cache::archives="apt-cache" install -y libsdl2-2.0-0
   script:
     - cargo test --verbose --jobs 1
