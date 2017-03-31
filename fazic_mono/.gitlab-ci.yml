@@ -1,11 +1,11 @@
 image: rustdocker/rust:stable
 
-variables:
-  CARGO_HOME: $CI_PROJECT_DIR/cargo
-
 test:
+  variables:
+    CARGO_HOME: $CI_PROJECT_DIR/cargo
+    APT_CACHE_DIR: `pwd`/apt-cache
+
   before_script:
-    - export APT_CACHE_DIR=`pwd`/apt-cache
     - mkdir -pv $APT_CACHE_DIR
     - apt-get update -yq
     - apt-get -o dir::cache::archives="$APT_CACHE_DIR" install -y libsdl2-2.0-0 libsdl2-dev
