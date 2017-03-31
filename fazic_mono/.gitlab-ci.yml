@@ -3,7 +3,7 @@ image: rustdocker/rust:stable
 test:
   variables:
     CARGO_HOME: $CI_PROJECT_DIR/cargo
-    APT_CACHE_DIR: `pwd`/apt-cache
+    APT_CACHE_DIR: $CI_PROJECT_DIR/apt-cache
 
   before_script:
     - mkdir -pv $APT_CACHE_DIR
