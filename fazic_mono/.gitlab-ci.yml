@@ -1,7 +1,6 @@
 image: rustdocker/rust:stable
 
 cache:
-  key: cache
   untracked: true
   paths:
     - apt-cache/
