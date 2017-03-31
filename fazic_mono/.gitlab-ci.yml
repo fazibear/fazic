@@ -1,17 +1,18 @@
 image: rustdocker/rust:stable
 
-cache:
-  paths:
-    - apt-cache/
-    - target/
-    - cargo/<Paste>
 
 variables:
   CARGO_HOME: $CI_PROJECT_DIR/cargo
 
 test:
   before_script:
+    - env
     - apt-get update -yq
     - apt-get -o dir::cache::archives="apt-cache" install -y libsdl2-2.0-0
   script:
     - cargo test --verbose --jobs 1
+  cache:
+    paths:
+      - apt-cache/
+      - target/
+      - cargo/
