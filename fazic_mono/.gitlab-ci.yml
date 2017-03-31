@@ -7,6 +7,7 @@ variables:
 test:
   before_script:
     - env
+    - sdl2-config --libs
     - apt-get update -yq
     - apt-get -o dir::cache::archives="apt-cache" install -y libsdl2-2.0-0
   script:
