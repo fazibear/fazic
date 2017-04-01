@@ -44,12 +44,20 @@ impl<'t> Text<'t> {
     }
 
     fn render_char(&mut self, pos: usize) {
-        match self.get_color(pos).value() {
+        let is_cursor = pos == self.buffer.cursor;
+
+        let color = if is_cursor {
+            self.get_current_color().value()
+        } else {
+            self.get_color(pos).value()
+        };
+
+        match color {
             sdl2::pixels::Color::RGB(r, g, b) => self.texture.set_color_mod(r,g,b),
             sdl2::pixels::Color::RGBA(r, g, b, _) => self.texture.set_color_mod(r,g,b),
         }
 
-        let a = self.get_char_rect(self.buffer.chars[pos], pos == self.buffer.cursor);
+        let a = self.get_char_rect(self.buffer.chars[pos], is_cursor);
         let b = self.get_position_rect(pos);
 
         let _ = self.renderer.copy(
@@ -81,7 +89,15 @@ impl<'t> Text<'t> {
     }
 
     fn get_color(&self, pos: usize) -> Color {
-        match self.buffer.colors[pos] {
+        self.match_color(self.buffer.colors[pos])
+    }
+
+    fn get_current_color(&self) -> Color {
+        self.match_color(self.buffer.current_color)
+    }
+
+    fn match_color(&self, color: usize) -> Color {
+        match color {
              0 => Color::Black,
              1 => Color::White,
              2 => Color::Red,
