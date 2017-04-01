@@ -44,9 +44,7 @@ impl<'t> Text<'t> {
     }
 
     fn render_char(&mut self, pos: usize) {
-        let color = self.get_color(pos).value();
-
-        match color {
+        match self.get_color(pos).value() {
             sdl2::pixels::Color::RGB(r, g, b) => self.texture.set_color_mod(r,g,b),
             sdl2::pixels::Color::RGBA(r, g, b, _) => self.texture.set_color_mod(r,g,b),
         }
@@ -100,7 +98,7 @@ impl<'t> Text<'t> {
             13 => Color::LightGreen,
             14 => Color::LightBlue,
             15 => Color::LightGrey,
-             _ => Color::White,
+             _ => unreachable!(),
         }
     }
 }
