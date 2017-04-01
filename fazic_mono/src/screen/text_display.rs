@@ -9,7 +9,6 @@ use screen::colors::{Color};
 use runtime::text_buffer::{TextBuffer};
 
 pub struct Text<'t> {
-    chars: String,
     pub buffer: &'t mut TextBuffer,
     pub renderer: Box<Renderer<'t>>,
     texture: Texture,
@@ -31,10 +30,7 @@ impl<'t> Text<'t> {
             Err(err)    => panic!("failed to convert surface: {:?}", err)
         };
 
-        let chars_string = "@abcdefghijklmnopqrstuvwxyz[£]^@ !\"#$%&'()*+,-./0123456789:;<=>?@ABCDEFGHIJKLMNOPQRSTUVWXYZ".to_string();
-
         Text {
-            chars: chars_string,
             buffer: buffer,
             renderer: renderer,
             texture: texture,
@@ -43,14 +39,11 @@ impl<'t> Text<'t> {
 
     pub fn render(&mut self) {
         for i in 0..1000 {
-            match self.buffer.string.chars().nth(i) {
-                 Some(c) => self.render_char(i, c),
-                 None => self.render_char(i, ' '),
-            };
+            self.render_char(i)
         };
     }
 
-    fn render_char(&mut self, pos: usize, char: char) {
+    fn render_char(&mut self, pos: usize) {
         let color = self.get_color(pos).value();
 
         match color {
@@ -58,7 +51,7 @@ impl<'t> Text<'t> {
             sdl2::pixels::Color::RGBA(r, g, b, _) => self.texture.set_color_mod(r,g,b),
         }
 
-        let a = self.get_char_rect(char, pos == self.buffer.cursor);
+        let a = self.get_char_rect(self.buffer.chars[pos], pos == self.buffer.cursor);
         let b = self.get_position_rect(pos);
 
         let _ = self.renderer.copy(
@@ -67,7 +60,10 @@ impl<'t> Text<'t> {
     }
 
     fn get_char_rect(&self, char: char, rev: bool) -> Rect {
-        let pos = self.chars.chars().position(|x| x == char).unwrap();
+        let pos = match self.buffer.char_index(char) {
+            Some(pos) => pos,
+                    _ => 32,
+        };
 
         let h = 16;
         let x = (pos % h * 8) as i32;

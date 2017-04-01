@@ -5,7 +5,8 @@ pub mod text_display;
 
 use std::process;
 use sdl2::event::{Event};
-use sdl2::keyboard::Keycode;
+use sdl2::keyboard::{Keycode};
+
 use sdl2::rect::{Rect};
 
 use runtime::text_buffer::{TextBuffer};
@@ -51,19 +52,22 @@ pub fn main() {
                 Event::Quit {..} | Event::KeyDown {keycode: Some(Keycode::Escape), ..} => {
                     process::exit(1);
                 },
-                Event::KeyDown { keycode: Some(Keycode::Left), ..} => {
-                    text.buffer.left();
+                Event::KeyDown { keycode: Some(key), ..} => {
+                    match key {
+                        Keycode::Left => text.buffer.left(),
+                        Keycode::Right => text.buffer.right(),
+                        Keycode::Up => text.buffer.up(),
+                        Keycode::Down => text.buffer.down(),
+                        _ => (),
+                    }
                 },
-                Event::KeyDown { keycode: Some(Keycode::Right), ..} => {
-                    text.buffer.right();
-                },
-                Event::KeyDown { keycode: Some(Keycode::Up), ..} => {
-                    text.buffer.up();
-                },
-                Event::KeyDown { keycode: Some(Keycode::Down), ..} => {
-                    text.buffer.down();
-                },
-                _ => {}
+                Event::TextInput { text: string, ..} => {
+                    match string.chars().nth(0) {
+                        Some(char) => text.buffer.char(char),
+                        _ => (),
+                    }
+                }
+                _ => ()
             }
         }
 
