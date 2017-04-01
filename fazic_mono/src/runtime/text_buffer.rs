@@ -87,9 +87,10 @@ impl TextBuffer {
     }
 
     fn shift(&mut self) {
-        // self.chars = self.chars[40..1000]
-        //     .iter()
-        //     .chain(['\0'; 40].iter())
-        //     .collect()
+        let mut chars = ['\0'; 1000];
+        for i in 40..1000 {
+            chars[i - 40] = self.chars[i]
+        }
+        self.chars = chars;
     }
 }
