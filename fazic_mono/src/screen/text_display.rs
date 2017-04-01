@@ -37,14 +37,14 @@ impl<'t> Text<'t> {
         }
     }
 
-    pub fn render(&mut self) {
+    pub fn render(&mut self, blink: bool) {
         for i in 0..1000 {
-            self.render_char(i)
+            self.render_char(i, blink)
         };
     }
 
-    fn render_char(&mut self, pos: usize) {
-        let is_cursor = pos == self.buffer.cursor;
+    fn render_char(&mut self, pos: usize, blink: bool) {
+        let is_cursor = blink && (pos == self.buffer.cursor);
 
         let color = if is_cursor {
             self.get_current_color().value()

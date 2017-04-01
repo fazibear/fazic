@@ -45,6 +45,10 @@ pub fn main() {
     let mut text_buffer = TextBuffer::new();
     let mut text = Text::new(Box::new(renderer), &mut text_buffer);
     let mut events = ctx.event_pump().unwrap();
+    let mut timer = ctx.timer().unwrap();
+
+    let mut ms_passed = 0;
+    let mut blink = false;
 
     let mut main_loop = || {
         for event in events.poll_iter() {
@@ -55,14 +59,14 @@ pub fn main() {
                 Event::KeyDown { keycode: Some(key), keymod: LGUIMOD, ..} |
                 Event::KeyDown { keycode: Some(key), keymod: RGUIMOD, ..} => {
                     match key {
-                        Keycode::Num1 => text.buffer.set_current_color(1),
-                        Keycode::Num2 => text.buffer.set_current_color(2),
-                        Keycode::Num3 => text.buffer.set_current_color(3),
-                        Keycode::Num4 => text.buffer.set_current_color(4),
-                        Keycode::Num5 => text.buffer.set_current_color(5),
-                        Keycode::Num6 => text.buffer.set_current_color(6),
-                        Keycode::Num7 => text.buffer.set_current_color(7),
-                        Keycode::Num8 => text.buffer.set_current_color(8),
+                        Keycode::Num1 => text.buffer.set_current_color(0),
+                        Keycode::Num2 => text.buffer.set_current_color(1),
+                        Keycode::Num3 => text.buffer.set_current_color(2),
+                        Keycode::Num4 => text.buffer.set_current_color(3),
+                        Keycode::Num5 => text.buffer.set_current_color(4),
+                        Keycode::Num6 => text.buffer.set_current_color(5),
+                        Keycode::Num7 => text.buffer.set_current_color(6),
+                        Keycode::Num8 => text.buffer.set_current_color(7),
                         _ => (),
                     }
                 },
@@ -85,6 +89,11 @@ pub fn main() {
             }
         }
 
+        if timer.ticks() - ms_passed > 500 {
+            blink = !blink;
+            ms_passed = timer.ticks();
+        }
+
         let _ = text.renderer.set_scale(SCREEN_SCALE, SCREEN_SCALE);
         let _ = text.renderer.set_draw_color(colors::LIGHT_BLUE);
         let _ = text.renderer.clear();
@@ -94,7 +103,7 @@ pub fn main() {
         let screen_rect = Rect::new(SCREEN_X, SCREEN_Y, SCREEN_WIDTH, SCREEN_HEIGHT);
         let _ = text.renderer.fill_rect(screen_rect);
 
-        let _ = text.render();
+        let _ = text.render(blink);
         let _ = text.renderer.present();
     };
 

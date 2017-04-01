@@ -109,7 +109,6 @@ impl TextBuffer {
         }
     }
     pub fn set_current_color(&mut self, color: i32) {
-        self.colors[self.cursor] = color as usize;
         self.current_color = color as usize;
     }
 
