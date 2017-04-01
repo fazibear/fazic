@@ -5,7 +5,7 @@ pub mod text_display;
 
 use std::process;
 use sdl2::event::{Event};
-use sdl2::keyboard::{Keycode};
+use sdl2::keyboard::*;
 
 use sdl2::rect::{Rect};
 
@@ -52,6 +52,20 @@ pub fn main() {
                 Event::Quit {..} | Event::KeyDown {keycode: Some(Keycode::Escape), ..} => {
                     process::exit(1);
                 },
+                Event::KeyDown { keycode: Some(key), keymod: LGUIMOD, ..} |
+                Event::KeyDown { keycode: Some(key), keymod: RGUIMOD, ..} => {
+                    match key {
+                        Keycode::Num1 => text.buffer.set_current_color(1),
+                        Keycode::Num2 => text.buffer.set_current_color(2),
+                        Keycode::Num3 => text.buffer.set_current_color(3),
+                        Keycode::Num4 => text.buffer.set_current_color(4),
+                        Keycode::Num5 => text.buffer.set_current_color(5),
+                        Keycode::Num6 => text.buffer.set_current_color(6),
+                        Keycode::Num7 => text.buffer.set_current_color(7),
+                        Keycode::Num8 => text.buffer.set_current_color(8),
+                        _ => (),
+                    }
+                },
                 Event::KeyDown { keycode: Some(key), ..} => {
                     match key {
                         Keycode::Left => text.buffer.left(),
@@ -63,7 +77,7 @@ pub fn main() {
                 },
                 Event::TextInput { text: string, ..} => {
                     match string.chars().nth(0) {
-                        Some(char) => text.buffer.char(char),
+                        Some(char) => text.buffer.set_char(char),
                         _ => (),
                     }
                 }

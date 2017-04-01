@@ -58,7 +58,7 @@ impl<'t> Text<'t> {
     }
 
     fn get_char_rect(&self, char: char, rev: bool) -> Rect {
-        let pos = match self.buffer.char_index(char) {
+        let pos = match self.buffer.get_char_index(char) {
             Some(pos) => pos,
                     _ => 32,
         };

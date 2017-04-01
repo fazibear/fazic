@@ -1,8 +1,9 @@
 pub struct TextBuffer {
     pub supported_chars: String,
     pub chars: [char; 1000],
-    pub colors: [i32; 1000],
+    pub colors: [usize; 1000],
     pub cursor: usize,
+    pub current_color: usize,
 }
 
 impl TextBuffer {
@@ -64,6 +65,7 @@ impl TextBuffer {
                 14,14,14,14,14,14,14,14,14,14,14,14,14,14,14,14,14,14,14,14,14,14,14,14,14,14,14,14,14,14,14,14,14,14,14,14,14,14,14,14,
             ],
             cursor: 160,
+            current_color: 14,
         }
     }
 
@@ -96,17 +98,22 @@ impl TextBuffer {
         }
     }
 
-    pub fn char(&mut self, char: char) {
-        match self.char_index(char) {
+    pub fn set_char(&mut self, char: char) {
+        match self.get_char_index(char) {
             Some(_) => {
                 self.chars[self.cursor] = char;
+                self.colors[self.cursor] = self.current_color;
                 self.right();
             },
             _ => ()
         }
     }
+    pub fn set_current_color(&mut self, color: i32) {
+        self.colors[self.cursor] = color as usize;
+        self.current_color = color as usize;
+    }
 
-    pub fn char_index(&self, char: char) -> Option<usize>  {
+    pub fn get_char_index(&self, char: char) -> Option<usize>  {
         self.supported_chars
             .chars()
             .position(|x| x == char)
