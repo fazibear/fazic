@@ -26,7 +26,7 @@ pub fn main() {
     let ctx = sdl2::init().unwrap();
     let video_ctx = ctx.video().unwrap();
 
-    let window  = match video_ctx
+    let window = match video_ctx
         .window("fazic", WINDOW_WIDTH, WINDOW_HEIGHT)
         .position_centered()
         .opengl()

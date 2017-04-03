@@ -9,7 +9,6 @@ pub mod emscripten {
 
     extern {
         pub fn emscripten_set_main_loop(func: em_callback_func, fps: c_int, simulate_infinite_loop: c_int);
-
         pub fn emscripten_cancel_main_loop();
         pub fn emscripten_get_now() -> c_float;
     }
