@@ -16,7 +16,6 @@ use sdl2::keyboard::*;
 use sdl2::render;
 use sdl2::pixels::PixelFormatEnum;
 
-
 pub fn main() {
     let ctx = sdl2::init().unwrap();
     let video_ctx = ctx.video().unwrap();
@@ -62,12 +61,19 @@ pub fn main() {
                     process::exit(1);
                 },
                 Event::KeyDown { keycode: Some(key), ..} => {
-                    screen.putpixel(
+                    // screen.putpixel(
+                    //     rand::random::<u8>() as usize,
+                    //     rand::random::<u8>() as usize,
+                    //     1
+                    // );
+                    screen.print("Xsdfsdf".to_string(),
                         rand::random::<u8>() as usize,
                         rand::random::<u8>() as usize,
                         1
-                    )
-                    // let v = if screen.pixels[0] == 1 { 0 } else { 1 };
+                    );
+
+
+                        // let v = if screen.pixels[0] == 1 { 0 } else { 1 };
                     // for i in 0..SCREEN_PIXELS {
                     //     screen.pixels[i] = v;
                     // }
