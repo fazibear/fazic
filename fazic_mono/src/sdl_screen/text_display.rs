@@ -4,8 +4,8 @@ use sdl2::surface::{Surface};
 use sdl2::rect::{Rect};
 use sdl2::render::{Renderer, Texture};
 
-use screen::{colors};
-use screen::colors::{Color};
+use sdl_screen::{colors};
+use sdl_screen::colors::{Color};
 use runtime::text_buffer::{TextBuffer};
 
 pub struct Text<'t> {
