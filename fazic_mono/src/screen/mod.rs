@@ -3,7 +3,7 @@ extern crate sdl2;
 pub mod colors;
 pub mod text_display;
 
-use std::process;
+use std::{process};
 use sdl2::event::{Event};
 use sdl2::keyboard::*;
 
@@ -37,6 +37,8 @@ pub fn main() {
 
     let renderer = match window
         .renderer()
+        .accelerated()
+        .present_vsync()
         .build() {
             Ok(renderer) => renderer,
             Err(err) => panic!("failed to create renderer: {}", err)
@@ -105,6 +107,8 @@ pub fn main() {
 
         let _ = text.render(blink);
         let _ = text.renderer.present();
+        //
+        // timer.delay(100)
     };
 
     #[cfg(target_os = "emscripten")]
