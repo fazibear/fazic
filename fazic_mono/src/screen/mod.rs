@@ -16,10 +16,8 @@ impl Screen {
         }
     }
 
-    pub fn print(&mut self, string: String, x: usize, y: usize, color: u8) {
+    pub fn print(&mut self, string: String, mut x: usize, y: usize, color: u8) {
         println!("print({}, {}, {}, {})", string, x, y, color);
-
-        let mut x = x;
 
         for char in string.chars() {
             let data = chars::get_c64_char(char);
@@ -40,12 +38,10 @@ impl Screen {
     }
 
     pub fn putpixel(&mut self, x: usize, y: usize, color: u8) {
-        println!("putpixel({}, {}, {})", x, y, color);
+        // println!("putpixel({}, {}, {})", x, y, color);
 
-        if x >= SCREEN_WIDTH || y >= SCREEN_HEIGHT {
-            return;
+        if x < SCREEN_WIDTH && y < SCREEN_HEIGHT {
+            self.pixels[x + y * SCREEN_WIDTH] = color;
         }
-
-        self.pixels[x + y * SCREEN_WIDTH] = color;
     }
 }

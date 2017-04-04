@@ -126,10 +126,7 @@ pub const C64: [u64; 127] = [
     0xffffffe0e0e7e7e7,
     0xfffffffff0f0f0f0,
     0x0f0f0f0ff0f0f0f0,
-    ];
-
-pub const C64_INDEX: &'static str =
-"@abcdefghijklmnopqrstuvwxyz[£]^@ !\"#$%&'()*+,-./0123456789:;<=>?@ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+];
 
 pub fn get_c64_char(char: char) -> u64 {
     let pos = match char {
@@ -164,7 +161,7 @@ pub fn get_c64_char(char: char) -> u64 {
         '£' => 28,
         ']' => 29,
         '^' => 30,
-        '@' => 31,
+        '{' => 31,
         ' ' => 32,
         '!' => 33,
         '"' => 34,
@@ -197,7 +194,7 @@ pub fn get_c64_char(char: char) -> u64 {
         '=' => 61,
         '>' => 62,
         '?' => 63,
-        '@' => 64,
+        '~' => 64,
         'A' => 65,
         'B' => 66,
         'C' => 67,

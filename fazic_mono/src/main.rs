@@ -16,12 +16,14 @@ use sdl2::keyboard::*;
 use sdl2::render;
 use sdl2::pixels::PixelFormatEnum;
 
+const SCALE: usize = 2;
+
 pub fn main() {
     let ctx = sdl2::init().unwrap();
     let video_ctx = ctx.video().unwrap();
 
     let window = match video_ctx
-        .window("fazic", SCREEN_WIDTH as u32, SCREEN_HEIGHT as u32)
+        .window("fazic", (SCREEN_WIDTH * SCALE) as u32, (SCREEN_HEIGHT * SCALE) as u32)
         .position_centered()
         .opengl()
         .build() {
@@ -66,6 +68,7 @@ pub fn main() {
                     //     rand::random::<u8>() as usize,
                     //     1
                     // );
+                    screen.clear();
                     screen.print("Xsdfsdf".to_string(),
                         rand::random::<u8>() as usize,
                         rand::random::<u8>() as usize,
