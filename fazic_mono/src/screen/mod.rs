@@ -49,6 +49,10 @@ pub fn main() {
     let mut events = ctx.event_pump().unwrap();
     let mut timer = ctx.timer().unwrap();
 
+    let mut fps = ctx.timer().unwrap();
+    let mut fps_update = ctx.timer().unwrap();
+    let mut fps_frames = 0;
+
     let mut ms_passed = 0;
     let mut blink = false;
 
@@ -107,8 +111,12 @@ pub fn main() {
 
         let _ = text.render(blink);
         let _ = text.renderer.present();
-        //
-        // timer.delay(100)
+
+        if fps_update.ticks() > 1000 {
+            println!("FPS: {}", fps_frames / (fps.ticks() / 1000));
+            fps_update = ctx.timer().unwrap();
+        }
+        fps_frames = fps_frames + 1;
     };
 
     #[cfg(target_os = "emscripten")]
