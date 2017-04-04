@@ -1,4 +1,5 @@
 extern crate sdl2;
+extern crate rand;
 
 //pub mod ast;
 //pub mod runtime;
@@ -61,10 +62,15 @@ pub fn main() {
                     process::exit(1);
                 },
                 Event::KeyDown { keycode: Some(key), ..} => {
-                    let v = if screen.pixels[0] == 1 { 0 } else { 1 };
-                    for i in 0..SCREEN_PIXELS {
-                        screen.pixels[i] = v;
-                    }
+                    screen.putpixel(
+                        rand::random::<u8>() as usize,
+                        rand::random::<u8>() as usize,
+                        1
+                    )
+                    // let v = if screen.pixels[0] == 1 { 0 } else { 1 };
+                    // for i in 0..SCREEN_PIXELS {
+                    //     screen.pixels[i] = v;
+                    // }
                 },
                  _ => ()
             }
