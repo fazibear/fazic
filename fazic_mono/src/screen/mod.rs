@@ -52,6 +52,7 @@ pub fn main() {
     let mut fps = ctx.timer().unwrap();
     let mut fps_update = ctx.timer().unwrap();
     let mut fps_frames = 0;
+    let mut fps_update_ms = 0;
 
     let mut ms_passed = 0;
     let mut blink = false;
@@ -112,9 +113,10 @@ pub fn main() {
         let _ = text.render(blink);
         let _ = text.renderer.present();
 
-        if fps_update.ticks() > 1000 {
+
+        if fps_update.ticks() - fps_update_ms > 1000 {
             println!("FPS: {}", fps_frames / (fps.ticks() / 1000));
-            fps_update = ctx.timer().unwrap();
+            fps_update_ms = fps_update.ticks();
         }
         fps_frames = fps_frames + 1;
     };
