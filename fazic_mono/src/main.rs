@@ -5,11 +5,10 @@ extern crate rand;
 //pub mod runtime;
 //pub mod parser;
 //pub mod sdl_screen;
-//pub mod emscripten;
 
-pub mod screen;
+pub mod emscripten;
+pub mod fazic;
 
-use screen::*;
 use std::{process};
 use sdl2::event::{Event};
 use sdl2::keyboard::*;
@@ -23,7 +22,7 @@ pub fn main() {
     let video_ctx = ctx.video().unwrap();
 
     let window = match video_ctx
-        .window("fazic", (SCREEN_WIDTH * SCALE) as u32, (SCREEN_HEIGHT * SCALE) as u32)
+        .window("fazic", (fazic::screen::WIDTH * SCALE) as u32, (fazic::screen::HEIGHT * SCALE) as u32)
         .position_centered()
         .resizable()
         .opengl()
@@ -42,8 +41,8 @@ pub fn main() {
 
     let mut texture = renderer.create_texture(PixelFormatEnum::BGR24,
                                               render::TextureAccess::Streaming,
-                                              SCREEN_WIDTH as u32,
-                                              SCREEN_HEIGHT as u32
+                                              fazic::screen::WIDTH as u32,
+                                              fazic::screen::HEIGHT as u32
                                              ).unwrap();
 
     let mut events = ctx.event_pump().unwrap();
@@ -53,9 +52,9 @@ pub fn main() {
     let mut fps_frames = 0;
     let mut fps_update_ms = 0;
 
-    let mut screen = Screen::new();
+    let mut fazic = fazic::Fazic::new();
 
-    let mut rgb_pixels: Box<[u8; SCREEN_PIXELS * 3]> = Box::new([0; SCREEN_PIXELS * 3]);
+    let mut rgb_pixels: Box<[u8; fazic::screen::PIXELS * 3]> = Box::new([0; fazic::screen::PIXELS * 3]);
 
     let mut main_loop = || {
         for event in events.poll_iter() {
@@ -69,8 +68,8 @@ pub fn main() {
                     //     rand::random::<u8>() as usize,
                     //     1
                     // );
-                    screen.clear();
-                    screen.print("Xsdfsdf".to_string(),
+                    fazic.screen.clear();
+                    fazic.screen.print("Xsdfsdf".to_string(),
                         rand::random::<u8>() as usize,
                         rand::random::<u8>() as usize,
                         1
@@ -86,8 +85,8 @@ pub fn main() {
             }
         }
 
-        for i in 0..SCREEN_PIXELS {
-            match screen.pixels[i] {
+        for i in 0..fazic::screen::PIXELS {
+            match fazic.screen.pixels[i] {
                 0 => {
                     rgb_pixels[i*3]   = 0;
                     rgb_pixels[i*3+1] = 0;
@@ -104,7 +103,7 @@ pub fn main() {
 
         texture.update(None,
                        &mut *rgb_pixels,
-                       SCREEN_WIDTH * 3).unwrap();
+                       fazic::screen::WIDTH * 3).unwrap();
 
         renderer.copy(&texture, None, None);
         renderer.present();

@@ -1,18 +1,17 @@
 pub mod chars;
 
-
-pub const SCREEN_WIDTH: usize = 320;
-pub const SCREEN_HEIGHT: usize = 240;
-pub const SCREEN_PIXELS: usize = SCREEN_WIDTH * SCREEN_HEIGHT;
+pub const WIDTH: usize = 320;
+pub const HEIGHT: usize = 240;
+pub const PIXELS: usize = WIDTH * HEIGHT;
 
 pub struct Screen {
-    pub pixels: [u8; SCREEN_PIXELS]
+    pub pixels: [u8; PIXELS]
 }
 
 impl Screen {
     pub fn new() -> Screen {
         Screen {
-            pixels: [0; SCREEN_PIXELS]
+            pixels: [0; PIXELS]
         }
     }
 
@@ -32,7 +31,7 @@ impl Screen {
     }
 
     pub fn clear(&mut self) {
-        for i in 0..SCREEN_PIXELS {
+        for i in 0..PIXELS {
             self.pixels[i] = 0;
         }
     }
@@ -40,8 +39,8 @@ impl Screen {
     pub fn putpixel(&mut self, x: usize, y: usize, color: u8) {
         // println!("putpixel({}, {}, {})", x, y, color);
 
-        if x < SCREEN_WIDTH && y < SCREEN_HEIGHT {
-            self.pixels[x + y * SCREEN_WIDTH] = color;
+        if x < WIDTH && y < HEIGHT {
+            self.pixels[x + y * WIDTH] = color;
         }
     }
 }
