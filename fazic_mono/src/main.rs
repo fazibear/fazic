@@ -69,7 +69,7 @@ pub fn main() {
                     fazic.screen.set_current_color(fazic::screen::palette::Color::Blue.index());
                     fazic.screen.clear();
                     fazic.screen.set_current_color(fazic::screen::palette::Color::LightBlue.index());
-                    fazic.screen.print("Xsdfsdf".to_string(),
+                    fazic.screen.print("Hello Fazic !".to_string(),
                         rand::random::<u8>() as usize,
                         rand::random::<u8>() as usize,
                         14
