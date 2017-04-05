@@ -39,7 +39,7 @@ pub fn main() {
             Err(err) => panic!("failed to create renderer: {}", err)
         };
 
-    let mut texture = renderer.create_texture(PixelFormatEnum::BGR24,
+    let mut texture = renderer.create_texture(PixelFormatEnum::RGB24,
                                               render::TextureAccess::Streaming,
                                               fazic::screen::WIDTH as u32,
                                               fazic::screen::HEIGHT as u32
@@ -68,11 +68,13 @@ pub fn main() {
                     //     rand::random::<u8>() as usize,
                     //     1
                     // );
+                    fazic.screen.set_current_color(6);
                     fazic.screen.clear();
+                    fazic.screen.set_current_color(14);
                     fazic.screen.print("Xsdfsdf".to_string(),
                         rand::random::<u8>() as usize,
                         rand::random::<u8>() as usize,
-                        1
+                        14
                     );
 
 
@@ -97,6 +99,76 @@ pub fn main() {
                     rgb_pixels[i*3+1] = 255;
                     rgb_pixels[i*3+2] = 255;
                 },
+                2 => {
+                    rgb_pixels[i*3]   = 224;
+                    rgb_pixels[i*3+1] = 64;
+                    rgb_pixels[i*3+2] = 64;
+                },
+                3 => {
+                    rgb_pixels[i*3]   = 96;
+                    rgb_pixels[i*3+1] = 255;
+                    rgb_pixels[i*3+2] = 255;
+                },
+                4 => {
+                    rgb_pixels[i*3]   = 224;
+                    rgb_pixels[i*3+1] = 94;
+                    rgb_pixels[i*3+2] = 224;
+                },
+                5 => {
+                    rgb_pixels[i*3]   = 64;
+                    rgb_pixels[i*3+1] = 224;
+                    rgb_pixels[i*3+2] = 64;
+                },
+                6 => {
+                    rgb_pixels[i*3]   = 64;
+                    rgb_pixels[i*3+1] = 64;
+                    rgb_pixels[i*3+2] = 224;
+                },
+                7 => {
+                    rgb_pixels[i*3]   = 255;
+                    rgb_pixels[i*3+1] = 255;
+                    rgb_pixels[i*3+2] = 64;
+                },
+                8 => {
+                    rgb_pixels[i*3]   = 224;
+                    rgb_pixels[i*3+1] = 160;
+                    rgb_pixels[i*3+2] = 64;
+                },
+                9 => {
+                    rgb_pixels[i*3]   = 156;
+                    rgb_pixels[i*3+1] = 116;
+                    rgb_pixels[i*3+2] = 72;
+                },
+                10 => {
+                    rgb_pixels[i*3]   = 255;
+                    rgb_pixels[i*3+1] = 160;
+                    rgb_pixels[i*3+2] = 160;
+                },
+                11 => {
+                    rgb_pixels[i*3]   = 84;
+                    rgb_pixels[i*3+1] = 84;
+                    rgb_pixels[i*3+2] = 84;
+                },
+                12 => {
+                    rgb_pixels[i*3]   = 136;
+                    rgb_pixels[i*3+1] = 136;
+                    rgb_pixels[i*3+2] = 136;
+                },
+                13 => {
+                    rgb_pixels[i*3]   = 160;
+                    rgb_pixels[i*3+1] = 255;
+                    rgb_pixels[i*3+2] = 160;
+                },
+                14 => {
+                    rgb_pixels[i*3]   = 160;
+                    rgb_pixels[i*3+1] = 160;
+                    rgb_pixels[i*3+2] = 255;
+                },
+                15 => {
+                    rgb_pixels[i*3]   = 192;
+                    rgb_pixels[i*3+1] = 192;
+                    rgb_pixels[i*3+2] = 192;
+                },
                 _ => unreachable!()
             }
         }
@@ -105,7 +177,7 @@ pub fn main() {
                        &mut *rgb_pixels,
                        fazic::screen::WIDTH * 3).unwrap();
 
-        renderer.copy(&texture, None, None);
+        let _ = renderer.copy(&texture, None, None);
         renderer.present();
 
         if fps_update.ticks() - fps_update_ms > 1000 {

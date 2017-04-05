@@ -5,13 +5,15 @@ pub const HEIGHT: usize = 240;
 pub const PIXELS: usize = WIDTH * HEIGHT;
 
 pub struct Screen {
-    pub pixels: [u8; PIXELS]
+    pub pixels: [u8; PIXELS],
+    pub current_color: u8,
 }
 
 impl Screen {
     pub fn new() -> Screen {
         Screen {
-            pixels: [0; PIXELS]
+            pixels: [0; PIXELS],
+            current_color: 0,
         }
     }
 
@@ -30,9 +32,13 @@ impl Screen {
         }
     }
 
+    pub fn set_current_color(&mut self, color: u8) {
+        self.current_color = color;
+    }
+
     pub fn clear(&mut self) {
         for i in 0..PIXELS {
-            self.pixels[i] = 0;
+            self.pixels[i] = self.current_color;
         }
     }
 
