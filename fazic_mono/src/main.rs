@@ -25,6 +25,7 @@ pub fn main() {
     let window = match video_ctx
         .window("fazic", (SCREEN_WIDTH * SCALE) as u32, (SCREEN_HEIGHT * SCALE) as u32)
         .position_centered()
+        .resizable()
         .opengl()
         .build() {
             Ok(window) => window,
