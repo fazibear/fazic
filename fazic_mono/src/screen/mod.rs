@@ -22,7 +22,7 @@ impl Screen {
         for char in string.chars() {
             let data = chars::get_c64_char(char);
 
-            for xx in 0..63 {
+            for xx in 0..64 {
                 if data & (0b1 << xx) != 0 {
                     self.putpixel(x + (xx % 8), y + (xx / 8), color);
                 }
