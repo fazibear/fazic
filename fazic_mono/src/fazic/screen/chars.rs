@@ -1,4 +1,4 @@
-pub const C64: [u64; 127] = [
+pub const CHARS: [u64; 127] = [
     0x003c46067676663c,
     0x007c667c603c0000,
     0x003e66663e060600,
@@ -128,7 +128,7 @@ pub const C64: [u64; 127] = [
     0x0f0f0f0ff0f0f0f0,
 ];
 
-pub fn get_c64_char(char: char) -> u64 {
+pub fn get_char(char: char) -> u64 {
     let pos = match char {
         '@' => 0,
         'a' => 1,
@@ -224,5 +224,5 @@ pub fn get_c64_char(char: char) -> u64 {
         _ => 32,
     };
 
-    C64[pos]
+    CHARS[pos]
 }
