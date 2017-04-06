@@ -44,10 +44,12 @@ impl Screen {
         let (r,g,b) = palette::rgb_for(self.current_color);
 
         for i in 0..PIXELS {
+            let i3 = i * 3;
+
             self.pixels[i] = self.current_color;
-            self.rgb_pixels[i*3]   = r;
-            self.rgb_pixels[i*3+1] = g;
-            self.rgb_pixels[i*3+2] = b;
+            self.rgb_pixels[i3]   = r;
+            self.rgb_pixels[i3+1] = g;
+            self.rgb_pixels[i3+2] = b;
         }
     }
 
@@ -56,12 +58,13 @@ impl Screen {
         if x < WIDTH && y < HEIGHT {
 
             let i = x as usize + y as usize * WIDTH as usize;
+            let i3 = i * 3;
             let (r,g,b) = palette::rgb_for(color);
 
             self.pixels[i] = color;
-            self.rgb_pixels[i*3]   = r;
-            self.rgb_pixels[i*3+1] = g;
-            self.rgb_pixels[i*3+2] = b;
+            self.rgb_pixels[i3]   = r;
+            self.rgb_pixels[i3+1] = g;
+            self.rgb_pixels[i3+2] = b;
         }
     }
 }
