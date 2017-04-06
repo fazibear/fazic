@@ -1,26 +1,27 @@
 pub mod chars;
 pub mod palette;
 
-pub const WIDTH: usize = 320;
-pub const HEIGHT: usize = 240;
-pub const PIXELS: usize = WIDTH * HEIGHT;
+pub const WIDTH: u16 = 320;
+pub const HEIGHT: u16 = 240;
+pub const PIXELS: usize = WIDTH as usize * HEIGHT as usize;
+pub const RGB_PIXELS: usize = PIXELS * 3;
 
 pub struct Screen {
-    pub pixels: [u8; PIXELS],
-    pub rgb_pixels: Box<[u8; PIXELS * 3]>,
+    pub pixels: [u8; PIXELS as usize],
+    pub rgb_pixels: Box<[u8; RGB_PIXELS as usize]>,
     pub current_color: u8,
 }
 
 impl Screen {
     pub fn new() -> Screen {
         Screen {
-            pixels: [0; PIXELS],
-            rgb_pixels: Box::new([0; PIXELS * 3]),
+            pixels: [0; PIXELS as usize],
+            rgb_pixels: Box::new([0; RGB_PIXELS as usize]),
             current_color: 0,
         }
     }
 
-    pub fn print(&mut self, string: String, mut x: usize, y: usize, color: u8) {
+    pub fn print(&mut self, string: String, mut x: u16, y: u16, color: u8) {
         println!("print({}, {}, {}, {})", string, x, y, color);
 
         for char in string.chars() {
@@ -50,11 +51,11 @@ impl Screen {
         }
     }
 
-    pub fn putpixel(&mut self, x: usize, y: usize, color: u8) {
+    pub fn putpixel(&mut self, x: u16, y: u16, color: u8) {
         // println!("putpixel({}, {}, {})", x, y, color);
         if x < WIDTH && y < HEIGHT {
 
-            let i = x + y * WIDTH;
+            let i = x as usize + y as usize * WIDTH as usize;
             let (r,g,b) = palette::rgb_for(color);
 
             self.pixels[i] = color;

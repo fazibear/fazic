@@ -13,16 +13,20 @@ use std::{process};
 use sdl2::event::{Event};
 use sdl2::keyboard::*;
 use sdl2::render;
+use sdl2::rect::*;
 use sdl2::pixels::PixelFormatEnum;
 
-const SCALE: usize = 2;
+const SCALE: u16 = 2;
+const WIDTH: u32 = (fazic::screen::WIDTH * SCALE) as u32;
+const HEIGHT: u32 = (fazic::screen::HEIGHT * SCALE) as u32;
+const RGB_WIDTH: usize = fazic::screen::WIDTH as usize * 3;
 
 pub fn main() {
     let ctx = sdl2::init().unwrap();
     let video_ctx = ctx.video().unwrap();
 
     let window = match video_ctx
-        .window("fazic", (fazic::screen::WIDTH * SCALE) as u32, (fazic::screen::HEIGHT * SCALE) as u32)
+        .window("fazic", WIDTH, HEIGHT)
         .position_centered()
         .resizable()
         .opengl()
@@ -62,16 +66,16 @@ pub fn main() {
                 },
                 Event::KeyDown { keycode: Some(key), ..} => {
                     // screen.putpixel(
-                    //     rand::random::<u8>() as usize,
-                    //     rand::random::<u8>() as usize,
+                    //     rand::random::<u8>() as u16,
+                    //     rand::random::<u8>() as u16,
                     //     1
                     // );
                     fazic.screen.set_current_color(fazic::screen::palette::Color::Blue.index());
                     fazic.screen.clear();
                     fazic.screen.set_current_color(fazic::screen::palette::Color::LightBlue.index());
                     fazic.screen.print("Hello Fazic !".to_string(),
-                        rand::random::<u8>() as usize,
-                        rand::random::<u8>() as usize,
+                        rand::random::<u8>() as u16,
+                        rand::random::<u8>() as u16,
                         14
                     );
 
@@ -87,7 +91,7 @@ pub fn main() {
 
         texture.update(None,
                        &mut *fazic.screen.rgb_pixels,
-                       fazic::screen::WIDTH * 3).unwrap();
+                       RGB_WIDTH).unwrap();
 
         let _ = renderer.copy(&texture, None, None);
         renderer.present();
