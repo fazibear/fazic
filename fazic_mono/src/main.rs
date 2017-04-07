@@ -113,8 +113,9 @@ pub fn main() {
         renderer.present();
 
         if timer.ticks() - fps_last_tick > 1000 {
-            println!("FPS: {}", fps_frames / (timer.ticks() / 1000));
+            println!("FPS: {}", fps_frames);
             fps_last_tick = timer.ticks();
+            fps_frames = 0;
         }
         fps_frames = fps_frames + 1;
     };
