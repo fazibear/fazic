@@ -127,10 +127,14 @@ impl TextBuffer {
     }
 
     fn shift(&mut self) {
-        let mut chars = ['\0'; 1000];
+        let mut chars = ['\0'; CHARS as usize];
+        let mut colors = [self.current_color; CHARS as usize];
+
         for i in 40..1000 {
-            chars[i - 40] = self.chars[i]
+            chars[i - 40] = self.chars[i];
+            colors[i - 40] = self.colors[i];
         }
         self.chars = chars;
+        self.colors = colors;
     }
 }
