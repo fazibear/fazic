@@ -2,7 +2,7 @@ pub mod chars;
 pub mod palette;
 
 pub const WIDTH: u16 = 320;
-pub const HEIGHT: u16 = 240;
+pub const HEIGHT: u16 = 200;
 pub const PIXELS: usize = WIDTH as usize * HEIGHT as usize;
 pub const RGB_PIXELS: usize = PIXELS * 3;
 
@@ -21,18 +21,28 @@ impl Screen {
         }
     }
 
-    pub fn print(&mut self, string: String, mut x: u16, y: u16, color: u8) {
+    pub fn put_string(&mut self, string: String, mut x: u16, y: u16, color: u8) {
         println!("print({}, {}, {}, {})", string, x, y, color);
 
         for char in string.chars() {
-            let data = chars::get_char(char);
+            self.put_char(char, x, y, color, true);
+            x = x + 8;
+        }
+    }
 
-            for xx in 0..64 {
-                if data & (0b1 << xx) != 0 {
-                    self.putpixel(x + (xx % 8), y + (xx / 8), color);
+    pub fn put_char(&mut self, char: char, x: u16, y: u16, color: u8, reverse: bool) {
+        let data = chars::get_char(char);
+
+        for xx in 0..64 {
+            if data & (0b1 << xx) != 0 {
+                if !reverse {
+                    self.put_pixel(x + (xx % 8), y + (xx / 8), color);
+                }
+            } else {
+                if reverse {
+                    self.put_pixel(x + (xx % 8), y + (xx / 8), color);
                 }
             }
-            x = x + 8;
         }
     }
 
@@ -53,7 +63,7 @@ impl Screen {
         }
     }
 
-    pub fn putpixel(&mut self, x: u16, y: u16, color: u8) {
+    pub fn put_pixel(&mut self, x: u16, y: u16, color: u8) {
         // println!("putpixel({}, {}, {})", x, y, color);
         if x < WIDTH && y < HEIGHT {
 

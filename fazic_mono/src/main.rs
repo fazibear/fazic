@@ -13,7 +13,6 @@ use std::{process};
 use sdl2::event::{Event};
 use sdl2::keyboard::*;
 use sdl2::render;
-use sdl2::rect::*;
 use sdl2::pixels::PixelFormatEnum;
 
 const SCALE: u16 = 2;
@@ -51,10 +50,11 @@ pub fn main() {
 
     let mut events = ctx.event_pump().unwrap();
 
-    let mut fps = ctx.timer().unwrap();
-    let mut fps_update = ctx.timer().unwrap();
+    let mut timer = ctx.timer().unwrap();
+
+    let mut fps_last_tick = 0;
     let mut fps_frames = 0;
-    let mut fps_update_ms = 0;
+    let mut blink_last_tick = 0;
 
     let mut fazic = fazic::Fazic::new();
 
@@ -64,30 +64,46 @@ pub fn main() {
                 Event::Quit {..} | Event::KeyDown {keycode: Some(Keycode::Escape), ..} => {
                     process::exit(1);
                 },
-                Event::KeyDown { keycode: Some(key), ..} => {
-                    // screen.putpixel(
-                    //     rand::random::<u8>() as u16,
-                    //     rand::random::<u8>() as u16,
-                    //     1
-                    // );
-                    fazic.screen.set_current_color(fazic::screen::palette::Color::Blue.index());
-                    fazic.screen.clear();
-                    fazic.screen.set_current_color(fazic::screen::palette::Color::LightBlue.index());
-                    fazic.screen.print("Hello Fazic !".to_string(),
-                        rand::random::<u8>() as u16,
-                        rand::random::<u8>() as u16,
-                        14
-                    );
-
-
-                        // let v = if screen.pixels[0] == 1 { 0 } else { 1 };
-                    // for i in 0..SCREEN_PIXELS {
-                    //     screen.pixels[i] = v;
-                    // }
+                Event::KeyDown { keycode: Some(key), keymod: LGUIMOD, ..} |
+                Event::KeyDown { keycode: Some(key), keymod: RGUIMOD, ..} => {
+                    match key {
+                        Keycode::Num1 => fazic.text.set_current_color(0),
+                        Keycode::Num2 => fazic.text.set_current_color(1),
+                        Keycode::Num3 => fazic.text.set_current_color(2),
+                        Keycode::Num4 => fazic.text.set_current_color(3),
+                        Keycode::Num5 => fazic.text.set_current_color(4),
+                        Keycode::Num6 => fazic.text.set_current_color(5),
+                        Keycode::Num7 => fazic.text.set_current_color(6),
+                        Keycode::Num8 => fazic.text.set_current_color(7),
+                        _ => (),
+                    }
                 },
-                 _ => ()
+                Event::KeyDown { keycode: Some(key), ..} => {
+                    match key {
+                        Keycode::Left => fazic.text.left(),
+                        Keycode::Right => fazic.text.right(),
+                        Keycode::Up => fazic.text.up(),
+                        Keycode::Down => fazic.text.down(),
+                        _ => (),
+                    }
+                },
+                Event::TextInput { text: string, ..} => {
+                    match string.chars().nth(0) {
+                        Some(char) => fazic.text.set_char(char),
+                        _ => (),
+                    }
+                }
+                _ => ()
             }
         }
+
+        if timer.ticks() - blink_last_tick > 500 {
+            fazic.show_cursor = !fazic.show_cursor;
+            blink_last_tick = timer.ticks();
+            fazic.text.changed = true;
+        }
+
+        fazic.tick();
 
         texture.update(None,
                        &mut *fazic.screen.rgb_pixels,
@@ -96,9 +112,9 @@ pub fn main() {
         let _ = renderer.copy(&texture, None, None);
         renderer.present();
 
-        if fps_update.ticks() - fps_update_ms > 1000 {
-            println!("FPS: {}", fps_frames / (fps.ticks() / 1000));
-            fps_update_ms = fps_update.ticks();
+        if timer.ticks() - fps_last_tick > 1000 {
+            println!("FPS: {}", fps_frames / (timer.ticks() / 1000));
+            fps_last_tick = timer.ticks();
         }
         fps_frames = fps_frames + 1;
     };

@@ -128,8 +128,8 @@ pub const CHARS: [u64; 127] = [
     0x0f0f0f0ff0f0f0f0,
 ];
 
-pub fn get_char(char: char) -> u64 {
-    let pos = match char {
+pub fn get_char_index(char: char) -> u8 {
+    match char {
         '@' => 0,
         'a' => 1,
         'b' => 2,
@@ -222,7 +222,9 @@ pub fn get_char(char: char) -> u64 {
         'Y' => 89,
         'Z' => 90,
         _ => 32,
-    };
+    }
+}
 
-    CHARS[pos]
+pub fn get_char(char: char) -> u64 {
+    CHARS[get_char_index(char) as usize]
 }
