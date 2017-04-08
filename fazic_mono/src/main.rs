@@ -98,9 +98,8 @@ pub fn main() {
         }
 
         if timer.ticks() - blink_last_tick > 500 {
-            fazic.show_cursor = !fazic.show_cursor;
+            fazic.text.blink_cursor();
             blink_last_tick = timer.ticks();
-            fazic.text.changed = true;
         }
 
         fazic.tick();

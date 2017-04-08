@@ -4,7 +4,6 @@ pub mod text_buffer;
 pub struct Fazic {
     pub screen: screen::Screen,
     pub text: text_buffer::TextBuffer,
-    pub show_cursor: bool,
 }
 
 impl Fazic {
@@ -12,7 +11,6 @@ impl Fazic {
         Fazic {
             screen: screen::Screen::new(),
             text: text_buffer::TextBuffer::new(),
-            show_cursor: true,
         }
     }
 
@@ -21,7 +19,7 @@ impl Fazic {
         self.screen.clear();
 
         for i in 0..text_buffer::CHARS {
-            let is_cursor = self.text.cursor == i && self.show_cursor;
+            let is_cursor = self.text.cursor == i && self.text.show_cursor;
 
             let color = if is_cursor {
                 self.text.current_color

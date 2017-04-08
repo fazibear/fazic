@@ -8,6 +8,7 @@ pub struct TextBuffer {
     pub current_color: u8,
     pub background_color: u8,
     pub changed: bool,
+    pub show_cursor: bool,
 }
 
 impl TextBuffer {
@@ -72,11 +73,17 @@ impl TextBuffer {
             cursor: 160,
             background_color: 6,
             changed: true,
+            show_cursor: true,
         }
     }
 
     pub fn refreshed(&mut self) {
         self.changed = false;
+    }
+
+    pub fn blink_cursor(&mut self) {
+        self.show_cursor = !self.show_cursor;
+        self.changed = true;
     }
 
     pub fn left(&mut self) {
