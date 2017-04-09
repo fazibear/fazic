@@ -100,13 +100,16 @@ impl TextBuffer {
 
     pub fn update_cursor(&mut self) {
         let mut pos: u16 = 0;
-
         for line in self.line_offset..self.cursor_line  {
             pos = pos + self.lines[line as usize].len() as u16;
             pos = pos + CHARS_PER_LINE;
             pos = pos - pos % CHARS_PER_LINE;
         }
-        self.cursor = pos + self.cursor_char;
+        pos = pos + self.cursor_char;
+        if pos >= CHARS {
+            pos = pos - self.cursor_char + self.cursor_char % CHARS_PER_LINE;
+        }
+        self.cursor = pos;
         self.changed = true;
     }
 
@@ -132,8 +135,8 @@ impl TextBuffer {
                     let mut colors = [self.current_color; CHARS as usize];
 
                     for i in CHARS_PER_LINE..CHARS {
-                        chars[i as usize - 40] = self.chars[i as usize];
-                        colors[i as usize - 40] = self.colors[i as usize];
+                        chars[i as usize - CHARS_PER_LINE as usize] = self.chars[i as usize];
+                        colors[i as usize - CHARS_PER_LINE as usize] = self.colors[i as usize];
                     }
                     self.chars = chars;
                     self.colors = colors;
@@ -175,6 +178,7 @@ impl TextBuffer {
     }
 
     pub fn up(&mut self) {
+        println!("{}", self.cursor_line);
         if self.cursor_line != 0 {
             self.cursor_line = self.cursor_line - 1;
             if self.cursor_char as usize > self.lines[self.cursor_line as usize].len() {
@@ -200,7 +204,6 @@ impl TextBuffer {
             }
             self.update_cursor();
         }
-
     }
 
     pub fn enter(&mut self) {
@@ -223,12 +226,11 @@ impl TextBuffer {
             } else {
                 self.lines[self.cursor_line as usize][self.cursor_char as usize] = (char, self.current_color);
             }
-
-            self.changed = true;
             self.cursor_char = self.cursor_char + 1;
         }
         self.update_chars();
         self.update_cursor();
+        self.changed = true;
     }
 
     pub fn backspace(&mut self) {
