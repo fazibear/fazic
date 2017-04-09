@@ -30,5 +30,13 @@ body {
   height: 698px;
   position: absolute;
   top: 0px;
-  left: 0px
+  left: 0px;
+}
+
+#status {
+  color: #fff;
+  margin-top: 315px;
+  text-align: center;
+  font-size: 50px;
+  width: 1140px;
 }
