@@ -2,7 +2,7 @@ pub mod chars;
 pub mod palette;
 
 pub const WIDTH: u16 = 320;
-pub const HEIGHT: u16 = 200;
+pub const HEIGHT: u16 = 240;
 pub const PIXELS: usize = WIDTH as usize * HEIGHT as usize;
 pub const RGB_PIXELS: usize = PIXELS * 3;
 

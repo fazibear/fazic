@@ -1,4 +1,4 @@
-pub const CHARS: u16 = 1000;
+pub const CHARS: u16 = 1200;
 
 pub struct TextBuffer {
     pub chars: [char; CHARS as usize],
