@@ -11,6 +11,7 @@ pub struct TextBuffer {
     pub changed: bool,
     pub show_cursor: bool,
     pub lines: Vec<Vec<(char, u8)>>,
+    pub insert_mode: bool,
 }
 
 impl TextBuffer {
@@ -25,14 +26,25 @@ impl TextBuffer {
             background_color: 6,
             changed: true,
             show_cursor: true,
+            insert_mode: false,
             lines: vec![
                 vec![],
                 vec![
+                    (' ', 0),
+                    (' ', 0),
+                    (' ', 0),
+                    (' ', 0),
+                    (' ', 0),
                     ('*', 0),
+                    (' ', 0),
                     ('*', 1),
+                    (' ', 0),
                     ('*', 2),
+                    (' ', 0),
                     ('*', 3),
+                    (' ', 0),
                     ('*', 4),
+                    (' ', 0),
                     ('*', 5),
                     (' ', 0),
                     ('F', 14),
@@ -41,6 +53,18 @@ impl TextBuffer {
                     ('I', 14),
                     ('C', 14),
                     ('!', 14),
+                    (' ', 0),
+                    ('*', 5),
+                    (' ', 0),
+                    ('*', 4),
+                    (' ', 0),
+                    ('*', 3),
+                    (' ', 0),
+                    ('*', 2),
+                    (' ', 0),
+                    ('*', 1),
+                    (' ', 0),
+                    ('*', 0),
                 ],
                 vec![],
                 vec![
@@ -135,9 +159,7 @@ impl TextBuffer {
     }
 
     pub fn enter(&mut self) {
-        println!("{} == {}", self.lines.len(), self.cursor_line);
         if self.lines.len() - 1 == self.cursor_line as usize {
-            println!("add");
             self.lines.push(vec![]);
         }
         self.cursor_line = self.cursor_line + 1;
@@ -148,7 +170,12 @@ impl TextBuffer {
 
     pub fn insert_string(&mut self, string: String) {
         for char in string.chars() {
-            self.lines[self.cursor_line as usize].insert(self.cursor_char as usize, (char, self.current_color));
+            if self.insert_mode || self.cursor_char == self.lines[self.cursor_line as usize].len() as u16 {
+                self.lines[self.cursor_line as usize].insert(self.cursor_char as usize, (char, self.current_color));
+            } else {
+                self.lines[self.cursor_line as usize][self.cursor_char as usize] = (char, self.current_color);
+            }
+
             self.changed = true;
             self.cursor_char = self.cursor_char + 1;
         }
@@ -163,7 +190,6 @@ impl TextBuffer {
             self.cursor_char = self.cursor_char - 1;
             self.update_chars();
             self.update_cursor();
-            println!("{:?}", self.lines);
         }
     }
 
