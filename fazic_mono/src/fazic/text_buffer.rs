@@ -14,6 +14,7 @@ pub struct TextBuffer {
     pub show_cursor: bool,
     pub lines: Vec<Vec<(char, u8)>>,
     pub insert_mode: bool,
+    pub line_offset: u16,
 }
 
 impl TextBuffer {
@@ -29,6 +30,7 @@ impl TextBuffer {
             changed: true,
             show_cursor: true,
             insert_mode: false,
+            line_offset: 0,
             lines: Vec::with_capacity(MAX_LINES),
         };
         buffer.lines = vec![
@@ -94,7 +96,7 @@ impl TextBuffer {
 
     pub fn update_cursor(&mut self) {
         let mut pos: u16 = 0;
-        for line in 0..self.cursor_line {
+        for line in self.line_offset..self.cursor_line  {
             pos = pos + self.lines[line as usize].len() as u16;
             pos = pos + 40;
             pos = pos - pos % 40;
@@ -105,7 +107,16 @@ impl TextBuffer {
 
     pub fn update_chars(&mut self) {
         let mut pos = 0;
-        for line in self.lines.iter() {
+
+        let start = self.line_offset as usize;
+        let len = self.lines.len() as usize;
+        let end = if start + 30 > len {
+            len
+        } else {
+            start + 30
+        };
+
+        for line in self.lines[start..end].iter() {
             for &(char, color) in line {
                 self.chars[pos as usize] = char;
                 self.colors[pos as usize] = color;
@@ -148,6 +159,11 @@ impl TextBuffer {
             if self.cursor_char as usize > self.lines[self.cursor_line as usize].len() {
                 self.cursor_char = self.lines[self.cursor_line as usize].len() as u16;
             }
+            if self.cursor_line < self.line_offset {
+                println!("!!!");
+                self.line_offset = self.line_offset - 1;
+                self.update_chars();
+            }
             self.update_cursor();
         }
     }
@@ -157,6 +173,11 @@ impl TextBuffer {
             self.cursor_line = self.cursor_line + 1;
             if self.cursor_char as usize > self.lines[self.cursor_line as usize].len() {
                 self.cursor_char = self.lines[self.cursor_line as usize].len() as u16;
+            }
+            if self.cursor_line > self.line_offset + 30 {
+                println!("!!!");
+                self.line_offset = self.line_offset + 1;
+                self.update_chars();
             }
             self.update_cursor();
         }
@@ -168,7 +189,12 @@ impl TextBuffer {
             self.lines.push(Vec::with_capacity(MAX_LINE_CHARS));
         }
         self.cursor_line = self.cursor_line + 1;
+        if self.cursor_line > self.line_offset + 29 {
+            println!("!");
+            self.line_offset = self.line_offset + 1;
+        }
         self.cursor_char = 0;
+        println!("{}, {}", self.cursor_line, self.line_offset);
         self.update_chars();
         self.update_cursor();
     }
