@@ -10,7 +10,7 @@ pub struct TextBuffer {
     pub background_color: u8,
     pub changed: bool,
     pub show_cursor: bool,
-    pub lines: Vec<String>,
+    pub lines: Vec<Vec<(char, u8)>>,
 }
 
 impl TextBuffer {
@@ -26,12 +26,33 @@ impl TextBuffer {
             changed: true,
             show_cursor: true,
             lines: vec![
-                "".to_string(),
-                " * * * * * F A Z I C * * * * * saassasasasasa".to_string(),
-                "".to_string(),
-                "READY".to_string(),
-                "".to_string(),
-            ]
+                vec![],
+                vec![
+                    ('*', 0),
+                    ('*', 1),
+                    ('*', 2),
+                    ('*', 3),
+                    ('*', 4),
+                    ('*', 5),
+                    (' ', 0),
+                    ('F', 14),
+                    ('A', 14),
+                    ('Z', 14),
+                    ('I', 14),
+                    ('C', 14),
+                    ('!', 14),
+                ],
+                vec![],
+                vec![
+                    ('R', 14),
+                    ('E', 14),
+                    ('A', 14),
+                    ('D', 14),
+                    ('Y', 14),
+                    ('.', 14),
+                ],
+                vec![],
+            ],
         };
         buffer.update_chars();
         buffer.update_cursor();
@@ -56,11 +77,12 @@ impl TextBuffer {
     pub fn update_chars(&mut self) {
         let mut pos = 0;
         for line in self.lines.iter() {
-            for char in line.chars() {
+            for &(char, color) in line {
                 self.chars[pos as usize] = char;
+                self.colors[pos as usize] = color;
                 pos = pos + 1;
             }
-            for empty in 0..40 - pos % 40 {
+            for _ in 0..40 - pos % 40 {
                 self.chars[pos as usize] = ' ';
                 pos = pos + 1;
             }
@@ -97,7 +119,6 @@ impl TextBuffer {
             if self.cursor_char as usize > self.lines[self.cursor_line as usize].len() {
                 self.cursor_char = self.lines[self.cursor_line as usize].len() as u16;
             }
-            println!("set: {}, {}", self.cursor_line, self.cursor_char);
             self.update_cursor();
         }
     }
@@ -108,8 +129,6 @@ impl TextBuffer {
             if self.cursor_char as usize > self.lines[self.cursor_line as usize].len() {
                 self.cursor_char = self.lines[self.cursor_line as usize].len() as u16;
             }
-
-            println!("set: {}, {}", self.cursor_line, self.cursor_char);
             self.update_cursor();
         }
 
@@ -119,7 +138,7 @@ impl TextBuffer {
         println!("{} == {}", self.lines.len(), self.cursor_line);
         if self.lines.len() - 1 == self.cursor_line as usize {
             println!("add");
-            self.lines.push("".to_string());
+            self.lines.push(vec![]);
         }
         self.cursor_line = self.cursor_line + 1;
         self.cursor_char = 0;
@@ -128,7 +147,7 @@ impl TextBuffer {
     }
 
     pub fn insert_string(&mut self, string: String) {
-        self.lines[self.cursor_line as usize].insert_str(self.cursor_char as usize, &string);
+        self.lines[self.cursor_line as usize].insert(self.cursor_char as usize, ('X', self.current_color));
         self.changed = true;
         self.cursor_char = self.cursor_char + 1;
         self.update_chars();
@@ -147,8 +166,8 @@ impl TextBuffer {
     }
 
     pub fn set_current_color(&mut self, color: u8) {
-        // self.current_color = color;
-        // self.changed = true;
+        self.current_color = color;
+        self.changed = true;
     }
 
     fn shift(&mut self) {
