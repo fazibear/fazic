@@ -84,20 +84,17 @@ pub fn main() {
                         Keycode::Right => fazic.text.right(),
                         Keycode::Up => fazic.text.up(),
                         Keycode::Down => fazic.text.down(),
+                        Keycode::Backspace => fazic.text.backspace(),
+                        Keycode::Return => fazic.text.enter(),
                         _ => (),
                     }
                 },
-                Event::TextInput { text: string, ..} => {
-                    match string.chars().nth(0) {
-                        Some(char) => fazic.text.set_char(char),
-                        _ => (),
-                    }
-                }
+                Event::TextInput { text: string, ..} => fazic.text.insert_string(string),
                 _ => ()
             }
         }
 
-        if timer.ticks() - blink_last_tick > 500 {
+        if timer.ticks() - blink_last_tick > 250 {
             fazic.text.blink_cursor();
             blink_last_tick = timer.ticks();
         }
