@@ -147,9 +147,11 @@ impl TextBuffer {
     }
 
     pub fn insert_string(&mut self, string: String) {
-        self.lines[self.cursor_line as usize].insert(self.cursor_char as usize, ('X', self.current_color));
-        self.changed = true;
-        self.cursor_char = self.cursor_char + 1;
+        for char in string.chars() {
+            self.lines[self.cursor_line as usize].insert(self.cursor_char as usize, (char, self.current_color));
+            self.changed = true;
+            self.cursor_char = self.cursor_char + 1;
+        }
         self.update_chars();
         self.update_cursor();
     }
