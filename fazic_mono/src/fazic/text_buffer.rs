@@ -1,4 +1,6 @@
 pub const CHARS: u16 = 1200;
+pub const MAX_LINES: usize = 1000;
+pub const MAX_LINE_CHARS: usize = 200;
 
 pub struct TextBuffer {
     pub chars: [char; CHARS as usize],
@@ -27,57 +29,60 @@ impl TextBuffer {
             changed: true,
             show_cursor: true,
             insert_mode: false,
-            lines: vec![
-                vec![],
-                vec![
-                    (' ', 0),
-                    (' ', 0),
-                    (' ', 0),
-                    (' ', 0),
-                    (' ', 0),
-                    ('*', 0),
-                    (' ', 0),
-                    ('*', 1),
-                    (' ', 0),
-                    ('*', 2),
-                    (' ', 0),
-                    ('*', 3),
-                    (' ', 0),
-                    ('*', 4),
-                    (' ', 0),
-                    ('*', 5),
-                    (' ', 0),
-                    ('F', 14),
-                    ('A', 14),
-                    ('Z', 14),
-                    ('I', 14),
-                    ('C', 14),
-                    ('!', 14),
-                    (' ', 0),
-                    ('*', 5),
-                    (' ', 0),
-                    ('*', 4),
-                    (' ', 0),
-                    ('*', 3),
-                    (' ', 0),
-                    ('*', 2),
-                    (' ', 0),
-                    ('*', 1),
-                    (' ', 0),
-                    ('*', 0),
-                ],
-                vec![],
-                vec![
-                    ('R', 14),
-                    ('E', 14),
-                    ('A', 14),
-                    ('D', 14),
-                    ('Y', 14),
-                    ('.', 14),
-                ],
-                vec![],
-            ],
+            lines: Vec::with_capacity(MAX_LINES),
         };
+        buffer.lines = vec![
+            Vec::with_capacity(MAX_LINE_CHARS),
+            Vec::with_capacity(MAX_LINE_CHARS),
+            Vec::with_capacity(MAX_LINE_CHARS),
+            Vec::with_capacity(MAX_LINE_CHARS),
+            Vec::with_capacity(MAX_LINE_CHARS),
+        ];
+        buffer.lines[1] = vec![
+            (' ', 0),
+            (' ', 0),
+            (' ', 0),
+            (' ', 0),
+            (' ', 0),
+            ('*', 0),
+            (' ', 0),
+            ('*', 1),
+            (' ', 0),
+            ('*', 2),
+            (' ', 0),
+            ('*', 3),
+            (' ', 0),
+            ('*', 4),
+            (' ', 0),
+            ('*', 5),
+            (' ', 0),
+            ('F', 14),
+            ('A', 14),
+            ('Z', 14),
+            ('I', 14),
+            ('C', 14),
+            ('!', 14),
+            (' ', 0),
+            ('*', 5),
+            (' ', 0),
+            ('*', 4),
+            (' ', 0),
+            ('*', 3),
+            (' ', 0),
+            ('*', 2),
+            (' ', 0),
+            ('*', 1),
+            (' ', 0),
+            ('*', 0),
+        ];
+        buffer.lines[3] = vec![
+            ('R', 14),
+            ('E', 14),
+            ('A', 14),
+            ('D', 14),
+            ('Y', 14),
+            ('.', 14),
+        ];
         buffer.update_chars();
         buffer.update_cursor();
         buffer
@@ -160,7 +165,7 @@ impl TextBuffer {
 
     pub fn enter(&mut self) {
         if self.lines.len() - 1 == self.cursor_line as usize {
-            self.lines.push(vec![]);
+            self.lines.push(Vec::with_capacity(MAX_LINE_CHARS));
         }
         self.cursor_line = self.cursor_line + 1;
         self.cursor_char = 0;
