@@ -17,6 +17,7 @@ pub struct TextBuffer {
     pub lines: Vec<Vec<(char, u8)>>,
     pub insert_mode: bool,
     pub line_offset: u16,
+    pub additional_lines: u16,
 }
 
 impl TextBuffer {
@@ -33,6 +34,7 @@ impl TextBuffer {
             show_cursor: true,
             insert_mode: false,
             line_offset: 0,
+            additional_lines: 0,
             lines: Vec::with_capacity(MAX_LINES),
         };
         buffer.lines = vec![
@@ -98,6 +100,7 @@ impl TextBuffer {
 
     pub fn update_cursor(&mut self) {
         let mut pos: u16 = 0;
+
         for line in self.line_offset..self.cursor_line  {
             pos = pos + self.lines[line as usize].len() as u16;
             pos = pos + CHARS_PER_LINE;
@@ -118,7 +121,9 @@ impl TextBuffer {
             start + LINES as usize
         };
 
+        self.additional_lines = 0;
         for line in self.lines[start..end].iter() {
+            self.additional_lines = self.additional_lines + line.len() as u16 / CHARS_PER_LINE;
             for &(char, color) in line {
                 self.chars[pos as usize] = char;
                 self.colors[pos as usize] = color;
@@ -136,21 +141,11 @@ impl TextBuffer {
                 }
                 pos = pos + 1;
             }
-            for _ in 0..CHARS_PER_LINE - pos % CHARS_PER_LINE {
-                self.chars[pos as usize] = ' ';
-                if pos >= CHARS - 1 {
-                    let mut chars = ['\0'; CHARS as usize];
-                    let mut colors = [self.current_color; CHARS as usize];
-
-                    for i in CHARS_PER_LINE..CHARS {
-                        chars[i as usize - 40] = self.chars[i as usize];
-                        colors[i as usize - 40] = self.colors[i as usize];
-                    }
-                    self.chars = chars;
-                    self.colors = colors;
-                    pos = pos - CHARS_PER_LINE;
+            if pos < CHARS {
+                for _ in 0..CHARS_PER_LINE - pos % CHARS_PER_LINE {
+                    self.chars[pos as usize] = ' ';
+                    pos = pos + 1;
                 }
-                pos = pos + 1;
             }
         }
         while pos < CHARS {
@@ -199,7 +194,7 @@ impl TextBuffer {
             if self.cursor_char as usize > self.lines[self.cursor_line as usize].len() {
                 self.cursor_char = self.lines[self.cursor_line as usize].len() as u16;
             }
-            if self.cursor_line > self.line_offset + LINES {
+            if self.cursor_line > self.line_offset + LINES - 1 - self.additional_lines {
                 self.line_offset = self.line_offset + 1;
                 self.update_chars();
             }
@@ -213,7 +208,7 @@ impl TextBuffer {
             self.lines.push(Vec::with_capacity(MAX_LINE_CHARS));
         }
         self.cursor_line = self.cursor_line + 1;
-        if self.cursor_line > self.line_offset + 29 {
+        if self.cursor_line > self.line_offset + LINES - 1 - self.additional_lines {
             self.line_offset = self.line_offset + 1;
         }
         self.cursor_char = 0;
