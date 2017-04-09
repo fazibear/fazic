@@ -1,4 +1,6 @@
 pub const CHARS: u16 = 1200;
+pub const CHARS_PER_LINE: u16 = 40;
+pub const LINES: u16 = 30;
 pub const MAX_LINES: usize = 1000;
 pub const MAX_LINE_CHARS: usize = 200;
 
@@ -98,8 +100,8 @@ impl TextBuffer {
         let mut pos: u16 = 0;
         for line in self.line_offset..self.cursor_line  {
             pos = pos + self.lines[line as usize].len() as u16;
-            pos = pos + 40;
-            pos = pos - pos % 40;
+            pos = pos + CHARS_PER_LINE;
+            pos = pos - pos % CHARS_PER_LINE;
         }
         self.cursor = pos + self.cursor_char;
         self.changed = true;
@@ -110,24 +112,48 @@ impl TextBuffer {
 
         let start = self.line_offset as usize;
         let len = self.lines.len() as usize;
-        let end = if start + 30 > len {
+        let end = if start + LINES as usize > len {
             len
         } else {
-            start + 30
+            start + LINES as usize
         };
 
         for line in self.lines[start..end].iter() {
             for &(char, color) in line {
                 self.chars[pos as usize] = char;
                 self.colors[pos as usize] = color;
+                if pos >= CHARS - 1 {
+                    let mut chars = ['\0'; CHARS as usize];
+                    let mut colors = [self.current_color; CHARS as usize];
+
+                    for i in CHARS_PER_LINE..CHARS {
+                        chars[i as usize - 40] = self.chars[i as usize];
+                        colors[i as usize - 40] = self.colors[i as usize];
+                    }
+                    self.chars = chars;
+                    self.colors = colors;
+                    pos = pos - CHARS_PER_LINE;
+                }
                 pos = pos + 1;
             }
-            for _ in 0..40 - pos % 40 {
+            for _ in 0..CHARS_PER_LINE - pos % CHARS_PER_LINE {
                 self.chars[pos as usize] = ' ';
+                if pos >= CHARS - 1 {
+                    let mut chars = ['\0'; CHARS as usize];
+                    let mut colors = [self.current_color; CHARS as usize];
+
+                    for i in CHARS_PER_LINE..CHARS {
+                        chars[i as usize - 40] = self.chars[i as usize];
+                        colors[i as usize - 40] = self.colors[i as usize];
+                    }
+                    self.chars = chars;
+                    self.colors = colors;
+                    pos = pos - CHARS_PER_LINE;
+                }
                 pos = pos + 1;
             }
         }
-        while pos < 1000 {
+        while pos < CHARS {
             self.chars[pos as usize] = ' ';
             pos = pos + 1;
         }
@@ -160,7 +186,6 @@ impl TextBuffer {
                 self.cursor_char = self.lines[self.cursor_line as usize].len() as u16;
             }
             if self.cursor_line < self.line_offset {
-                println!("!!!");
                 self.line_offset = self.line_offset - 1;
                 self.update_chars();
             }
@@ -174,8 +199,7 @@ impl TextBuffer {
             if self.cursor_char as usize > self.lines[self.cursor_line as usize].len() {
                 self.cursor_char = self.lines[self.cursor_line as usize].len() as u16;
             }
-            if self.cursor_line > self.line_offset + 30 {
-                println!("!!!");
+            if self.cursor_line > self.line_offset + LINES {
                 self.line_offset = self.line_offset + 1;
                 self.update_chars();
             }
@@ -190,11 +214,9 @@ impl TextBuffer {
         }
         self.cursor_line = self.cursor_line + 1;
         if self.cursor_line > self.line_offset + 29 {
-            println!("!");
             self.line_offset = self.line_offset + 1;
         }
         self.cursor_char = 0;
-        println!("{}, {}", self.cursor_line, self.line_offset);
         self.update_chars();
         self.update_cursor();
     }
@@ -227,17 +249,5 @@ impl TextBuffer {
     pub fn set_current_color(&mut self, color: u8) {
         self.current_color = color;
         self.changed = true;
-    }
-
-    fn shift(&mut self) {
-        // let mut chars = ['\0'; CHARS as usize];
-        // let mut colors = [self.current_color; CHARS as usize];
-        //
-        // for i in 40..1000 {
-        //     chars[i - 40] = self.chars[i];
-        //     colors[i - 40] = self.colors[i];
-        // }
-        // self.chars = chars;
-        // self.colors = colors;
     }
 }
