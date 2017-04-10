@@ -128,9 +128,10 @@ impl TextBuffer {
         for line in self.lines[start..end].iter() {
             self.additional_lines = self.additional_lines + line.len() as u16 / CHARS_PER_LINE;
             for &(char, color) in line {
+                if pos >= CHARS { break; }
                 self.chars[pos as usize] = char;
                 self.colors[pos as usize] = color;
-                if pos >= CHARS - 1 {
+                if pos >= CHARS - 1 && self.cursor / CHARS_PER_LINE == LINES - 1 {
                     let mut chars = ['\0'; CHARS as usize];
                     let mut colors = [self.current_color; CHARS as usize];
 
@@ -141,6 +142,7 @@ impl TextBuffer {
                     self.chars = chars;
                     self.colors = colors;
                     pos = pos - CHARS_PER_LINE;
+                    self.line_offset = self.line_offset + 1;
                 }
                 pos = pos + 1;
             }
@@ -178,7 +180,6 @@ impl TextBuffer {
     }
 
     pub fn up(&mut self) {
-        println!("{}", self.cursor_line);
         if self.cursor_line != 0 {
             self.cursor_line = self.cursor_line - 1;
             if self.cursor_char as usize > self.lines[self.cursor_line as usize].len() {
