@@ -11,9 +11,9 @@ use sdl2::render;
 use sdl2::pixels::PixelFormatEnum;
 
 const SCALE: u16 = 2;
-const WIDTH: u32 = (fazic::screen::WIDTH * SCALE) as u32;
-const HEIGHT: u32 = (fazic::screen::HEIGHT * SCALE) as u32;
-const RGB_WIDTH: usize = fazic::screen::WIDTH as usize * 3;
+const WIDTH: u32 = (fazic::SCREEN_WIDTH * SCALE) as u32;
+const HEIGHT: u32 = (fazic::SCREEN_HEIGHT * SCALE) as u32;
+const RGB_WIDTH: usize = fazic::SCREEN_WIDTH as usize * 3;
 
 pub fn main() {
     let ctx = sdl2::init().unwrap();
@@ -39,8 +39,8 @@ pub fn main() {
 
     let mut texture = renderer.create_texture(PixelFormatEnum::RGB24,
                                               render::TextureAccess::Streaming,
-                                              fazic::screen::WIDTH as u32,
-                                              fazic::screen::HEIGHT as u32
+                                              fazic::SCREEN_WIDTH as u32,
+                                              fazic::SCREEN_HEIGHT as u32
                                              ).unwrap();
 
     let mut events = ctx.event_pump().unwrap();
