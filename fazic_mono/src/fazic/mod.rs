@@ -58,6 +58,7 @@ impl Fazic {
     }
 
     pub fn enter_key(&mut self) {
+        println!("{}", self.text.get_current_line_string());
         self.text.enter()
     }
 
