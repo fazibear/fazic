@@ -1,5 +1,5 @@
 #[derive(Debug)]
-pub struct Node(pub Opcode, pub Vec<NodeElement>);
+pub struct Entry(pub Option<i32>, pub Vec<NodeElement>);
 
 #[derive(Debug)]
 pub enum NodeElement {
@@ -7,6 +7,9 @@ pub enum NodeElement {
     Value(Value),
     Error(String),
 }
+
+#[derive(Debug)]
+pub struct Node(pub Opcode, pub Vec<NodeElement>);
 
 #[derive(Debug)]
 pub enum Value {

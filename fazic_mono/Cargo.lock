@@ -3,7 +3,7 @@ name = "fazic"
 version = "0.1.0"
 dependencies = [
  "lalrpop 0.12.5 (registry+https://github.com/rust-lang/crates.io-index)",
- "lalrpop-util 0.12.5 (registry+https://github.com/rust-lang/crates.io-index)",
+ "lalrpop-util 0.13.0 (registry+https://github.com/rust-lang/crates.io-index)",
  "rand 0.3.15 (registry+https://github.com/rust-lang/crates.io-index)",
  "regex 0.2.1 (registry+https://github.com/rust-lang/crates.io-index)",
  "sdl2 0.29.1 (registry+https://github.com/rust-lang/crates.io-index)",
@@ -144,6 +144,11 @@ dependencies = [
 [[package]]
 name = "lalrpop-util"
 version = "0.12.5"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+
+[[package]]
+name = "lalrpop-util"
+version = "0.13.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 
 [[package]]
@@ -389,6 +394,7 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 "checksum lalrpop-intern 0.12.5 (registry+https://github.com/rust-lang/crates.io-index)" = "39e21a3b0618b97e727f67d46bf1a21954384f6be6bf72558cc48f149881066e"
 "checksum lalrpop-snap 0.12.5 (registry+https://github.com/rust-lang/crates.io-index)" = "e82554f7abfe767e8a22286e7ca6d1ea7d873e91f0259981e15c7c6754d7340d"
 "checksum lalrpop-util 0.12.5 (registry+https://github.com/rust-lang/crates.io-index)" = "36497edf44be49f4663ebd9cfb154a81c84491986a62773c62624911efd3d84d"
+"checksum lalrpop-util 0.13.0 (registry+https://github.com/rust-lang/crates.io-index)" = "3fc80b1a0b7f0eb17a20b5d5bdc086df800e340ec6bfb0c18c1d240e487964de"
 "checksum lazy_static 0.2.8 (registry+https://github.com/rust-lang/crates.io-index)" = "3b37545ab726dd833ec6420aaba8231c5b320814b9029ad585555d2a03e94fbf"
 "checksum libc 0.2.21 (registry+https://github.com/rust-lang/crates.io-index)" = "88ee81885f9f04bff991e306fea7c1c60a5f0f9e409e99f6b40e3311a3363135"
 "checksum memchr 0.1.11 (registry+https://github.com/rust-lang/crates.io-index)" = "d8b629fb514376c675b98c1421e80b151d3817ac42d7c667717d282761418d20"

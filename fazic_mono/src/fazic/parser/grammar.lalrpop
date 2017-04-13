@@ -1,11 +1,27 @@
-use fazic::ast::{NodeElement, Opcode};
+use fazic::ast::{Entry, NodeElement, Opcode};
 use fazic::parser::node_builder::*;
 
 grammar;
 
-pub all: NodeElement = {
-    command,
-    expression
+pub all: Entry = {
+    <ast:all_list> => { entry_node(None, ast) },
+    <line:r"[0-9]+"> <ast:all_list> => { entry_node(Some(line), ast) },
+};
+
+all_list: Vec<NodeElement> = {
+    <ast:command> => vec![ast],
+    <ast:expression> => vec![ast],
+    <ast:command> ":" <rest:all_list> => {
+        let mut cmds = vec![ast];
+        cmds.extend(rest);
+        cmds
+
+    },
+    <ast:expression>":" <rest:all_list> => {
+        let mut cmds = vec![ast];
+        cmds.extend(rest);
+        cmds
+    },
 };
 
 expression: NodeElement = {

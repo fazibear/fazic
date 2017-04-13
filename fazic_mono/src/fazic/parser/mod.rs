@@ -1,9 +1,9 @@
 mod grammar;
 mod node_builder;
 
-use fazic::ast::{NodeElement};
+use fazic::ast::Entry;
 
-pub fn parse(str: &str) -> Result<NodeElement, String> {
+pub fn parse(str: &str) -> Result<Entry, String> {
     let ast = grammar::parse_all(str);
     if ast.is_ok(){
         Ok(ast.unwrap())
@@ -70,4 +70,19 @@ fn print_div(){
 #[test]
 fn div_by_zer(){
     assert!(parse("PRINT 4/0").is_ok())
+}
+
+#[test]
+fn print_with_line(){
+    assert!(parse("10 PRINT 4/3").is_ok())
+}
+
+#[test]
+fn mutliple_print(){
+    assert!(parse("PRINT 4/3:PRINT 2/1").is_ok())
+}
+
+#[test]
+fn multiple_print_with_line(){
+    assert!(parse("10 PRINT 4/3:PRINT 2/2").is_ok())
 }
