@@ -248,4 +248,12 @@ impl TextBuffer {
         self.current_color = color;
         self.changed = true;
     }
+
+    pub fn get_current_line_string(&mut self) -> String {
+        self
+            .lines[self.cursor_line as usize]
+            .iter()
+            .map(|&(c, _)| c)
+            .collect()
+    }
 }

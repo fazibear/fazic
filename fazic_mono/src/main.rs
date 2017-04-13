@@ -80,7 +80,10 @@ pub fn main() {
                         Keycode::Up => fazic.text.up(),
                         Keycode::Down => fazic.text.down(),
                         Keycode::Backspace => fazic.text.backspace(),
-                        Keycode::Return => fazic.text.enter(),
+                        Keycode::Return => {
+                            println!("'{}'", fazic.text.get_current_line_string());
+                            fazic.text.enter()
+                        },
                         _ => (),
                     }
                 },
