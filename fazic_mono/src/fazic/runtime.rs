@@ -1,6 +1,4 @@
-pub mod text_buffer;
-
-use ast::{NodeElement, Node, Value, Opcode};
+use fazic::ast::{NodeElement, Node, Value, Opcode};
 
 pub fn run(node: NodeElement) {
     match node {

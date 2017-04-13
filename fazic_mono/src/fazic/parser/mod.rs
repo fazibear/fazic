@@ -1,7 +1,7 @@
 mod grammar;
 mod node_builder;
 
-use ast::{NodeElement};
+use fazic::ast::{NodeElement};
 
 pub fn parse(str: &str) -> Result<NodeElement, String> {
     let ast = grammar::parse_all(str);

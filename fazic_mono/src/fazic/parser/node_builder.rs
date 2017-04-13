@@ -1,5 +1,5 @@
 use std::str::FromStr;
-use ast::{NodeElement, Node, Value, Opcode};
+use fazic::ast::{NodeElement, Node, Value, Opcode};
 
 pub fn string_node(string: &str) -> NodeElement {
     let mut string: String = string.to_string();

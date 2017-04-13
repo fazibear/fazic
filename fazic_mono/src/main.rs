@@ -1,11 +1,6 @@
 extern crate sdl2;
 extern crate rand;
 
-//pub mod ast;
-//pub mod runtime;
-//pub mod parser;
-//pub mod sdl_screen;
-
 pub mod emscripten;
 pub mod fazic;
 
