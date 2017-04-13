@@ -62,52 +62,51 @@ pub fn main() {
                 Event::KeyDown { keycode: Some(key), keymod: LGUIMOD, ..} |
                 Event::KeyDown { keycode: Some(key), keymod: RGUIMOD, ..} => {
                     match key {
-                        Keycode::Num1 => fazic.text.set_current_color(0),
-                        Keycode::Num2 => fazic.text.set_current_color(1),
-                        Keycode::Num3 => fazic.text.set_current_color(2),
-                        Keycode::Num4 => fazic.text.set_current_color(3),
-                        Keycode::Num5 => fazic.text.set_current_color(4),
-                        Keycode::Num6 => fazic.text.set_current_color(5),
-                        Keycode::Num7 => fazic.text.set_current_color(6),
-                        Keycode::Num8 => fazic.text.set_current_color(7),
+                        Keycode::Num1 => fazic.set_current_text_color(0),
+                        Keycode::Num2 => fazic.set_current_text_color(1),
+                        Keycode::Num3 => fazic.set_current_text_color(2),
+                        Keycode::Num4 => fazic.set_current_text_color(3),
+                        Keycode::Num5 => fazic.set_current_text_color(4),
+                        Keycode::Num6 => fazic.set_current_text_color(5),
+                        Keycode::Num7 => fazic.set_current_text_color(6),
+                        Keycode::Num8 => fazic.set_current_text_color(7),
                         _ => (),
                     }
                 },
                 Event::KeyDown { keycode: Some(key), ..} => {
                     match key {
-                        Keycode::Left => fazic.text.left(),
-                        Keycode::Right => fazic.text.right(),
-                        Keycode::Up => fazic.text.up(),
-                        Keycode::Down => fazic.text.down(),
-                        Keycode::Backspace => fazic.text.backspace(),
+                        Keycode::Left => fazic.left_key(),
+                        Keycode::Right => fazic.right_key(),
+                        Keycode::Up => fazic.up_key(),
+                        Keycode::Down => fazic.down_key(),
+                        Keycode::Backspace => fazic.backspace_key(),
                         Keycode::Return => {
-                            println!("'{}'", fazic.text.get_current_line_string());
-                            fazic.text.enter()
+                            fazic.enter_key()
                         },
                         _ => (),
                     }
                 },
-                Event::TextInput { text: string, ..} => fazic.text.insert_string(string),
+                Event::TextInput { text: string, ..} => fazic.insert_string(string),
                 _ => ()
             }
         }
 
         if timer.ticks() - blink_last_tick > 250 {
-            fazic.text.blink_cursor();
+            fazic.blink_cursor();
             blink_last_tick = timer.ticks();
         }
 
         fazic.tick();
 
         texture.update(None,
-                       &mut *fazic.screen.rgb_pixels,
+                       fazic.get_rgb_pixels(),
                        RGB_WIDTH).unwrap();
 
         let _ = renderer.copy(&texture, None, None);
         renderer.present();
 
         if timer.ticks() - fps_last_tick > 1000 {
-            //println!("FPS: {}", fps_frames);
+            println!("FPS: {}", fps_frames);
             fps_last_tick = timer.ticks();
             fps_frames = 0;
         }
