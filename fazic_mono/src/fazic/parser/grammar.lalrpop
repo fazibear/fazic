@@ -17,7 +17,7 @@ all_list: Vec<NodeElement> = {
         cmds
 
     },
-    <ast:expression>":" <rest:all_list> => {
+    <ast:expression> ":" <rest:all_list> => {
         let mut cmds = vec![ast];
         cmds.extend(rest);
         cmds
@@ -25,8 +25,8 @@ all_list: Vec<NodeElement> = {
 };
 
 expression: NodeElement = {
-    <l:expression> "OR" <r:prec_1> => param_2_node(Opcode::Or, l, r),
-    <l:expression> "AND" <r:prec_1> => param_2_node(Opcode::And, l, r),
+    <l:expression> r"(?i)OR" <r:prec_1> => param_2_node(Opcode::Or, l, r),
+    <l:expression> r"(?i)AND" <r:prec_1> => param_2_node(Opcode::And, l, r),
     prec_1
 };
 
@@ -56,17 +56,17 @@ term: NodeElement = {
 
 
 function: NodeElement = {
-    "ABS(" <expression> ")" => param_1_node(Opcode::Abs, <>),
+    r"(?i)ABS\(" <expression> ")" => param_1_node(Opcode::Abs, <>),
 };
 
 command: NodeElement = {
     "?" <expression> => param_1_node(Opcode::Print, <>),
-    "PRINT" <expression> => param_1_node(Opcode::Print, <>),
+    r"(?i)PRINT" <expression> => param_1_node(Opcode::Print, <>),
 };
 
 string: NodeElement = {
-    <r"'.*'"> => string_node(<>),
-    <r#"".*""#> => string_node(<>),
+    r"'.*'" => string_node(<>),
+    r#"".*""# => string_node(<>),
 };
 
 float: NodeElement = {

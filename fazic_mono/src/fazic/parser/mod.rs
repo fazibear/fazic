@@ -86,3 +86,7 @@ fn mutliple_print(){
 fn multiple_print_with_line(){
     assert!(parse("10 PRINT 4/3:PRINT 2/2").is_ok())
 }
+#[test]
+fn multiple_print_with_line_downcase(){
+    assert!(parse("10 PRINT 4/3:print 2/2").is_ok())
+}
