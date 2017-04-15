@@ -4,7 +4,7 @@ pub mod ast;
 pub mod runtime;
 pub mod parser;
 
-pub const SCREEN_WIDTH: u16 = 300;
+pub const SCREEN_WIDTH: u16 = 320;
 pub const SCREEN_HEIGHT: u16 = 240;
 pub const SCREEN_PIXELS: usize = SCREEN_WIDTH as usize * SCREEN_HEIGHT as usize;
 pub const SCREEN_RGB_PIXELS: usize = SCREEN_PIXELS * 3;

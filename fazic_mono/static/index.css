@@ -17,8 +17,11 @@ body {
   border: 0px none;
   width: 640px;
   height: 480px;
+}
+
+.canvas {
   position: absolute;
-  left: 158px;
+  left: 163px;
   top: 112px;
 }
 
@@ -39,4 +42,122 @@ body {
   text-align: center;
   font-size: 50px;
   width: 1140px;
+}
+
+
+/* scanlines */
+.canvas::before {
+  content: " ";
+  display: block;
+  position: absolute;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  right: 0;
+  background: linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.25) 50%), linear-gradient(90deg, rgba(255, 0, 0, 0.06), rgba(0, 255, 0, 0.02), rgba(0, 0, 255, 0.06));
+  z-index: 2;
+  background-size: 100% 2px, 3px 100%;
+  pointer-events: none;
+}
+
+/* flickers */
+@keyframes flicker {
+  0% {
+    opacity: 0.37791;
+  }
+
+  5% {
+    opacity: 0.57272;
+  }
+
+  10% {
+    opacity: 0.52965;
+  }
+
+  15% {
+    opacity: 0.44904;
+  }
+
+  20% {
+    opacity: 0.38612;
+  }
+
+  25% {
+    opacity: 0.61337;
+  }
+
+  30% {
+    opacity: 0.52264;
+  }
+
+  35% {
+    opacity: 0.13441;
+  }
+
+  40% {
+    opacity: 0.62158;
+  }
+
+  45% {
+    opacity: 0.38709;
+  }
+
+  50% {
+    opacity: 0.6193;
+  }
+
+  55% {
+    opacity: 0.17385;
+  }
+
+  60% {
+    opacity: 0.67879;
+  }
+
+  65% {
+    opacity: 0.68461;
+  }
+
+  70% {
+    opacity: 0.8871;
+  }
+
+  75% {
+    opacity: 0.55066;
+  }
+
+  80% {
+    opacity: 0.64226;
+  }
+
+  85% {
+    opacity: 0.71568;
+  }
+
+  90% {
+    opacity: 0.66524;
+  }
+
+  95% {
+    opacity: 0.50998;
+  }
+
+  100% {
+    opacity: 0.09196;
+  }
+}
+
+.canvas::after {
+  content: " ";
+  display: block;
+  position: absolute;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  right: 0;
+  background: rgba(18, 16, 16, 0.1);
+  opacity: 0;
+  z-index: 2;
+  pointer-events: none;
+  animation: flicker 0.15s infinite;
 }
