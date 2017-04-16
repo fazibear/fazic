@@ -18,7 +18,7 @@ pub enum Value {
     Float(f64),
 }
 
-#[derive(Copy, Clone, Debug)]
+#[derive(Debug)]
 pub enum Opcode {
     //
     Mul,

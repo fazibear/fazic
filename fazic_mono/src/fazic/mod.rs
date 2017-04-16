@@ -58,7 +58,13 @@ impl Fazic {
     }
 
     pub fn enter_key(&mut self) {
-        println!("{}", self.text.get_current_line_string());
+        let line = &self.text.get_current_line_string();
+        let ast = parser::parse(line);
+        if ast.is_ok() {
+            runtime::exec(ast.unwrap());
+        } else {
+            println!("err");
+        }
         self.text.enter()
     }
 
