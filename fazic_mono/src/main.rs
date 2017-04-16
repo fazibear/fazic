@@ -4,6 +4,10 @@ extern crate rand;
 pub mod emscripten;
 pub mod fazic;
 
+#[cfg(test)]
+pub mod tests;
+
+
 use std::{process};
 use sdl2::event::{Event};
 use sdl2::keyboard::*;
