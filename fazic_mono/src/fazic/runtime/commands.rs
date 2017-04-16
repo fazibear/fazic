@@ -1,6 +1,6 @@
 use fazic::runtime::ast::{NodeElement, Value};
 
-pub fn print(mut params: Vec<NodeElement>, fazic: &mut ::fazic::Fazic) {
+pub fn print(fazic: &mut ::fazic::Fazic, mut params: Vec<NodeElement>) {
     let param = params.pop();
 
     let output = match param {
@@ -11,7 +11,11 @@ pub fn print(mut params: Vec<NodeElement>, fazic: &mut ::fazic::Fazic) {
         _ => unreachable!()
     };
 
-    println!("output {}", output);
-
     fazic.text_buffer.insert_line(&output);
+}
+
+pub fn list(fazic: &mut ::fazic::Fazic){
+    for &(_, _, ref string) in &fazic.program.lines {
+        fazic.text_buffer.insert_line(&string);
+    }
 }

@@ -32,5 +32,7 @@ pub enum Opcode {
     Abs,
 
     // Commands
-    Print
+    List,
+    Print,
+
 }

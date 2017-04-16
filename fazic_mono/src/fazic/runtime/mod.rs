@@ -9,16 +9,25 @@ pub mod functions;
 use self::ast::{Entry, NodeElement, Node, Opcode};
 
 pub fn exec(fazic: &mut ::fazic::Fazic) {
-    let line = fazic.text_buffer.get_current_line_string();
+    let input = fazic.text_buffer.get_current_line_string();
     fazic.text_buffer.enter();
-    let ast = parser::parse_all(&line);
-    println!("ast: {:?}", ast);
+    let ast = parser::parse_all(&input);
+
     match ast {
-        Ok(Entry(None, nodes)) => run_each_node(nodes, fazic),
-        Ok(Entry(line, ast)) => println!("wijt line"),
-        _ => fazic.text_buffer.insert_line("?SYNTAX ERROR"),
+        Ok(Entry(None, nodes)) => {
+            run_each_node(nodes, fazic);
+            fazic.text_buffer.enter();
+            fazic.text_buffer.prompt();
+        },
+        Ok(Entry(line, ast)) => {
+            fazic.program.add_line(line.unwrap() as u16, ast, input.clone());
+        }
+        _ => {
+            fazic.text_buffer.enter();
+            fazic.text_buffer.insert_line("?SYNTAX ERROR");
+            fazic.text_buffer.prompt();
+        }
     }
-    fazic.text_buffer.prompt();
 }
 
 
@@ -30,7 +39,8 @@ fn run_each_node(nodes: Vec<NodeElement>, fazic: &mut ::fazic::Fazic) {
 
 fn run_node(node: NodeElement, fazic: &mut ::fazic::Fazic) {
     match node {
-        NodeElement::Node(Node(Opcode::Print, params)) => commands::print(evaluate_each_node(params), fazic),
+        NodeElement::Node(Node(Opcode::Print, params)) => commands::print(fazic, evaluate_each_node(params)),
+        NodeElement::Node(Node(Opcode::List, _)) => commands::list(fazic),
         NodeElement::Node(_) => println!("ups! node!"),
         NodeElement::Value(_) => println!("ups! value!"),
         NodeElement::Error(e) => println!("ERROR: {}", e),
