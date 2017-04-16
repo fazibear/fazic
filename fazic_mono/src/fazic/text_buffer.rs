@@ -201,10 +201,19 @@ impl TextBuffer {
         }
     }
 
-    pub fn enter(&mut self) {
+    fn add_buffer_line(&mut self) {
         if self.lines.len() - 1 == self.cursor_line as usize {
+            if self.lines.len() == ::fazic::TEXT_BUFFER_MAX_LINES as usize {
+                self.lines.remove(0);
+                self.cursor_line = self.cursor_line - 1;
+            }
             self.lines.push(Vec::with_capacity(::fazic::TEXT_BUFFER_MAX_LINE_CHARS as usize));
         }
+
+    }
+
+    pub fn enter(&mut self) {
+        self.add_buffer_line();
         self.cursor_line = self.cursor_line + 1;
         if self.cursor_line > self.line_offset + ::fazic::TEXT_BUFFER_LINES - 1 - self.additional_lines {
             self.line_offset = self.line_offset + 1;
