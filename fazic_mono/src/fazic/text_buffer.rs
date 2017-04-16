@@ -92,67 +92,6 @@ impl TextBuffer {
         self.changed = false;
     }
 
-    pub fn update_cursor(&mut self) {
-        let mut pos: u16 = 0;
-        for line in self.line_offset..self.cursor_line  {
-            pos = pos + self.lines[line as usize].len() as u16;
-            pos = pos + ::fazic::TEXT_BUFFER_CHARS_PER_LINE;
-            pos = pos - pos % ::fazic::TEXT_BUFFER_CHARS_PER_LINE;
-        }
-        pos = pos + self.cursor_char;
-        if pos >= ::fazic::TEXT_BUFFER_CHARS {
-            pos = pos - self.cursor_char + self.cursor_char % ::fazic::TEXT_BUFFER_CHARS_PER_LINE;
-        }
-        self.cursor = pos;
-        self.changed = true;
-    }
-
-    pub fn update_chars(&mut self) {
-        let mut pos = 0;
-
-        let start = self.line_offset as usize;
-        let len = self.lines.len() as usize;
-        let end = if start + ::fazic::TEXT_BUFFER_LINES as usize > len {
-            len
-        } else {
-            start + ::fazic::TEXT_BUFFER_LINES as usize
-        };
-
-        self.additional_lines = 0;
-        for line in self.lines[start..end].iter() {
-            self.additional_lines = self.additional_lines + line.len() as u16 / ::fazic::TEXT_BUFFER_CHARS_PER_LINE;
-            for &(char, color) in line {
-                if pos >= ::fazic::TEXT_BUFFER_CHARS { break; }
-                self.chars[pos as usize] = char;
-                self.colors[pos as usize] = color;
-                if pos >= ::fazic::TEXT_BUFFER_CHARS - 1 && self.cursor / ::fazic::TEXT_BUFFER_CHARS_PER_LINE == ::fazic::TEXT_BUFFER_LINES - 1 {
-                    let mut chars = ['\0'; ::fazic::TEXT_BUFFER_CHARS as usize];
-                    let mut colors = [self.current_color; ::fazic::TEXT_BUFFER_CHARS as usize];
-
-                    for i in ::fazic::TEXT_BUFFER_CHARS_PER_LINE..::fazic::TEXT_BUFFER_CHARS {
-                        chars[i as usize - ::fazic::TEXT_BUFFER_CHARS_PER_LINE as usize] = self.chars[i as usize];
-                        colors[i as usize - ::fazic::TEXT_BUFFER_CHARS_PER_LINE as usize] = self.colors[i as usize];
-                    }
-                    self.chars = chars;
-                    self.colors = colors;
-                    pos = pos - ::fazic::TEXT_BUFFER_CHARS_PER_LINE;
-                    self.line_offset = self.line_offset + 1;
-                }
-                pos = pos + 1;
-            }
-            if pos < ::fazic::TEXT_BUFFER_CHARS {
-                for _ in 0..::fazic::TEXT_BUFFER_CHARS_PER_LINE - pos % ::fazic::TEXT_BUFFER_CHARS_PER_LINE {
-                    self.chars[pos as usize] = ' ';
-                    pos = pos + 1;
-                }
-            }
-        }
-        while pos < ::fazic::TEXT_BUFFER_CHARS {
-            self.chars[pos as usize] = ' ';
-            pos = pos + 1;
-        }
-        self.changed = true;
-    }
 
     pub fn blink_cursor(&mut self) {
         self.show_cursor = !self.show_cursor;
@@ -201,17 +140,6 @@ impl TextBuffer {
         }
     }
 
-    fn add_buffer_line(&mut self) {
-        if self.lines.len() - 1 == self.cursor_line as usize {
-            if self.lines.len() == ::fazic::TEXT_BUFFER_MAX_LINES as usize {
-                self.lines.remove(0);
-                self.cursor_line = self.cursor_line - 1;
-            }
-            self.lines.push(Vec::with_capacity(::fazic::TEXT_BUFFER_MAX_LINE_CHARS as usize));
-        }
-
-    }
-
     pub fn enter(&mut self) {
         self.add_buffer_line();
         self.cursor_line = self.cursor_line + 1;
@@ -258,5 +186,79 @@ impl TextBuffer {
             .iter()
             .map(|&(c, _)| c)
             .collect()
+    }
+
+    /* private */
+
+    fn update_cursor(&mut self) {
+        let mut pos: u16 = 0;
+        for line in self.line_offset..self.cursor_line  {
+            pos = pos + self.lines[line as usize].len() as u16;
+            pos = pos + ::fazic::TEXT_BUFFER_CHARS_PER_LINE;
+            pos = pos - pos % ::fazic::TEXT_BUFFER_CHARS_PER_LINE;
+        }
+        pos = pos + self.cursor_char;
+        if pos >= ::fazic::TEXT_BUFFER_CHARS {
+            pos = pos - self.cursor_char + self.cursor_char % ::fazic::TEXT_BUFFER_CHARS_PER_LINE;
+        }
+        self.cursor = pos;
+        self.changed = true;
+    }
+
+    fn update_chars(&mut self) {
+        let mut pos = 0;
+
+        let start = self.line_offset as usize;
+        let len = self.lines.len() as usize;
+        let end = if start + ::fazic::TEXT_BUFFER_LINES as usize > len {
+            len
+        } else {
+            start + ::fazic::TEXT_BUFFER_LINES as usize
+        };
+
+        self.additional_lines = 0;
+        for line in self.lines[start..end].iter() {
+            self.additional_lines = self.additional_lines + line.len() as u16 / ::fazic::TEXT_BUFFER_CHARS_PER_LINE;
+            for &(char, color) in line {
+                if pos >= ::fazic::TEXT_BUFFER_CHARS { break; }
+                self.chars[pos as usize] = char;
+                self.colors[pos as usize] = color;
+                if pos >= ::fazic::TEXT_BUFFER_CHARS - 1 && self.cursor / ::fazic::TEXT_BUFFER_CHARS_PER_LINE == ::fazic::TEXT_BUFFER_LINES - 1 {
+                    let mut chars = ['\0'; ::fazic::TEXT_BUFFER_CHARS as usize];
+                    let mut colors = [self.current_color; ::fazic::TEXT_BUFFER_CHARS as usize];
+
+                    for i in ::fazic::TEXT_BUFFER_CHARS_PER_LINE..::fazic::TEXT_BUFFER_CHARS {
+                        chars[i as usize - ::fazic::TEXT_BUFFER_CHARS_PER_LINE as usize] = self.chars[i as usize];
+                        colors[i as usize - ::fazic::TEXT_BUFFER_CHARS_PER_LINE as usize] = self.colors[i as usize];
+                    }
+                    self.chars = chars;
+                    self.colors = colors;
+                    pos = pos - ::fazic::TEXT_BUFFER_CHARS_PER_LINE;
+                    self.line_offset = self.line_offset + 1;
+                }
+                pos = pos + 1;
+            }
+            if pos < ::fazic::TEXT_BUFFER_CHARS {
+                for _ in 0..::fazic::TEXT_BUFFER_CHARS_PER_LINE - pos % ::fazic::TEXT_BUFFER_CHARS_PER_LINE {
+                    self.chars[pos as usize] = ' ';
+                    pos = pos + 1;
+                }
+            }
+        }
+        while pos < ::fazic::TEXT_BUFFER_CHARS {
+            self.chars[pos as usize] = ' ';
+            pos = pos + 1;
+        }
+        self.changed = true;
+    }
+
+    fn add_buffer_line(&mut self) {
+        if self.lines.len() - 1 == self.cursor_line as usize {
+            if self.lines.len() == ::fazic::TEXT_BUFFER_MAX_LINES as usize {
+                self.lines.remove(0);
+                self.cursor_line = self.cursor_line - 1;
+            }
+            self.lines.push(Vec::with_capacity(::fazic::TEXT_BUFFER_MAX_LINE_CHARS as usize));
+        }
     }
 }
