@@ -21,7 +21,7 @@ impl TextBuffer {
             colors: [14; ::fazic::TEXT_BUFFER_CHARS as usize],
             current_color: 14,
             cursor: 0,
-            cursor_line: 4,
+            cursor_line: 3,
             cursor_char: 0,
             background_color: 6,
             changed: true,
@@ -32,7 +32,6 @@ impl TextBuffer {
             lines: Vec::with_capacity(::fazic::TEXT_BUFFER_MAX_LINES as usize),
         };
         buffer.lines = vec![
-            Vec::with_capacity(::fazic::TEXT_BUFFER_MAX_LINE_CHARS as usize),
             Vec::with_capacity(::fazic::TEXT_BUFFER_MAX_LINE_CHARS as usize),
             Vec::with_capacity(::fazic::TEXT_BUFFER_MAX_LINE_CHARS as usize),
             Vec::with_capacity(::fazic::TEXT_BUFFER_MAX_LINE_CHARS as usize),
@@ -75,17 +74,18 @@ impl TextBuffer {
             (' ', 0),
             ('*', 0),
         ];
-        buffer.lines[3] = vec![
-            ('R', 14),
-            ('E', 14),
-            ('A', 14),
-            ('D', 14),
-            ('Y', 14),
-            ('.', 14),
-        ];
+        buffer.prompt();
         buffer.update_chars();
         buffer.update_cursor();
         buffer
+    }
+    pub fn prompt(&mut self) {
+        self.insert_line("READY.");
+    }
+
+    pub fn insert_line(&mut self, string: &str) {
+        self.insert_string(string.to_string());
+        self.enter();
     }
 
     pub fn refreshed(&mut self) {

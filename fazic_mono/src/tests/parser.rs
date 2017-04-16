@@ -41,6 +41,11 @@ fn print_single_quite() {
 }
 
 #[test]
+fn print_single_quite_with_spaces() {
+    assert!(parse_all("  PRINT '123'").is_ok())
+}
+
+#[test]
 fn print_expression(){
     assert!(parse_all("PRINT 10+10-2*67/2").is_ok())
 }
