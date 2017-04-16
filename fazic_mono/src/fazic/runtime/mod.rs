@@ -7,13 +7,15 @@ pub mod program;
 
 use self::ast::{Entry, NodeElement, Node, Opcode};
 
-pub fn exec(program: &program::Program, line: &String) {
+pub fn exec(fazic: &mut ::fazic::Fazic) {
+    let line = fazic.text_buffer.get_current_line_string();
     let ast = parser::parse_all(&line);
     match ast {
         Ok(Entry(None, nodes)) => run_each_node(nodes),
         Ok(Entry(line, ast)) => println!("wijt line"),
         _ => println!("Parse error"),
     }
+    fazic.text_buffer.enter();
 }
 
 fn run_each_node(nodes: Vec<NodeElement>) {
@@ -44,8 +46,6 @@ fn evaluate_node(node: NodeElement) -> NodeElement {
         NodeElement::Node(Node(Opcode::Sub, params)) => operators::sub(evaluate_each_node(params)),
         NodeElement::Node(Node(Opcode::Mul, params)) => operators::mul(evaluate_each_node(params)),
         NodeElement::Node(Node(Opcode::Div, params)) => operators::div(evaluate_each_node(params)),
-        NodeElement::Node(_) => NodeElement::Error("Not implemented".to_string()),
-        NodeElement::Value(_) => node,
-        NodeElement::Error(_) => node,
+        _ => NodeElement::Error("Not implemented".to_string()),
     };
 }
