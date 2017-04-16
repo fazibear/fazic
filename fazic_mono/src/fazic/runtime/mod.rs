@@ -1,15 +1,18 @@
+pub mod ast;
+pub mod parser;
+pub mod node_builder;
 pub mod operators;
 pub mod commands;
+pub mod program;
 
-use fazic::ast::{Entry, NodeElement, Node, Opcode};
+use self::ast::{Entry, NodeElement, Node, Opcode};
 
-pub fn exec(entry: Entry) {
-    let Entry(line, nodes) = entry;
-
-    if line.is_some() {
-        println!("with line");
-    } else {
-        run_each_node(nodes);
+pub fn exec(program: &program::Program, line: &String) {
+    let ast = parser::parse_all(&line);
+    match ast {
+        Ok(Entry(None, nodes)) => run_each_node(nodes),
+        Ok(Entry(line, ast)) => println!("wijt line"),
+        _ => println!("Parse error"),
     }
 }
 

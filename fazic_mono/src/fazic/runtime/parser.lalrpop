@@ -1,5 +1,5 @@
-use fazic::ast::{Entry, NodeElement, Opcode};
-use fazic::parser::node_builder::*;
+use fazic::runtime::ast::{Entry, NodeElement, Opcode};
+use fazic::runtime::node_builder::*;
 
 grammar;
 

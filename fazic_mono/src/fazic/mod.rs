@@ -1,8 +1,6 @@
 pub mod screen;
 pub mod text_buffer;
-pub mod ast;
 pub mod runtime;
-pub mod parser;
 
 pub const SCREEN_WIDTH: u16 = 320;
 pub const SCREEN_HEIGHT: u16 = 240;
@@ -19,6 +17,7 @@ pub const TEXT_BUFFER_MAX_LINE_CHARS: u16 = TEXT_BUFFER_CHARS_PER_LINE * 5;
 pub struct Fazic {
     screen: screen::Screen,
     text: text_buffer::TextBuffer,
+    program: runtime::program::Program,
 }
 
 impl Fazic {
@@ -26,6 +25,7 @@ impl Fazic {
         Fazic {
             screen: screen::Screen::new(),
             text: text_buffer::TextBuffer::new(),
+            program: runtime::program::Program::new(),
         }
     }
 
@@ -58,13 +58,10 @@ impl Fazic {
     }
 
     pub fn enter_key(&mut self) {
-        let line = &self.text.get_current_line_string();
-        let ast = parser::parse(line);
-        if ast.is_ok() {
-            runtime::exec(ast.unwrap());
-        } else {
-            println!("err");
-        }
+        runtime::exec(
+            &self.program,
+            &self.text.get_current_line_string()
+        );
         self.text.enter()
     }
 

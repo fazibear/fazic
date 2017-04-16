@@ -1,4 +1,4 @@
-use fazic::ast::{NodeElement, Value};
+use fazic::runtime::ast::{NodeElement, Value};
 
 pub fn add(mut params: Vec<NodeElement>) -> NodeElement {
     let right = params.pop();
