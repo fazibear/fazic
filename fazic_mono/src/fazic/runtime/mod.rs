@@ -4,6 +4,7 @@ pub mod node_builder;
 pub mod operators;
 pub mod commands;
 pub mod program;
+pub mod functions;
 
 use self::ast::{Entry, NodeElement, Node, Opcode};
 
@@ -11,7 +12,7 @@ pub fn exec(fazic: &mut ::fazic::Fazic) {
     let line = fazic.text_buffer.get_current_line_string();
     fazic.text_buffer.enter();
     let ast = parser::parse_all(&line);
-    println!("{:?}", &line);
+    println!("ast: {:?}", ast);
     match ast {
         Ok(Entry(None, nodes)) => run_each_node(nodes, fazic),
         Ok(Entry(line, ast)) => println!("wijt line"),
@@ -49,6 +50,7 @@ fn evaluate_node(node: NodeElement) -> NodeElement {
         NodeElement::Node(Node(Opcode::Sub, params)) => operators::sub(evaluate_each_node(params)),
         NodeElement::Node(Node(Opcode::Mul, params)) => operators::mul(evaluate_each_node(params)),
         NodeElement::Node(Node(Opcode::Div, params)) => operators::div(evaluate_each_node(params)),
+        NodeElement::Node(Node(Opcode::Abs, params)) => functions::abs(evaluate_each_node(params)),
         NodeElement::Value(_) => node,
         _ => NodeElement::Error("Not implemented".to_string()),
     };
