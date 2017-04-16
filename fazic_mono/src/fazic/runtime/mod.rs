@@ -1,3 +1,5 @@
+extern crate lalrpop_util;
+
 pub mod ast;
 pub mod parser;
 pub mod node_builder;
@@ -5,6 +7,7 @@ pub mod operators;
 pub mod commands;
 pub mod program;
 pub mod functions;
+
 
 use self::ast::{Entry, NodeElement, Node, Opcode};
 
@@ -21,6 +24,11 @@ pub fn exec(fazic: &mut ::fazic::Fazic) {
         },
         Ok(Entry(line, ast)) => {
             fazic.program.add_line(line.unwrap() as u16, ast, input.clone());
+        }
+        Err(lalrpop_util::ParseError::InvalidToken{location}) => {
+            fazic.text_buffer.insert_line(&format!("{: >1$}", "^", location + 1));
+            fazic.text_buffer.insert_line("?SYNTAX ERROR");
+            fazic.text_buffer.prompt();
         }
         _ => {
             fazic.text_buffer.enter();
