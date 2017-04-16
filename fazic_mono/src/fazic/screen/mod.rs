@@ -72,4 +72,27 @@ impl Screen {
             self.rgb_pixels[i3+2] = b;
         }
     }
+
+    pub fn draw_text_buffer(&mut self, text : &::fazic::text_buffer::TextBuffer) {
+        self.set_current_color(text.background_color);
+        self.clear();
+
+        for i in 0..::fazic::TEXT_BUFFER_CHARS {
+            let is_cursor = text.cursor == i && text.show_cursor;
+
+            let color = if is_cursor {
+                text.current_color
+            } else {
+                text.colors[i as usize]
+            };
+
+            self.put_char(
+                text.chars[i as usize],
+                (i % ::fazic::TEXT_BUFFER_CHARS_PER_LINE * 8),
+                (i / ::fazic::TEXT_BUFFER_CHARS_PER_LINE * 8),
+                color,
+                is_cursor,
+                );
+        }
+    }
 }

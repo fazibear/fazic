@@ -30,7 +30,7 @@ impl Fazic {
     }
 
     pub fn redraw_text_buffer(&mut self) {
-        runtime::text::redraw_buffer(self)
+        self.screen.draw_text_buffer(&self.text)
     }
 
     pub fn set_current_text_color(&mut self, color: u8) {
