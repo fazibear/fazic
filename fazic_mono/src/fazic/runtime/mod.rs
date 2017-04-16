@@ -13,6 +13,10 @@ use self::ast::{Entry, NodeElement, Node, Opcode};
 
 pub fn exec(fazic: &mut ::fazic::Fazic) {
     let input = fazic.text_buffer.get_current_line_string();
+    if input.len() == 0 {
+        fazic.text_buffer.insert_line("");
+        return;
+    }
     fazic.text_buffer.enter();
     let ast = parser::parse_all(&input);
 
