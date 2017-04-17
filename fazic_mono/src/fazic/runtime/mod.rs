@@ -53,6 +53,7 @@ fn run_node(node: NodeElement, fazic: &mut ::fazic::Fazic) {
     match node {
         NodeElement::Node(Node(Opcode::Print, params)) => commands::print(fazic, evaluate_each_node(params)),
         NodeElement::Node(Node(Opcode::List, _)) => commands::list(fazic),
+        NodeElement::Node(Node(Opcode::Rem, _)) => (),
         NodeElement::Node(_) => println!("ups! node!"),
         NodeElement::Value(_) => println!("ups! value!"),
         NodeElement::Error(e) => println!("ERROR: {}", e),

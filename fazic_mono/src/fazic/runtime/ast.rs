@@ -34,5 +34,5 @@ pub enum Opcode {
     // Commands
     List,
     Print,
-
+    Rem,
 }
