@@ -15,7 +15,7 @@ pub fn print(fazic: &mut ::fazic::Fazic, mut params: Vec<NodeElement>) {
 }
 
 pub fn list(fazic: &mut ::fazic::Fazic){
-    for &(_, _, ref string) in &fazic.program.lines {
+    for &(_, ref string) in &fazic.program.lines {
         fazic.text_buffer.insert_line(&string);
     }
 }

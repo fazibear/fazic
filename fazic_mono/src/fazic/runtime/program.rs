@@ -1,23 +1,31 @@
 use fazic::runtime::ast::NodeElement;
 
 pub struct Program {
-    pub lines: Vec<(u16, Vec<NodeElement>, String)>
+    pub lines: Vec<(u16, String)>,
+    pub ast: Vec<Vec<NodeElement>>,
 }
 
 impl Program {
     pub fn new() -> Program {
         Program {
             lines: vec![],
+            ast: vec![vec![]; ::fazic::BASIC_MAX_LINES as usize],
         }
     }
 
     pub fn add_line(&mut self, line: u16, nodes: Vec<NodeElement>, string: String) {
-        self.lines.retain(|&(l, _, _)| l != line);
-        self.lines.push((line, nodes, string));
-        self.sort();
+        self.add_to_ast(line, nodes);
+        self.add_to_lines(line, string);
     }
 
-    fn sort(&mut self) {
-        self.lines.sort_by(|&(a, _, _), &(b, _, _)| a.cmp(&b));
+    fn add_to_ast(&mut self, line: u16, nodes: Vec<NodeElement>) {
+        // check vector boundries
+        self.ast[line as usize] = nodes;
+    }
+
+    fn add_to_lines(&mut self, line: u16, string: String) {
+        self.lines.retain(|&(l, _)| l != line);
+        self.lines.push((line, string));
+        self.lines.sort_by(|&(a, _), &(b, _)| a.cmp(&b));
     }
 }

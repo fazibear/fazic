@@ -14,6 +14,8 @@ pub const TEXT_BUFFER_CHARS: u16 = TEXT_BUFFER_CHARS_PER_LINE * TEXT_BUFFER_LINE
 pub const TEXT_BUFFER_MAX_LINES: u16 = TEXT_BUFFER_LINES * 1000;
 pub const TEXT_BUFFER_MAX_LINE_CHARS: u16 = TEXT_BUFFER_CHARS_PER_LINE * 5;
 
+pub const BASIC_MAX_LINES: u16 = 10000;
+
 pub struct Fazic {
     screen: screen::Screen,
     text_buffer: text_buffer::TextBuffer,

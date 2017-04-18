@@ -1,24 +1,24 @@
 #[derive(Debug)]
 pub struct Entry(pub Option<i32>, pub Vec<NodeElement>);
 
-#[derive(Debug)]
+#[derive(Debug, Clone)]
 pub enum NodeElement {
     Node(Node),
     Value(Value),
     Error(String),
 }
 
-#[derive(Debug)]
+#[derive(Debug, Clone)]
 pub struct Node(pub Opcode, pub Vec<NodeElement>);
 
-#[derive(Debug)]
+#[derive(Debug, Clone)]
 pub enum Value {
     Integer(i32),
     String(String),
     Float(f64),
 }
 
-#[derive(Debug)]
+#[derive(Debug, Clone)]
 pub enum Opcode {
     //
     Mul,
