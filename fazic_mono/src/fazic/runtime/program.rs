@@ -47,11 +47,9 @@ impl Program {
                 self.position.0 = self.position.0 + 1;
                 if self.position.0 > self.last_line {
                     self.running = false;
-                    println!("break 1");
                     break;
                 }
                 if self.ast[self.position.0 as usize].len() != 0 {
-                    println!("break 2");
                     break;
                 }
             };

@@ -65,6 +65,7 @@ command: NodeElement = {
     r"(?i)LIST" => param_0_node(Opcode::List),
     r"(?i)REM.*" => param_0_node(Opcode::Rem),
     r"(?i)RUN" => param_0_node(Opcode::Run),
+    r"(?i)GOTO" <integer> => param_1_node(Opcode::Goto, <>),
 };
 
 string: NodeElement = {

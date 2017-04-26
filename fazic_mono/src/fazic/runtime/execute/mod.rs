@@ -16,8 +16,9 @@ pub fn exec_node(node: NodeElement, fazic: &mut ::fazic::Fazic) {
         NodeElement::Node(Node(Opcode::List, _)) => commands::list(fazic),
         NodeElement::Node(Node(Opcode::Run, _)) => commands::run(fazic),
         NodeElement::Node(Node(Opcode::Rem, _)) => (),
-        NodeElement::Node(_) => println!("ups! node!"),
-        NodeElement::Value(_) => println!("ups! value!"),
+        NodeElement::Node(Node(Opcode::Goto, params)) => commands::goto(fazic, params),
+        NodeElement::Node(_) => (),
+        NodeElement::Value(_) => (),
         NodeElement::Error(e) => println!("ERROR: {}", e),
     }
 }

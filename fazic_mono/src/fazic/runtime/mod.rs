@@ -11,7 +11,6 @@ use self::ast::{Entry};
 pub fn step(fazic: &mut ::fazic::Fazic) {
     if fazic.program.running {
         execute::exec_node(fazic.program.current_node(), fazic);
-        fazic.program.next();
         if !fazic.program.running {
             fazic.text_buffer.prompt();
         }
