@@ -8,10 +8,11 @@ pub fn string_node(string: &str) -> NodeElement {
     NodeElement::Value(Value::String(naked))
 }
 
-pub fn entry_node(line: Option<&str>, ast: Vec<NodeElement>) -> Entry {
+pub fn entry_node(line: Option<NodeElement>, ast: Vec<NodeElement>) -> Entry {
     match line {
         None => Entry(None, ast),
-        Some(line) => Entry(Some(i32::from_str(line).unwrap()), ast),
+        Some(NodeElement::Value(Value::Integer(line))) => Entry(Some(line), ast),
+        _ => unreachable!(),
     }
 }
 

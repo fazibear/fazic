@@ -41,7 +41,8 @@ pub fn exec(fazic: &mut ::fazic::Fazic) {
             fazic.text_buffer.insert_line("?SYNTAX ERROR");
             fazic.text_buffer.prompt();
         }
-        _ => {
+        e => {
+            println!("Parse error!: {:?}", e);
             fazic.text_buffer.insert_line("?SYNTAX ERROR");
             fazic.text_buffer.prompt();
         }

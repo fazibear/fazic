@@ -5,7 +5,7 @@ grammar;
 
 pub all: Entry = {
     <ast:all_list> => { entry_node(None, ast) },
-    <line:r"[0-9]+"> <ast:all_list> => { entry_node(Some(line), ast) },
+    <line:line_no> <ast:all_list> => { entry_node(Some(line), ast) },
 };
 
 all_list: Vec<NodeElement> = {
@@ -47,11 +47,9 @@ prec_3: NodeElement = {
 };
 
 term: NodeElement = {
-    function,
     integer,
+    function,
     float,
-    uinteger,
-    ufloat,
     string,
     "(" <expression> ")",
 };
@@ -67,7 +65,7 @@ command: NodeElement = {
     r"(?i)LIST" => param_0_node(Opcode::List),
     r"(?i)REM.*" => param_0_node(Opcode::Rem),
     r"(?i)RUN" => param_0_node(Opcode::Run),
-    r"(?i)GOTO" <integer> => param_1_node(Opcode::Goto, <>),
+    r"(?i)GOTO" <line_no> => param_1_node(Opcode::Goto, <>),
 };
 
 string: NodeElement = {
@@ -77,16 +75,14 @@ string: NodeElement = {
 
 float: NodeElement = {
     r"[0-9]*\.[0-9]+" => float_node(<>),
+    //r"-[0-9]*\.[0-9]+" => float_node(<>),
 };
 
 integer: NodeElement = {
     r"[0-9]+" => integer_node(<>),
+    //r"-[0-9]+" => integer_node(<>),
 };
 
-ufloat: NodeElement = {
-    r"-[0-9]*\.[0-9]+" => float_node(<>),
-};
-
-uinteger: NodeElement = {
-    r"-[0-9]+" => integer_node(<>),
+line_no : NodeElement = {
+    r"[0-9]+" => integer_node(<>),
 };
