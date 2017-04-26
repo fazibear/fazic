@@ -41,7 +41,13 @@ impl Program {
     }
 
     pub fn next(&mut self) {
-        if self.position.1 as usize == self.ast[self.position.0 as usize].len() - 1 {
+        let length = self.ast[self.position.0 as usize].len();
+
+        if length == 0 {
+            return;
+        }
+
+        if self.position.1 as usize == length - 1 {
             self.position.1 = 0;
             loop {
                 self.position.0 = self.position.0 + 1;

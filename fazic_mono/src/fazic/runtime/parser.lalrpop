@@ -5,7 +5,7 @@ grammar;
 
 pub all: Entry = {
     <ast:all_list> => { entry_node(None, ast) },
-    <line:r"-?[0-9]+"> <ast:all_list> => { entry_node(Some(line), ast) },
+    <line:r"[0-9]+"> <ast:all_list> => { entry_node(Some(line), ast) },
 };
 
 all_list: Vec<NodeElement> = {
@@ -50,6 +50,8 @@ term: NodeElement = {
     function,
     integer,
     float,
+    uinteger,
+    ufloat,
     string,
     "(" <expression> ")",
 };
@@ -74,9 +76,17 @@ string: NodeElement = {
 };
 
 float: NodeElement = {
-    r"-?[0-9]*\.[0-9]+" => float_node(<>),
+    r"[0-9]*\.[0-9]+" => float_node(<>),
 };
 
 integer: NodeElement = {
-    r"-?[0-9]+" => integer_node(<>),
+    r"[0-9]+" => integer_node(<>),
+};
+
+ufloat: NodeElement = {
+    r"-[0-9]*\.[0-9]+" => float_node(<>),
+};
+
+uinteger: NodeElement = {
+    r"-[0-9]+" => integer_node(<>),
 };
