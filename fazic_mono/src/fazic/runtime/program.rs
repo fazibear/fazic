@@ -1,4 +1,5 @@
-use fazic::runtime::ast::{NodeElement};
+use fazic::runtime::ast::{NodeElement, Value};
+use std::collections::HashMap;
 
 pub struct Program {
     pub lines: Vec<(u16, String)>,
@@ -7,6 +8,7 @@ pub struct Program {
     pub position: (u16, u16),
     pub first_line: u16,
     pub last_line: u16,
+    pub variables: HashMap<String, Value>
 }
 
 impl Program {
@@ -18,6 +20,7 @@ impl Program {
             position: (0, 0),
             first_line: ::fazic::BASIC_MAX_LINES - 1,
             last_line: 0,
+            variables: HashMap::new(),
         }
     }
 

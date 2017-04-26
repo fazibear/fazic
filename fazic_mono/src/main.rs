@@ -1,3 +1,9 @@
+#![feature(link_args)]
+
+#[cfg(target_os = "emscripten")]
+#[link_args = "-s USE_SDL=2"]
+extern {}
+
 extern crate sdl2;
 extern crate rand;
 
