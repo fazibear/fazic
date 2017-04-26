@@ -1,4 +1,4 @@
-image: rustdocker/rust:stable
+image: rustdocker/rust:nightly
 
 cache:
   untracked: true
