@@ -72,16 +72,10 @@ impl Fazic {
     }
 
     pub fn tick(&mut self) {
+        runtime::step(self);
         if self.text_buffer.changed {
-            self.redraw_text_buffer();
+            self.screen.draw_text_buffer(&self.text_buffer);
             self.text_buffer.refreshed();
         }
     }
-
-    /* private */
-
-    fn redraw_text_buffer(&mut self) {
-        self.screen.draw_text_buffer(&self.text_buffer)
-    }
-
 }

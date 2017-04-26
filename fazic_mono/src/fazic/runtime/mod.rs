@@ -3,13 +3,20 @@ extern crate lalrpop_util;
 pub mod ast;
 pub mod parser;
 pub mod node_builder;
-pub mod operators;
-pub mod commands;
 pub mod program;
-pub mod functions;
+pub mod execute;
 
+use self::ast::{Entry};
 
-use self::ast::{Entry, NodeElement, Node, Opcode};
+pub fn step(fazic: &mut ::fazic::Fazic) {
+    if fazic.program.running {
+        execute::exec_node(fazic.program.current_node(), fazic);
+        fazic.program.next();
+        if !fazic.program.running {
+            fazic.text_buffer.prompt();
+        }
+    }
+}
 
 pub fn exec(fazic: &mut ::fazic::Fazic) {
     let input = fazic.text_buffer.get_current_line_string();
@@ -22,9 +29,11 @@ pub fn exec(fazic: &mut ::fazic::Fazic) {
 
     match ast {
         Ok(Entry(None, nodes)) => {
-            run_each_node(nodes, fazic);
+            execute::exec_each_node(nodes, fazic);
             fazic.text_buffer.enter();
-            fazic.text_buffer.prompt();
+            if !fazic.program.running {
+                fazic.text_buffer.prompt();
+            }
         },
         Ok(Entry(line, ast)) => {
             fazic.program.add_line(line.unwrap() as u16, ast, input.clone());
@@ -40,42 +49,4 @@ pub fn exec(fazic: &mut ::fazic::Fazic) {
             fazic.text_buffer.prompt();
         }
     }
-}
-
-
-fn run_each_node(nodes: Vec<NodeElement>, fazic: &mut ::fazic::Fazic) {
-    for node in nodes {
-        run_node(node, fazic)
-    }
-}
-
-fn run_node(node: NodeElement, fazic: &mut ::fazic::Fazic) {
-    match node {
-        NodeElement::Node(Node(Opcode::Print, params)) => commands::print(fazic, evaluate_each_node(params)),
-        NodeElement::Node(Node(Opcode::List, _)) => commands::list(fazic),
-        NodeElement::Node(Node(Opcode::Run, _)) => commands::run(fazic),
-        NodeElement::Node(Node(Opcode::Rem, _)) => (),
-        NodeElement::Node(_) => println!("ups! node!"),
-        NodeElement::Value(_) => println!("ups! value!"),
-        NodeElement::Error(e) => println!("ERROR: {}", e),
-    }
-}
-
-fn evaluate_each_node(nodes: Vec<NodeElement>) -> Vec<NodeElement> {
-    nodes
-        .into_iter()
-        .map(evaluate_node)
-        .collect()
-}
-
-fn evaluate_node(node: NodeElement) -> NodeElement {
-    return match node {
-        NodeElement::Node(Node(Opcode::Add, params)) => operators::add(evaluate_each_node(params)),
-        NodeElement::Node(Node(Opcode::Sub, params)) => operators::sub(evaluate_each_node(params)),
-        NodeElement::Node(Node(Opcode::Mul, params)) => operators::mul(evaluate_each_node(params)),
-        NodeElement::Node(Node(Opcode::Div, params)) => operators::div(evaluate_each_node(params)),
-        NodeElement::Node(Node(Opcode::Abs, params)) => functions::abs(evaluate_each_node(params)),
-        NodeElement::Value(_) => node,
-        _ => NodeElement::Error("Not implemented".to_string()),
-    };
 }
