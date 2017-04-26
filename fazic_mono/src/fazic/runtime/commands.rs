@@ -19,3 +19,7 @@ pub fn list(fazic: &mut ::fazic::Fazic){
         fazic.text_buffer.insert_line(&string);
     }
 }
+
+pub fn run(fazic: &mut ::fazic::Fazic){
+    fazic.program.start();
+}
