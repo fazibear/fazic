@@ -29,7 +29,6 @@ pub fn exec(fazic: &mut ::fazic::Fazic) {
     match ast {
         Ok(Entry(None, nodes)) => {
             execute::exec_each_node(nodes, fazic);
-            fazic.text_buffer.enter();
             if !fazic.program.running {
                 fazic.text_buffer.prompt();
             }
@@ -43,7 +42,6 @@ pub fn exec(fazic: &mut ::fazic::Fazic) {
             fazic.text_buffer.prompt();
         }
         _ => {
-            fazic.text_buffer.enter();
             fazic.text_buffer.insert_line("?SYNTAX ERROR");
             fazic.text_buffer.prompt();
         }
