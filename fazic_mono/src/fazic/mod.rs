@@ -59,6 +59,10 @@ impl Fazic {
         runtime::exec(self);
     }
 
+    pub fn stop_key(&mut self) {
+        runtime::stop(self);
+    }
+
     pub fn insert_string(&mut self, string: String) {
         self.text_buffer.insert_string(string)
     }

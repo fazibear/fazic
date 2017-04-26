@@ -60,9 +60,8 @@ pub fn main() {
     let mut main_loop = || {
         for event in events.poll_iter() {
             match event {
-                Event::Quit {..} | Event::KeyDown {keycode: Some(Keycode::Escape), ..} => {
-                    process::exit(1);
-                },
+                Event::Quit {..} => process::exit(1),
+                Event::KeyDown {keycode: Some(Keycode::Escape), ..} => fazic.stop_key(),
                 Event::KeyDown { keycode: Some(key), keymod: LGUIMOD, ..} |
                 Event::KeyDown { keycode: Some(key), keymod: RGUIMOD, ..} => {
                     match key {

@@ -16,7 +16,7 @@ impl Program {
             ast: vec![vec![]; ::fazic::BASIC_MAX_LINES as usize],
             running: false,
             position: (0, 0),
-            first_line: ::fazic::BASIC_MAX_LINES,
+            first_line: ::fazic::BASIC_MAX_LINES - 1,
             last_line: 0,
         }
     }
@@ -28,8 +28,10 @@ impl Program {
     }
 
     pub fn start(&mut self) {
-        self.position = (self.first_line, 0);
-        self.running = true;
+        if self.last_line != 0 {
+            self.position = (self.first_line, 0);
+            self.running = true;
+        }
     }
 
     pub fn stop(&mut self) {
@@ -84,7 +86,6 @@ impl Program {
         if line > self.last_line {
             self.last_line = line;
         }
-        println!("{}, {}", self.first_line, self.last_line);
     }
 
 }
