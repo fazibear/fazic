@@ -2,7 +2,7 @@ pub mod operators;
 pub mod commands;
 pub mod functions;
 
-use ::fazic::runtime::ast::{NodeElement, Node, Opcode};
+use ::fazic::runtime::ast::*;
 
 pub fn exec_each_node(nodes: Vec<NodeElement>, fazic: &mut ::fazic::Fazic) {
     for node in nodes {
@@ -32,6 +32,7 @@ pub fn eval_each_node(nodes: Vec<NodeElement>) -> Vec<NodeElement> {
 
 pub fn eval_node(node: NodeElement) -> NodeElement {
     return match node {
+        NodeElement::Node(Node(Opcode::Var, params)) => var(params),
         NodeElement::Node(Node(Opcode::Add, params)) => operators::add(eval_each_node(params)),
         NodeElement::Node(Node(Opcode::Sub, params)) => operators::sub(eval_each_node(params)),
         NodeElement::Node(Node(Opcode::Mul, params)) => operators::mul(eval_each_node(params)),
@@ -41,4 +42,8 @@ pub fn eval_node(node: NodeElement) -> NodeElement {
         NodeElement::Value(_) => node,
         _ => NodeElement::Error("Not implemented".to_string()),
     };
+}
+
+fn var(node: Vec<NodeElement>) -> NodeElement {
+    NodeElement::Value(Value::String("FROM_VAR".to_string()))
 }

@@ -1,13 +1,15 @@
 use fazic::runtime::ast::{NodeElement, Value};
 
-pub fn print(fazic: &mut ::fazic::Fazic, mut params: Vec<NodeElement>) {
-    let param = params.pop();
+pub fn print(fazic: &mut ::fazic::Fazic, params: Vec<NodeElement>) {
+    if params.len() != 1 {
+        return;
+    }
 
-    let output = match param {
-        Some(NodeElement::Value(Value::String(s))) => format!("{}", s),
-        Some(NodeElement::Value(Value::Integer(i))) => format!("{}", i),
-        Some(NodeElement::Value(Value::Float(f))) => format!("{}", f),
-        Some(NodeElement::Error(e)) => format!("ERROR: {}", e),
+    let output = match params[0] {
+        NodeElement::Value(Value::String(ref s)) => format!("{}", s),
+        NodeElement::Value(Value::Integer(ref i)) => format!("{}", i),
+        NodeElement::Value(Value::Float(ref f)) => format!("{}", f),
+        NodeElement::Error(ref e) => format!("ERROR: {}", e),
         _ => unreachable!()
     };
 

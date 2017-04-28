@@ -17,7 +17,7 @@ pub fn float_node(string: &str) -> NodeElement {
 }
 
 pub fn variable_node(string: &str) -> NodeElement {
-    NodeElement::Value(Value::Var(string.to_string()))
+    NodeElement::Node(Node(Opcode::Var, vec![NodeElement::Value(Value::String(string.to_string()))]))
 }
 
 pub fn param_0_node(opcode: Opcode) -> NodeElement {
