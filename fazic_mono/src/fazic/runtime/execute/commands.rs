@@ -20,6 +20,7 @@ pub fn lett(fazic: &mut ::fazic::Fazic, params: Vec<NodeElement>) {
     };
 
     fazic.program.variables.insert(name.to_string(), params[1].clone());
+    fazic.program.next();
 }
 
 
