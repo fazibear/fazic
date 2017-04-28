@@ -1,23 +1,20 @@
-use fazic::runtime::ast::{Entry, NodeElement, Opcode};
+use fazic::runtime::ast::{NodeElement, Opcode};
 use fazic::runtime::node_builder::*;
 
+#[LALR]
 grammar;
 
-pub all: Entry = {
-    <ast:all_list> => { entry_node(None, ast) },
-    <line:line_no> <ast:all_list> => { entry_node(Some(line), ast) },
-};
 
-all_list: Vec<NodeElement> = {
+pub all: Vec<NodeElement> = {
     <ast:command> => vec![ast],
     <ast:expression> => vec![ast],
-    <ast:command> ":" <rest:all_list> => {
+    <ast:command> ":" <rest:all> => {
         let mut cmds = vec![ast];
         cmds.extend(rest);
         cmds
 
     },
-    <ast:expression> ":" <rest:all_list> => {
+    <ast:expression> ":" <rest:all> => {
         let mut cmds = vec![ast];
         cmds.extend(rest);
         cmds
@@ -43,13 +40,14 @@ prec_2: NodeElement = {
 prec_3: NodeElement = {
     <l:prec_3> "*" <r:term> => param_2_node(Opcode::Mul, l, r),
     <l:prec_3> "/" <r:term> => param_2_node(Opcode::Div, l, r),
+    "-" <r:term> => param_1_node(Opcode::Neg, r),
     term,
 };
 
 term: NodeElement = {
     integer,
-    function,
     float,
+    function,
     string,
     "(" <expression> ")",
 };
@@ -65,7 +63,7 @@ command: NodeElement = {
     r"(?i)LIST" => param_0_node(Opcode::List),
     r"(?i)REM.*" => param_0_node(Opcode::Rem),
     r"(?i)RUN" => param_0_node(Opcode::Run),
-    r"(?i)GOTO" <line_no> => param_1_node(Opcode::Goto, <>),
+    r"(?i)GOTO" <integer> => param_1_node(Opcode::Goto, <>),
 };
 
 string: NodeElement = {
@@ -75,14 +73,8 @@ string: NodeElement = {
 
 float: NodeElement = {
     r"[0-9]*\.[0-9]+" => float_node(<>),
-    //r"-[0-9]*\.[0-9]+" => float_node(<>),
 };
 
 integer: NodeElement = {
-    r"[0-9]+" => integer_node(<>),
-    //r"-[0-9]+" => integer_node(<>),
-};
-
-line_no : NodeElement = {
     r"[0-9]+" => integer_node(<>),
 };

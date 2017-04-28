@@ -37,6 +37,7 @@ pub fn eval_node(node: NodeElement) -> NodeElement {
         NodeElement::Node(Node(Opcode::Mul, params)) => operators::mul(eval_each_node(params)),
         NodeElement::Node(Node(Opcode::Div, params)) => operators::div(eval_each_node(params)),
         NodeElement::Node(Node(Opcode::Abs, params)) => functions::abs(eval_each_node(params)),
+        NodeElement::Node(Node(Opcode::Neg, params)) => functions::neg(eval_each_node(params)),
         NodeElement::Value(_) => node,
         _ => NodeElement::Error("Not implemented".to_string()),
     };

@@ -1,6 +1,3 @@
-#[derive(Debug)]
-pub struct Entry(pub Option<i32>, pub Vec<NodeElement>);
-
 #[derive(Debug, Clone)]
 pub enum NodeElement {
     Node(Node),
@@ -30,6 +27,7 @@ pub enum Opcode {
 
     // Functions
     Abs,
+    Neg,
 
     // Commands
     List,

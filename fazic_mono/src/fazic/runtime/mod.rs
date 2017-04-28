@@ -1,12 +1,13 @@
 extern crate lalrpop_util;
+extern crate regex;
+
+use std::str::FromStr;
 
 pub mod ast;
 pub mod parser;
 pub mod node_builder;
 pub mod program;
 pub mod execute;
-
-use self::ast::{Entry};
 
 pub fn step(fazic: &mut ::fazic::Fazic) {
     if fazic.program.running {
@@ -24,18 +25,27 @@ pub fn exec(fazic: &mut ::fazic::Fazic) {
         return;
     }
     fazic.text_buffer.enter();
-    let ast = parser::parse_all(&input);
 
-    match ast {
-        Ok(Entry(None, nodes)) => {
-            execute::exec_each_node(nodes, fazic);
-            if !fazic.program.running {
-                fazic.text_buffer.prompt();
+    let regex = regex::Regex::new(r"([0-9]*)(.*)").unwrap();
+    let caps = regex.captures(&input).unwrap();
+
+    let line = caps.get(1).unwrap().as_str();
+    let rest = caps.get(2).unwrap().as_str();
+
+    match parser::parse_all(rest) {
+        Ok(nodes) => {
+            match line {
+                "" => {
+                    execute::exec_each_node(nodes, fazic);
+                    if !fazic.program.running {
+                        fazic.text_buffer.prompt();
+                    }
+                }
+                line => {
+                    fazic.program.add_line(u16::from_str(line).unwrap(), nodes, input.clone());
+                }
             }
         },
-        Ok(Entry(line, ast)) => {
-            fazic.program.add_line(line.unwrap() as u16, ast, input.clone());
-        }
         Err(lalrpop_util::ParseError::InvalidToken{location}) => {
             fazic.text_buffer.insert_line(&format!("{: >1$}", "^", location + 1));
             fazic.text_buffer.insert_line("?SYNTAX ERROR");
@@ -46,7 +56,7 @@ pub fn exec(fazic: &mut ::fazic::Fazic) {
             fazic.text_buffer.insert_line("?SYNTAX ERROR");
             fazic.text_buffer.prompt();
         }
-    }
+    };
 }
 
 pub fn stop(fazic: &mut ::fazic::Fazic) {
