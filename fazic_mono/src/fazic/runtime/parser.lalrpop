@@ -18,7 +18,8 @@ match {
 
     r"(?i)LET" => LET,
 } else {
-    r#"["'].*["']"# => STRING,
+    r"'[^']*'" => STRING_S,
+    r#""[^"]*""# => STRING_D,
     r"[0-9]*\.[0-9]+" => FLOAT,
     r"[0-9]+" => INTEGER,
     r"(?i)[A-Z]+" => VARIABLE,
@@ -88,7 +89,8 @@ command: NodeElement = {
 };
 
 string: NodeElement = {
-    STRING => string_node(<>),
+    STRING_S => string_node(<>),
+    STRING_D => string_node(<>),
 };
 
 float: NodeElement = {

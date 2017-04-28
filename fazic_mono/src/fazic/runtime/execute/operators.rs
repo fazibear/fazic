@@ -25,6 +25,14 @@ pub fn add(mut params: Vec<NodeElement>) -> NodeElement {
             Some(NodeElement::Value(Value::Integer(l))),
             Some(NodeElement::Value(Value::Float(r)))
         ) => NodeElement::Value(Value::Float(l as f64 + r)),
+        (
+            Some(NodeElement::Value(Value::String(l))),
+            Some(NodeElement::Value(Value::String(r)))
+        ) => {
+            let mut str = l.clone();
+            str.push_str(&r);
+            NodeElement::Value(Value::String(str))
+        },
         _ => NodeElement::Error("?TYPE MISMATCH".to_string()),
     }
 }
