@@ -13,6 +13,7 @@ pub enum Value {
     Integer(i32),
     String(String),
     Float(f64),
+    Var(String),
 }
 
 #[derive(Debug, Clone)]

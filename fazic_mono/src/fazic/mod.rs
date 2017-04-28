@@ -32,7 +32,7 @@ impl Fazic {
     }
 
     pub fn set_current_text_color(&mut self, color: u8) {
-        self.text_buffer.set_current_color(color)
+        self.text_buffer.set_current_color(color);
     }
 
     pub fn up_key(&mut self) {

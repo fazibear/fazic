@@ -16,6 +16,10 @@ pub fn float_node(string: &str) -> NodeElement {
     NodeElement::Value(Value::Float(f64::from_str(string).unwrap()))
 }
 
+pub fn variable_node(string: &str) -> NodeElement {
+    NodeElement::Value(Value::Var(string.to_string()))
+}
+
 pub fn param_0_node(opcode: Opcode) -> NodeElement {
     NodeElement::Node(Node(opcode, vec![]))
 }

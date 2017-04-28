@@ -4,6 +4,25 @@ use fazic::runtime::node_builder::*;
 #[LALR]
 grammar;
 
+match {
+    r"(?i)OR" => OR,
+    r"(?i)AND" => AND,
+
+    r"(?i)ABS" => ABS,
+
+    r"(?i)PRINT" => PRINT,
+    r"(?i)LIST" => LIST,
+    r"(?i)REM.*" => REM,
+    r"(?i)RUN" => RUN,
+    r"(?i)GOTO" => GOTO,
+
+    r#"["'].*["']"# => STRING,
+    r"[0-9]*\.[0-9]+" => FLOAT,
+    r"[0-9]+" => INTEGER,
+ } else {
+    r"(?i)[A-Z]+" => VARIABLE,
+    _
+ }
 
 pub all: Vec<NodeElement> = {
     <ast:command> => vec![ast],
@@ -22,8 +41,8 @@ pub all: Vec<NodeElement> = {
 };
 
 expression: NodeElement = {
-    <l:expression> r"(?i)OR" <r:prec_1> => param_2_node(Opcode::Or, l, r),
-    <l:expression> r"(?i)AND" <r:prec_1> => param_2_node(Opcode::And, l, r),
+    <l:expression> OR <r:prec_1> => param_2_node(Opcode::Or, l, r),
+    <l:expression> AND <r:prec_1> => param_2_node(Opcode::And, l, r),
     prec_1
 };
 
@@ -49,32 +68,35 @@ term: NodeElement = {
     float,
     function,
     string,
+    variable,
     "(" <expression> ")",
 };
 
-
 function: NodeElement = {
-    r"(?i)ABS\(" <expression> ")" => param_1_node(Opcode::Abs, <>),
+    ABS "(" <expression> ")" => param_1_node(Opcode::Abs, <>),
 };
 
 command: NodeElement = {
     "?" <expression> => param_1_node(Opcode::Print, <>),
-    r"(?i)PRINT" <expression> => param_1_node(Opcode::Print, <>),
-    r"(?i)LIST" => param_0_node(Opcode::List),
-    r"(?i)REM.*" => param_0_node(Opcode::Rem),
-    r"(?i)RUN" => param_0_node(Opcode::Run),
-    r"(?i)GOTO" <integer> => param_1_node(Opcode::Goto, <>),
+    PRINT <expression> => param_1_node(Opcode::Print, <>),
+    LIST => param_0_node(Opcode::List),
+    REM => param_0_node(Opcode::Rem),
+    RUN => param_0_node(Opcode::Run),
+    GOTO <integer> => param_1_node(Opcode::Goto, <>),
 };
 
 string: NodeElement = {
-    r"'.*'" => string_node(<>),
-    r#"".*""# => string_node(<>),
+    STRING => string_node(<>),
 };
 
 float: NodeElement = {
-    r"[0-9]*\.[0-9]+" => float_node(<>),
+    FLOAT => float_node(<>),
 };
 
 integer: NodeElement = {
-    r"[0-9]+" => integer_node(<>),
+    INTEGER => integer_node(<>),
+};
+
+variable: NodeElement = {
+     VARIABLE => variable_node(<>),
 };
