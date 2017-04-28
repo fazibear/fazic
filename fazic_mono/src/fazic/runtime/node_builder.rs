@@ -20,6 +20,10 @@ pub fn variable_node(string: &str) -> NodeElement {
     NodeElement::Node(Node(Opcode::Var, vec![NodeElement::Value(Value::String(string.to_string()))]))
 }
 
+pub fn variable_name(string: &str) -> NodeElement {
+    NodeElement::Value(Value::String(string.to_string()))
+}
+
 pub fn param_0_node(opcode: Opcode) -> NodeElement {
     NodeElement::Node(Node(opcode, vec![]))
 }

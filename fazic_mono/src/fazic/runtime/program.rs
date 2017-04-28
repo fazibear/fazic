@@ -1,4 +1,4 @@
-use fazic::runtime::ast::{NodeElement, Value};
+use fazic::runtime::ast::{NodeElement};
 use std::collections::HashMap;
 
 pub struct Program {
@@ -8,7 +8,7 @@ pub struct Program {
     pub position: (u16, u16),
     pub first_line: u16,
     pub last_line: u16,
-    pub variables: HashMap<String, Value>
+    pub variables: HashMap<String, NodeElement>
 }
 
 impl Program {

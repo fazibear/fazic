@@ -1,10 +1,6 @@
 use fazic::runtime::ast::{NodeElement, Value};
 
 pub fn print(fazic: &mut ::fazic::Fazic, params: Vec<NodeElement>) {
-    if params.len() != 1 {
-        return;
-    }
-
     let output = match params[0] {
         NodeElement::Value(Value::String(ref s)) => format!("{}", s),
         NodeElement::Value(Value::Integer(ref i)) => format!("{}", i),
@@ -16,6 +12,16 @@ pub fn print(fazic: &mut ::fazic::Fazic, params: Vec<NodeElement>) {
     fazic.text_buffer.insert_line(&output);
     fazic.program.next();
 }
+
+pub fn lett(fazic: &mut ::fazic::Fazic, params: Vec<NodeElement>) {
+    let name = match params[0] {
+        NodeElement::Value(Value::String(ref name)) => name.to_string().to_uppercase(),
+        _ => unreachable!(),
+    };
+
+    fazic.program.variables.insert(name.to_string(), params[1].clone());
+}
+
 
 pub fn list(fazic: &mut ::fazic::Fazic){
     for &(_, ref string) in &fazic.program.lines {

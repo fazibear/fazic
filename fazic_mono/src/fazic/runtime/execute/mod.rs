@@ -12,7 +12,14 @@ pub fn exec_each_node(nodes: Vec<NodeElement>, fazic: &mut ::fazic::Fazic) {
 
 pub fn exec_node(node: NodeElement, fazic: &mut ::fazic::Fazic) {
     match node {
-        NodeElement::Node(Node(Opcode::Print, params)) => commands::print(fazic, eval_each_node(params)),
+        NodeElement::Node(Node(Opcode::Print, params)) => {
+            let params = eval_each_node(params, fazic);
+            commands::print(fazic, params)
+        },
+        NodeElement::Node(Node(Opcode::Let, params)) => {
+            let params = eval_each_node(params, fazic);
+            commands::lett(fazic, params)
+        },
         NodeElement::Node(Node(Opcode::List, _)) => commands::list(fazic),
         NodeElement::Node(Node(Opcode::Run, _)) => commands::run(fazic),
         NodeElement::Node(Node(Opcode::Rem, _)) => (),
@@ -23,27 +30,35 @@ pub fn exec_node(node: NodeElement, fazic: &mut ::fazic::Fazic) {
     }
 }
 
-pub fn eval_each_node(nodes: Vec<NodeElement>) -> Vec<NodeElement> {
+pub fn eval_each_node(nodes: Vec<NodeElement>, fazic: &mut ::fazic::Fazic) -> Vec<NodeElement> {
     nodes
         .into_iter()
-        .map(eval_node)
+        .map(|node| eval_node(node, fazic))
         .collect()
 }
 
-pub fn eval_node(node: NodeElement) -> NodeElement {
+pub fn eval_node(node: NodeElement, fazic: &mut ::fazic::Fazic) -> NodeElement {
     return match node {
-        NodeElement::Node(Node(Opcode::Var, params)) => var(params),
-        NodeElement::Node(Node(Opcode::Add, params)) => operators::add(eval_each_node(params)),
-        NodeElement::Node(Node(Opcode::Sub, params)) => operators::sub(eval_each_node(params)),
-        NodeElement::Node(Node(Opcode::Mul, params)) => operators::mul(eval_each_node(params)),
-        NodeElement::Node(Node(Opcode::Div, params)) => operators::div(eval_each_node(params)),
-        NodeElement::Node(Node(Opcode::Abs, params)) => functions::abs(eval_each_node(params)),
-        NodeElement::Node(Node(Opcode::Neg, params)) => functions::neg(eval_each_node(params)),
+        NodeElement::Node(Node(Opcode::Var, params)) => var(params, fazic),
+        NodeElement::Node(Node(Opcode::Add, params)) => operators::add(eval_each_node(params, fazic)),
+        NodeElement::Node(Node(Opcode::Sub, params)) => operators::sub(eval_each_node(params, fazic)),
+        NodeElement::Node(Node(Opcode::Mul, params)) => operators::mul(eval_each_node(params, fazic)),
+        NodeElement::Node(Node(Opcode::Div, params)) => operators::div(eval_each_node(params, fazic)),
+        NodeElement::Node(Node(Opcode::Abs, params)) => functions::abs(eval_each_node(params, fazic)),
+        NodeElement::Node(Node(Opcode::Neg, params)) => functions::neg(eval_each_node(params, fazic)),
         NodeElement::Value(_) => node,
         _ => NodeElement::Error("Not implemented".to_string()),
     };
 }
 
-fn var(node: Vec<NodeElement>) -> NodeElement {
-    NodeElement::Value(Value::String("FROM_VAR".to_string()))
+fn var(nodes: Vec<NodeElement>, fazic: &mut ::fazic::Fazic) -> NodeElement {
+    let name = match nodes[0] {
+        NodeElement::Value(Value::String(ref name)) => name.to_string().to_uppercase(),
+        _ => unreachable!(),
+    };
+
+    match fazic.program.variables.get(&name) {
+        Some(value) => value.clone(),
+        None => NodeElement::Value(Value::Integer(0))
+    }
 }
