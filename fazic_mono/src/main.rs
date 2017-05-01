@@ -1,13 +1,9 @@
 #![feature(link_args)]
 
-#[cfg(target_os = "emscripten")]
-#[link_args = "-s USE_SDL=2"]
-extern {}
-
 extern crate sdl2;
 extern crate rand;
 
-pub mod emscripten;
+pub mod targets;
 pub mod fazic;
 
 #[cfg(test)]
@@ -122,12 +118,5 @@ pub fn main() {
         fps_frames = fps_frames + 1;
     };
 
-    #[cfg(target_os = "emscripten")]
-    use emscripten::{emscripten};
-
-    #[cfg(target_os = "emscripten")]
-    emscripten::set_main_loop_callback(main_loop);
-
-    #[cfg(not(target_os = "emscripten"))]
-    loop { main_loop(); }
+    targets::set_main_loop_callback(main_loop);
 }
