@@ -35,8 +35,9 @@ pub fn exec(fazic: &mut ::fazic::Fazic) {
         Ok(ast::Entry(Some(line), nodes)) => {
              fazic.program.add_line(line as u16, nodes, input.clone());
         },
-        e => {
+        Err(e) => {
             println!("Parse error!: {:?}", e);
+            fazic.text_buffer.insert_line(&format!("{: >1$}", "^", e.column));
             fazic.text_buffer.insert_line("?SYNTAX ERROR");
             fazic.text_buffer.prompt();
         }

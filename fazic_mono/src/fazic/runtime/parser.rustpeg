@@ -1,4 +1,4 @@
-use fazic::runtime::ast::{Entry, NodeElement, Opcode};
+use fazic::runtime::ast::*;
 use fazic::runtime::node_builder::*;
 
 pub parse_all -> Entry
@@ -6,11 +6,16 @@ pub parse_all -> Entry
     / a:(all ++ ":") { entry_node(None, a) }
 
 all -> NodeElement
-    = _ e:expression _ { e }
-    / _ c:command _ { c }
+    = _ c:command _ { c }
+    / _ e:expression _ { e }
 
 command -> NodeElement
     = ("?" / "PRINT" / "print") _ e:expression { param_1_node(Opcode::Print, e) }
+    / ("GOTO" / "goto") _ i:integer { param_1_node(Opcode::Goto, i) }
+    / ("LET" / "let") _ v:varname _ "=" _ e:expression { param_2_node(Opcode::Let, v, e) }
+    / ("LIST" / "list")  { param_0_node(Opcode::List) }
+    / ("REM" / "rem")  { param_0_node(Opcode::Rem) }
+    / ("RUN" / "run")  { param_0_node(Opcode::Run) }
 
 function -> NodeElement
     = ("ABS(" / "abs(") _ e:expression _ ")" { param_1_node(Opcode::Abs, e) }
@@ -32,6 +37,7 @@ term -> NodeElement
     / _ f:function _ { f }
     / _ "(" _ e:expression _ ")" _ { e }
     / _ "-" _ t:term _ { param_1_node(Opcode::Neg, t) }
+    / _ v:variable _ { v }
 
 float -> NodeElement
     = f:$([0-9]* "." [0-9]+) { println!("{}", f); float_node(f) }
@@ -42,5 +48,11 @@ integer -> NodeElement
 string -> NodeElement
     = "\"" s:$([^"]*) "\"" { string_node(s) }
     / "'" s:$([^']*) "'" { string_node(s) }
+
+variable -> NodeElement
+    = v:$([a-zA-Z]+) { variable_node(v) }
+
+ varname -> NodeElement
+     = v:$([0-1a-zA-Z]+) { variable_name(v) }
 
 _ = #quiet<" "*>
