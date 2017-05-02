@@ -1,13 +1,11 @@
-extern crate lalrpop_util;
-extern crate regex;
-
-use std::str::FromStr;
-
 pub mod ast;
-pub mod parser;
 pub mod node_builder;
 pub mod program;
 pub mod execute;
+
+pub mod parser {
+    include!(concat!(env!("OUT_DIR"), "/parser.rs"));
+}
 
 pub fn step(fazic: &mut ::fazic::Fazic) {
     if fazic.program.running {
@@ -26,31 +24,14 @@ pub fn exec(fazic: &mut ::fazic::Fazic) {
     }
     fazic.text_buffer.enter();
 
-    let regex = regex::Regex::new(r"([0-9]*)(.*)").unwrap();
-    let caps = regex.captures(&input).unwrap();
-
-    let line = caps.get(1).unwrap().as_str();
-    let rest = caps.get(2).unwrap().as_str();
-
-    match parser::parse_all(rest) {
+    match parser::parse_all(&input) {
         Ok(nodes) => {
-            match line {
-                "" => {
-                    execute::exec_each_node(nodes, fazic);
-                    if !fazic.program.running {
-                        fazic.text_buffer.prompt();
-                    }
-                }
-                line => {
-                    fazic.program.add_line(u16::from_str(line).unwrap(), nodes, input.clone());
-                }
+            println!("{:?}", nodes);
+            execute::exec_each_node(nodes, fazic);
+            if !fazic.program.running {
+                fazic.text_buffer.prompt();
             }
         },
-        Err(lalrpop_util::ParseError::InvalidToken{location}) => {
-            fazic.text_buffer.insert_line(&format!("{: >1$}", "^", location + 1));
-            fazic.text_buffer.insert_line("?SYNTAX ERROR");
-            fazic.text_buffer.prompt();
-        }
         e => {
             println!("Parse error!: {:?}", e);
             fazic.text_buffer.insert_line("?SYNTAX ERROR");

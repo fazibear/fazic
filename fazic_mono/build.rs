@@ -1,5 +1,5 @@
-extern crate lalrpop;
+extern crate peg;
 
 fn main() {
-    lalrpop::process_root().unwrap();
+    peg::cargo_build("src/fazic/runtime/parser.rustpeg");
 }

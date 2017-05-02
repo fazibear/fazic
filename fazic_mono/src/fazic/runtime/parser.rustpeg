@@ -1,0 +1,45 @@
+use fazic::runtime::ast::{NodeElement, Opcode};
+use fazic::runtime::node_builder::*;
+
+pub parse_all -> Vec<NodeElement>
+    = all ++ ":"
+
+all -> NodeElement
+    = _ e:expression _ { e }
+    / _ c:command _ { c }
+
+command -> NodeElement
+    = ("?" / "PRINT" / "print") _ e:expression { param_1_node(Opcode::Print, e) }
+
+function -> NodeElement
+    = ("ABS(" / "abs(") _ e:expression _ ")" { param_1_node(Opcode::Abs, e) }
+
+expression -> NodeElement
+    = #infix<term> {
+        #L l ("AND" / "and") r { param_2_node(Opcode::And, l, r) }
+           l ("OR" / "or") r { param_2_node(Opcode::Or, l, r) }
+        #L l "+" r { param_2_node(Opcode::Add, l, r) }
+           l "-" r { param_2_node(Opcode::Sub, l, r) }
+        #L l "*" r { param_2_node(Opcode::Mul, l, r) }
+           l "/" r { param_2_node(Opcode::Div, l, r) }
+    }
+
+term -> NodeElement
+    = _ f:float _ { f }
+    / _ i:integer _ { i }
+    / _ s:string _ { s }
+    / _ f:function _ { f }
+    / _ "(" _ e:expression _ ")" _ { e }
+    / "-" _ t:term { param_1_node(Opcode::Neg, t) }
+
+float -> NodeElement
+    = f:$([0-9]* "." [0-9]+) { println!("{}", f); float_node(f) }
+
+integer -> NodeElement
+    = i:$([0-9]+) { integer_node(i) }
+
+string -> NodeElement
+    = "\"" s:$([^"]*) "\"" { string_node(s) }
+    / "'" s:$([^']*) "'" { string_node(s) }
+
+_ = #quiet<" "*>

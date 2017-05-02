@@ -2,10 +2,10 @@ use std::str::FromStr;
 use fazic::runtime::ast::{NodeElement, Node, Value, Opcode};
 
 pub fn string_node(string: &str) -> NodeElement {
-    let mut string: String = string.to_string();
-    let len = string.len() - 1;
-    let naked = string.drain(1..len).collect();
-    NodeElement::Value(Value::String(naked))
+   // let mut string: String = string.to_string();
+   // let len = string.len() - 1;
+   // let naked = string.drain(1..len).collect();
+    NodeElement::Value(Value::String(string.to_string()))
 }
 
 pub fn integer_node(string: &str) -> NodeElement {
