@@ -59,7 +59,7 @@ pub fn main() {
 
     let mut fazic = fazic::Fazic::new();
 
-    let mut main_loop = || {
+    let main_loop = || {
         for event in events.poll_iter() {
             match event {
                 Event::Quit {..} => process::exit(1),
