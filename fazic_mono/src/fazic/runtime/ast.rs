@@ -1,3 +1,6 @@
+#[derive(Debug)]
+pub struct Entry(pub Option<i32>, pub Vec<NodeElement>);
+
 #[derive(Debug, Clone)]
 pub enum NodeElement {
     Node(Node),

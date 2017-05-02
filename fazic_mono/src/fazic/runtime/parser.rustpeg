@@ -1,8 +1,9 @@
-use fazic::runtime::ast::{NodeElement, Opcode};
+use fazic::runtime::ast::{Entry, NodeElement, Opcode};
 use fazic::runtime::node_builder::*;
 
-pub parse_all -> Vec<NodeElement>
-    = all ++ ":"
+pub parse_all -> Entry
+    = i:integer _ a:(all ++ ":") { entry_node(Some(i), a) }
+    / a:(all ++ ":") { entry_node(None, a) }
 
 all -> NodeElement
     = _ e:expression _ { e }
@@ -30,7 +31,7 @@ term -> NodeElement
     / _ s:string _ { s }
     / _ f:function _ { f }
     / _ "(" _ e:expression _ ")" _ { e }
-    / "-" _ t:term { param_1_node(Opcode::Neg, t) }
+    / _ "-" _ t:term _ { param_1_node(Opcode::Neg, t) }
 
 float -> NodeElement
     = f:$([0-9]* "." [0-9]+) { println!("{}", f); float_node(f) }

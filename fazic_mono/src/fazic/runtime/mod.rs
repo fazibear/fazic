@@ -25,12 +25,15 @@ pub fn exec(fazic: &mut ::fazic::Fazic) {
     fazic.text_buffer.enter();
 
     match parser::parse_all(&input) {
-        Ok(nodes) => {
+        Ok(ast::Entry(None, nodes)) => {
             println!("{:?}", nodes);
             execute::exec_each_node(nodes, fazic);
             if !fazic.program.running {
                 fazic.text_buffer.prompt();
             }
+        },
+        Ok(ast::Entry(Some(line), nodes)) => {
+             fazic.program.add_line(line as u16, nodes, input.clone());
         },
         e => {
             println!("Parse error!: {:?}", e);

@@ -67,10 +67,19 @@ fn div_by_zer(){
 
 #[test]
 fn print_with_line(){
-    assert!(parse_all("PRINT 4/3").is_ok())
+    assert!(parse_all("10 PRINT 4/3").is_ok())
 }
 
 #[test]
 fn mutliple_print(){
     assert!(parse_all("PRINT 4/3:PRINT 2/1").is_ok())
+}
+
+#[test]
+fn multiple_print_with_line(){
+    assert!(parse_all("10 PRINT 4/3:PRINT 2/2").is_ok())
+}
+#[test]
+fn multiple_print_with_line_downcase(){
+    assert!(parse_all("10 PRINT 4/3:print 2/2").is_ok())
 }

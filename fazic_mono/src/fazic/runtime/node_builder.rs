@@ -1,10 +1,15 @@
 use std::str::FromStr;
-use fazic::runtime::ast::{NodeElement, Node, Value, Opcode};
+use fazic::runtime::ast::*;
+
+pub fn entry_node(line: Option<NodeElement>, ast: Vec<NodeElement>) -> Entry {
+    match line {
+        None => Entry(None, ast),
+        Some(NodeElement::Value(Value::Integer(line))) => Entry(Some(line), ast),
+        _ => unreachable!(),
+    }
+}
 
 pub fn string_node(string: &str) -> NodeElement {
-   // let mut string: String = string.to_string();
-   // let len = string.len() - 1;
-   // let naked = string.drain(1..len).collect();
     NodeElement::Value(Value::String(string.to_string()))
 }
 
