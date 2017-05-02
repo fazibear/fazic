@@ -22,11 +22,11 @@ pub fn float_node(string: &str) -> NodeElement {
 }
 
 pub fn variable_node(string: &str) -> NodeElement {
-    NodeElement::Node(Node(Opcode::Var, vec![NodeElement::Value(Value::String(string.to_string()))]))
+    NodeElement::Node(Node(Opcode::Var, vec![NodeElement::Value(Value::String(string.to_string().to_uppercase()))]))
 }
 
 pub fn variable_name(string: &str) -> NodeElement {
-    NodeElement::Value(Value::String(string.to_string()))
+    NodeElement::Value(Value::String(string.to_string().to_uppercase()))
 }
 
 pub fn param_0_node(opcode: Opcode) -> NodeElement {

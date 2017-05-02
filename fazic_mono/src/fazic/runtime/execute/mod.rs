@@ -53,7 +53,7 @@ pub fn eval_node(node: NodeElement, fazic: &mut ::fazic::Fazic) -> NodeElement {
 
 fn var(nodes: Vec<NodeElement>, fazic: &mut ::fazic::Fazic) -> NodeElement {
     let name = match nodes[0] {
-        NodeElement::Value(Value::String(ref name)) => name.to_string().to_uppercase(),
+        NodeElement::Value(Value::String(ref name)) => name.to_string(),
         _ => unreachable!(),
     };
 

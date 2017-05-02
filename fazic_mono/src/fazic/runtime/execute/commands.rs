@@ -15,7 +15,7 @@ pub fn print(fazic: &mut ::fazic::Fazic, params: Vec<NodeElement>) {
 
 pub fn lett(fazic: &mut ::fazic::Fazic, params: Vec<NodeElement>) {
     let name = match params[0] {
-        NodeElement::Value(Value::String(ref name)) => name.to_string().to_uppercase(),
+        NodeElement::Value(Value::String(ref name)) => name.to_string(),
         _ => unreachable!(),
     };
 
