@@ -12,7 +12,7 @@ fn expression_with_funcition() {
 
 #[test]
 fn exression_with_or() {
-    assert!(parse_all("5 OR (5+5*(ABS(3)*3))").is_ok())
+    assert!(parse_all("? 5 OR (5+5*(ABS(3)*3))").is_ok())
 }
 
 #[test]
