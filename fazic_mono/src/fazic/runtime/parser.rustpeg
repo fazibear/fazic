@@ -14,7 +14,7 @@ command -> NodeElement
     / ("GOTO" / "goto") _ i:integer { param_1_node(Opcode::Goto, i) }
     / ("LET" / "let") _ v:varname _ "=" _ e:expression { param_2_node(Opcode::Let, v, e) }
     / ("LIST" / "list")  { param_0_node(Opcode::List) }
-    / ("REM" / "rem")  { param_0_node(Opcode::Rem) }
+    / ("REM" / "rem") .* { param_0_node(Opcode::Rem) }
     / ("RUN" / "run")  { param_0_node(Opcode::Run) }
 
 function -> NodeElement
