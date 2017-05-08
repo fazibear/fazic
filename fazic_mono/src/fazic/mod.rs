@@ -72,7 +72,7 @@ impl Fazic {
     }
 
     pub fn get_rgb_pixels(&mut self) -> &mut [u8] {
-        &mut *self.screen.rgb_pixels
+        &mut self.screen.rgb_pixels
     }
 
     pub fn tick(&mut self) {

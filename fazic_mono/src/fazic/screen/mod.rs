@@ -3,7 +3,7 @@ pub mod palette;
 
 pub struct Screen {
     pub pixels: [u8; ::fazic::SCREEN_PIXELS as usize],
-    pub rgb_pixels: Box<[u8; ::fazic::SCREEN_RGB_PIXELS as usize]>,
+    pub rgb_pixels: [u8; ::fazic::SCREEN_RGB_PIXELS as usize],
     pub current_color: u8,
 }
 
@@ -11,7 +11,7 @@ impl Screen {
     pub fn new() -> Screen {
         Screen {
             pixels: [0; ::fazic::SCREEN_PIXELS as usize],
-            rgb_pixels: Box::new([0; ::fazic::SCREEN_RGB_PIXELS as usize]),
+            rgb_pixels: [0; ::fazic::SCREEN_RGB_PIXELS as usize],
             current_color: 0,
         }
     }
