@@ -103,12 +103,15 @@ pub fn main() {
 
         fazic.tick();
 
-        texture.update(None,
-                       fazic.get_rgb_pixels(),
-                       RGB_WIDTH).unwrap();
+        if fazic.redraw() {
+            texture.update(None,
+                           fazic.get_rgb_pixels(),
+                           RGB_WIDTH).unwrap();
 
-        let _ = renderer.copy(&texture, None, None);
-        renderer.present();
+            let _ = renderer.copy(&texture, None, None);
+            renderer.present();
+            fazic.redrawed();
+        }
 
         if timer.ticks() - fps_last_tick > 1000 {
             println!("FPS: {}", fps_frames);

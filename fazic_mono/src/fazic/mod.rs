@@ -20,6 +20,7 @@ pub struct Fazic {
     screen: screen::Screen,
     text_buffer: text_buffer::TextBuffer,
     program: runtime::program::Program,
+    redraw: bool,
 }
 
 impl Fazic {
@@ -28,6 +29,7 @@ impl Fazic {
             screen: screen::Screen::new(),
             text_buffer: text_buffer::TextBuffer::new(),
             program: runtime::program::Program::new(),
+            redraw: true,
         }
     }
 
@@ -75,11 +77,20 @@ impl Fazic {
         &mut self.screen.rgb_pixels
     }
 
+    pub fn redraw(&mut self) -> bool {
+        self.redraw
+    }
+
+    pub fn redrawed(&mut self) {
+        self.redraw = false
+    }
+
     pub fn tick(&mut self) {
         runtime::step(self);
         if self.text_buffer.changed {
             self.screen.draw_text_buffer(&self.text_buffer);
             self.text_buffer.refreshed();
+            self.redraw = true;
         }
     }
 }
