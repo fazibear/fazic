@@ -63,6 +63,8 @@ pub fn gosub(fazic: &mut ::fazic::Fazic, params: Vec<NodeElement>){
 pub fn return_(fazic: &mut ::fazic::Fazic){
     loop {
         if fazic.program.stack.len() == 0 {
+            fazic.text_buffer.insert_line("?RETURN WITHOUT GOSUB");
+            fazic.program.stop();
             break;
         }
         match fazic.program.stack.pop() {
