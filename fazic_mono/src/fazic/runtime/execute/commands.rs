@@ -43,7 +43,12 @@ pub fn end(fazic: &mut ::fazic::Fazic){
 pub fn goto(fazic: &mut ::fazic::Fazic, params: Vec<NodeElement>){
     match params[0] {
         NodeElement::Value(Value::Integer(ln)) => {
-            fazic.program.position = (ln as u16, 0)
+            if fazic.program.ast[ln as usize].len() > 0 {
+                fazic.program.position = (ln as u16, 0)
+            } else {
+                fazic.text_buffer.insert_line("?LINE NOT EXISTS");
+                fazic.program.stop();
+            }
         },
         _ => println!("Error in goto")
     }
@@ -52,9 +57,13 @@ pub fn goto(fazic: &mut ::fazic::Fazic, params: Vec<NodeElement>){
 pub fn gosub(fazic: &mut ::fazic::Fazic, params: Vec<NodeElement>){
     match params[0] {
         NodeElement::Value(Value::Integer(ln)) => {
-            fazic.program.stack.push(StackEntry::Return(fazic.program.position));
-            println!("stack: {:?}", fazic.program.stack);
-            fazic.program.position = (ln as u16, 0);
+            if fazic.program.ast[ln as usize].len() > 0 {
+                fazic.program.stack.push(StackEntry::Return(fazic.program.position));
+                fazic.program.position = (ln as u16, 0);
+            } else {
+                fazic.text_buffer.insert_line("?LINE NOT EXISTS");
+                fazic.program.stop();
+            }
         },
         _ => println!("Error in gosub")
     }
