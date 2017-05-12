@@ -42,5 +42,9 @@ pub enum Opcode {
     Print,
     Rem,
     Run,
+    End,
     Goto,
+
+    Gosub,
+    Return,
 }

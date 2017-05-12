@@ -1,4 +1,5 @@
 pub mod ast;
+pub mod stack;
 pub mod node_builder;
 pub mod program;
 pub mod execute;

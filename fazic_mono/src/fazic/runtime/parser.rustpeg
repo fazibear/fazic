@@ -11,11 +11,17 @@ all -> NodeElement
 
 command -> NodeElement
     = ("?" / "PRINT" / "print") _ e:expression { param_1_node(Opcode::Print, e) }
+
     / ("GOTO" / "goto") _ i:integer { param_1_node(Opcode::Goto, i) }
+    / ("GOSUB" / "gosub") _ i:integer { param_1_node(Opcode::Gosub, i) }
+
     / ("LET" / "let") _ v:varname _ "=" _ e:expression { param_2_node(Opcode::Let, v, e) }
+
+    / ("RETURN" / "return") { param_0_node(Opcode::Return) }
     / ("LIST" / "list")  { param_0_node(Opcode::List) }
     / ("REM" / "rem") .* { param_0_node(Opcode::Rem) }
     / ("RUN" / "run")  { param_0_node(Opcode::Run) }
+    / ("END" / "end")  { param_0_node(Opcode::End) }
 
 function -> NodeElement
     = ("ABS(" / "abs(") _ e:expression _ ")" { param_1_node(Opcode::Abs, e) }

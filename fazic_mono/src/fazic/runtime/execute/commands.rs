@@ -1,4 +1,5 @@
-use fazic::runtime::ast::{NodeElement, Value};
+use fazic::runtime::ast::*;
+use fazic::runtime::stack::*;
 
 pub fn print(fazic: &mut ::fazic::Fazic, params: Vec<NodeElement>) {
     let output = match params[0] {
@@ -13,7 +14,7 @@ pub fn print(fazic: &mut ::fazic::Fazic, params: Vec<NodeElement>) {
     fazic.program.next();
 }
 
-pub fn lett(fazic: &mut ::fazic::Fazic, params: Vec<NodeElement>) {
+pub fn let_(fazic: &mut ::fazic::Fazic, params: Vec<NodeElement>) {
     let name = match params[0] {
         NodeElement::Value(Value::String(ref name)) => name.to_string(),
         _ => unreachable!(),
@@ -35,9 +36,44 @@ pub fn run(fazic: &mut ::fazic::Fazic){
     fazic.program.start();
 }
 
+pub fn end(fazic: &mut ::fazic::Fazic){
+    fazic.program.stop();
+}
+
 pub fn goto(fazic: &mut ::fazic::Fazic, params: Vec<NodeElement>){
     match params[0] {
-        NodeElement::Value(Value::Integer(ln)) => fazic.program.position = (ln as u16, 0),
-        _ => println!("Error")
+        NodeElement::Value(Value::Integer(ln)) => {
+            fazic.program.position = (ln as u16, 0)
+        },
+        _ => println!("Error in goto")
+    }
+}
+
+pub fn gosub(fazic: &mut ::fazic::Fazic, params: Vec<NodeElement>){
+    match params[0] {
+        NodeElement::Value(Value::Integer(ln)) => {
+            fazic.program.stack.push(StackEntry::Return(fazic.program.position));
+            println!("stack: {:?}", fazic.program.stack);
+            fazic.program.position = (ln as u16, 0);
+        },
+        _ => println!("Error in gosub")
+    }
+}
+
+pub fn return_(fazic: &mut ::fazic::Fazic){
+    loop {
+        if fazic.program.stack.len() == 0 {
+            break;
+        }
+        match fazic.program.stack.pop() {
+            Some(StackEntry::Return(position)) => {
+                println!("{:?}", position);
+                fazic.program.position = position;
+                fazic.program.next();
+                break;
+            },
+            _ => println!("Error in return")
+
+        }
     }
 }

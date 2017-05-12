@@ -18,12 +18,17 @@ pub fn exec_node(node: NodeElement, fazic: &mut ::fazic::Fazic) {
         },
         NodeElement::Node(Node(Opcode::Let, params)) => {
             let params = eval_each_node(params, fazic);
-            commands::lett(fazic, params)
+            commands::let_(fazic, params)
         },
         NodeElement::Node(Node(Opcode::List, _)) => commands::list(fazic),
         NodeElement::Node(Node(Opcode::Run, _)) => commands::run(fazic),
+        NodeElement::Node(Node(Opcode::End, _)) => commands::end(fazic),
         NodeElement::Node(Node(Opcode::Rem, _)) => (),
         NodeElement::Node(Node(Opcode::Goto, params)) => commands::goto(fazic, params),
+
+        NodeElement::Node(Node(Opcode::Gosub, params)) => commands::gosub(fazic, params),
+        NodeElement::Node(Node(Opcode::Return, _)) => commands::return_(fazic),
+
         NodeElement::Node(_) => (),
         NodeElement::Value(_) => (),
         NodeElement::Error(e) => println!("ERROR: {}", e),
