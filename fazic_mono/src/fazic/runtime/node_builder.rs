@@ -29,14 +29,6 @@ pub fn variable_name(string: &str) -> NodeElement {
     NodeElement::Value(Value::String(string.to_string().to_uppercase()))
 }
 
-pub fn param_0_node(opcode: Opcode) -> NodeElement {
-    NodeElement::Node(Node(opcode, vec![]))
-}
-
-pub fn param_1_node(opcode: Opcode, one: NodeElement) -> NodeElement {
-    NodeElement::Node(Node(opcode, vec![one]))
-}
-
-pub fn param_2_node(opcode: Opcode, one: NodeElement, two: NodeElement) -> NodeElement {
-    NodeElement::Node(Node(opcode, vec![one, two]))
+pub fn node(opcode: Opcode, vec: Vec<NodeElement>) -> NodeElement {
+    NodeElement::Node(Node(opcode, vec))
 }

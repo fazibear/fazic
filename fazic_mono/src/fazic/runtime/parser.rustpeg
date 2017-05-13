@@ -10,30 +10,36 @@ all -> NodeElement
     / _ e:expression _ { e }
 
 command -> NodeElement
-    = ("?" / "PRINT" / "print") _ e:expression { param_1_node(Opcode::Print, e) }
+    = ("?" / "PRINT" / "print") _ e:expression { node(Opcode::Print, vec![e]) }
 
-    / ("GOTO" / "goto") _ i:integer { param_1_node(Opcode::Goto, i) }
-    / ("GOSUB" / "gosub") _ i:integer { param_1_node(Opcode::Gosub, i) }
+    / ("GOTO" / "goto") _ i:integer { node(Opcode::Goto, vec![i]) }
+    / ("GOSUB" / "gosub") _ i:integer { node(Opcode::Gosub, vec![i]) }
 
-    / ("LET" / "let") _ v:varname _ "=" _ e:expression { param_2_node(Opcode::Let, v, e) }
+    / ("LET" / "let") _ v:varname _ "=" _ e:expression { node(Opcode::Let, vec![v, e]) }
 
-    / ("RETURN" / "return") { param_0_node(Opcode::Return) }
-    / ("LIST" / "list")  { param_0_node(Opcode::List) }
-    / ("REM" / "rem") .* { param_0_node(Opcode::Rem) }
-    / ("RUN" / "run")  { param_0_node(Opcode::Run) }
-    / ("END" / "end")  { param_0_node(Opcode::End) }
+    / ("FOR" / "for") _ v:varname _ "=" _ e:expression _ ("TO" / "to") _ t:expression _ ("STEP" / "step") _ s:expression { node(Opcode::For, vec![v, e, t, s]) }
+    / ("FOR" / "for") _ v:varname _ "=" _ e:expression _ ("TO" / "to") _ t:expression { node(Opcode::For, vec![v, e, t, integer_node("1")]) }
+
+    / ("NEXT" / "next" ) _ v:(varname ++ (_ "," _) ) { node(Opcode::Next, v) }
+    / ("NEXT" / "next" ) { node(Opcode::Next, vec![]) }
+
+    / ("RETURN" / "return") { node(Opcode::Return, vec![]) }
+    / ("LIST" / "list")  { node(Opcode::List, vec![]) }
+    / ("REM" / "rem") .* { node(Opcode::Rem, vec![]) }
+    / ("RUN" / "run")  { node(Opcode::Run, vec![]) }
+    / ("END" / "end")  { node(Opcode::End, vec![]) }
 
 function -> NodeElement
-    = ("ABS(" / "abs(") _ e:expression _ ")" { param_1_node(Opcode::Abs, e) }
+    = ("ABS(" / "abs(") _ e:expression _ ")" { node(Opcode::Abs, vec![e]) }
 
 expression -> NodeElement
     = #infix<term> {
-        #L l ("AND" / "and") r { param_2_node(Opcode::And, l, r) }
-           l ("OR" / "or") r { param_2_node(Opcode::Or, l, r) }
-        #L l "+" r { param_2_node(Opcode::Add, l, r) }
-           l "-" r { param_2_node(Opcode::Sub, l, r) }
-        #L l "*" r { param_2_node(Opcode::Mul, l, r) }
-           l "/" r { param_2_node(Opcode::Div, l, r) }
+        #L l ("AND" / "and") r { node(Opcode::And, vec![l, r]) }
+           l ("OR" / "or") r { node(Opcode::Or, vec![l, r]) }
+        #L l "+" r { node(Opcode::Add, vec![l, r]) }
+           l "-" r { node(Opcode::Sub, vec![l, r]) }
+        #L l "*" r { node(Opcode::Mul, vec![l, r]) }
+           l "/" r { node(Opcode::Div, vec![l, r]) }
     }
 
 term -> NodeElement
@@ -42,7 +48,7 @@ term -> NodeElement
     / _ s:string _ { s }
     / _ f:function _ { f }
     / _ "(" _ e:expression _ ")" _ { e }
-    / _ "-" _ t:term _ { param_1_node(Opcode::Neg, t) }
+    / _ "-" _ t:term _ { node(Opcode::Neg, vec![t]) }
     / _ v:variable _ { v }
 
 float -> NodeElement

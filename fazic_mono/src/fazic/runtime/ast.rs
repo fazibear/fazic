@@ -45,6 +45,9 @@ pub enum Opcode {
     End,
     Goto,
 
+    For,
+    Next,
+
     Gosub,
     Return,
 }
