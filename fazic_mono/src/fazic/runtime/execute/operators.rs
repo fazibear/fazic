@@ -1,5 +1,17 @@
 use fazic::runtime::ast::{NodeElement, Value};
 
+pub fn neg(params: Vec<NodeElement>) -> NodeElement {
+    if params.len() != 1 {
+        return NodeElement::Error("?SYNTAX ERROR".to_string());
+    }
+
+    match params[0] {
+        NodeElement::Value(Value::Integer(val)) => NodeElement::Value(Value::Integer(val * -1)),
+        NodeElement::Value(Value::Float(val)) => NodeElement::Value(Value::Float(val * -1.0)),
+        _ => NodeElement::Error("?TYPE MISMATCH".to_string()),
+    }
+}
+
 pub fn add(mut params: Vec<NodeElement>) -> NodeElement {
     let right = params.pop();
     let left = params.pop();
@@ -305,6 +317,54 @@ pub fn gt_eql(mut params: Vec<NodeElement>) -> NodeElement {
 }
 
 
-// pub fn and(mut params: Vec<NodeElement>) -> NodeElement {}
-// pub fn or(mut params: Vec<NodeElement>) -> NodeElement {}
-// pub fn not(mut params: Vec<NodeElement>) -> NodeElement {}
+pub fn and(mut params: Vec<NodeElement>) -> NodeElement {
+    let right = params.pop();
+    let left = params.pop();
+
+    if params.len() != 0 {
+        return NodeElement::Error("?SYNTAX ERROR".to_string());
+    }
+
+    match (left, right) {
+        (
+            Some(NodeElement::Value(Value::Integer(l))),
+            Some(NodeElement::Value(Value::Integer(r)))
+        ) => NodeElement::Value(Value::Integer(l & r)),
+        (
+            Some(NodeElement::Value(Value::Bool(l))),
+            Some(NodeElement::Value(Value::Bool(r)))
+        ) => NodeElement::Value(Value::Bool(l && r)),
+        _ => NodeElement::Error("?TYPE MISMATCH".to_string()),
+    }
+}
+pub fn or(mut params: Vec<NodeElement>) -> NodeElement {
+    let right = params.pop();
+    let left = params.pop();
+
+    if params.len() != 0 {
+        return NodeElement::Error("?SYNTAX ERROR".to_string());
+    }
+
+    match (left, right) {
+        (
+            Some(NodeElement::Value(Value::Integer(l))),
+            Some(NodeElement::Value(Value::Integer(r)))
+        ) => NodeElement::Value(Value::Integer(l | r)),
+        (
+            Some(NodeElement::Value(Value::Bool(l))),
+            Some(NodeElement::Value(Value::Bool(r)))
+        ) => NodeElement::Value(Value::Bool(l || r)),
+        _ => NodeElement::Error("?TYPE MISMATCH".to_string()),
+    }
+}
+pub fn not(params: Vec<NodeElement>) -> NodeElement {
+    if params.len() != 1 {
+        return NodeElement::Error("?SYNTAX ERROR".to_string());
+    }
+
+    match params[0] {
+        NodeElement::Value(Value::Integer(val)) => NodeElement::Value(Value::Integer(val * -1)),
+        NodeElement::Value(Value::Float(val)) => NodeElement::Value(Value::Float(val * -1.0)),
+        _ => NodeElement::Error("?TYPE MISMATCH".to_string()),
+    }
+}
