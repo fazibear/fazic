@@ -363,8 +363,8 @@ pub fn not(params: Vec<NodeElement>) -> NodeElement {
     }
 
     match params[0] {
-        NodeElement::Value(Value::Integer(val)) => NodeElement::Value(Value::Integer(val * -1)),
-        NodeElement::Value(Value::Float(val)) => NodeElement::Value(Value::Float(val * -1.0)),
+        NodeElement::Value(Value::Bool(val)) => NodeElement::Value(Value::Bool(!val)),
+        NodeElement::Value(Value::Integer(val)) => NodeElement::Value(Value::Integer(!val)),
         _ => NodeElement::Error("?TYPE MISMATCH".to_string()),
     }
 }

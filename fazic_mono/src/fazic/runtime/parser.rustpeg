@@ -60,7 +60,7 @@ term -> NodeElement
     / _ f:function _ { f }
     / _ "(" _ e:expression _ ")" _ { e }
     / _ "-" _ t:term _ { node(Opcode::Neg, vec![t]) }
-    / _ ("NOT" / "not") _ t:term _ { node(Opcode::Not, vec![t]) }
+    / _ ("NOT" / "not") _ e:expression _ { node(Opcode::Not, vec![e]) }
     / _ v:variable _ { v }
 
 float -> NodeElement
