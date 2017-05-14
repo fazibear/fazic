@@ -36,10 +36,21 @@ expression -> NodeElement
     = #infix<term> {
         #L l ("AND" / "and") r { node(Opcode::And, vec![l, r]) }
            l ("OR" / "or") r { node(Opcode::Or, vec![l, r]) }
-        #L l "+" r { node(Opcode::Add, vec![l, r]) }
-           l "-" r { node(Opcode::Sub, vec![l, r]) }
-        #L l "*" r { node(Opcode::Mul, vec![l, r]) }
-           l "/" r { node(Opcode::Div, vec![l, r]) }
+        #L l "="  r { node(Opcode::Eql, vec![l, r]) }
+           l "==" r { node(Opcode::Eql, vec![l, r]) }
+           l "!=" r { node(Opcode::NotEql, vec![l, r]) }
+           l "<>" r { node(Opcode::NotEql, vec![l, r]) }
+           l "<"  r { node(Opcode::Lt, vec![l, r]) }
+           l ">"  r { node(Opcode::Gt, vec![l, r]) }
+           l "<=" r { node(Opcode::LtEql, vec![l, r]) }
+           l ">=" r { node(Opcode::GtEql, vec![l, r]) }
+           l "=<" r { node(Opcode::LtEql, vec![l, r]) }
+           l "=>" r { node(Opcode::GtEql, vec![l, r]) }
+        #L l "+"  r { node(Opcode::Add, vec![l, r]) }
+           l "-"  r { node(Opcode::Sub, vec![l, r]) }
+        #L l "*"  r { node(Opcode::Mul, vec![l, r]) }
+           l "/"  r { node(Opcode::Div, vec![l, r]) }
+        #R l "^"  r { node(Opcode::Pow, vec![l, r]) }
     }
 
 term -> NodeElement
@@ -49,6 +60,7 @@ term -> NodeElement
     / _ f:function _ { f }
     / _ "(" _ e:expression _ ")" _ { e }
     / _ "-" _ t:term _ { node(Opcode::Neg, vec![t]) }
+    / _ ("NOT" / "not") _ t:term _ { node(Opcode::Not, vec![t]) }
     / _ v:variable _ { v }
 
 float -> NodeElement

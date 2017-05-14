@@ -4,8 +4,9 @@ use fazic::runtime::stack::*;
 pub fn print(fazic: &mut ::fazic::Fazic, params: Vec<NodeElement>) {
     let output = match params[0] {
         NodeElement::Value(Value::String(ref s)) => format!("{}", s),
-        NodeElement::Value(Value::Integer(ref i)) => format!("{}", i),
-        NodeElement::Value(Value::Float(ref f)) => format!("{}", f),
+        NodeElement::Value(Value::Integer(i)) => format!("{}", i),
+        NodeElement::Value(Value::Float(f)) => format!("{}", f),
+        NodeElement::Value(Value::Bool(b)) => format!("{}", b),
         NodeElement::Error(ref e) => format!("ERROR: {}", e),
         _ => unreachable!()
     };

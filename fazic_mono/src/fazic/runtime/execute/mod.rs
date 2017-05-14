@@ -52,8 +52,21 @@ pub fn eval_node(node: NodeElement, fazic: &mut ::fazic::Fazic) -> NodeElement {
         NodeElement::Node(Node(Opcode::Sub, params)) => operators::sub(eval_each_node(params, fazic)),
         NodeElement::Node(Node(Opcode::Mul, params)) => operators::mul(eval_each_node(params, fazic)),
         NodeElement::Node(Node(Opcode::Div, params)) => operators::div(eval_each_node(params, fazic)),
+        NodeElement::Node(Node(Opcode::Eql, params)) => operators::eql(eval_each_node(params, fazic)),
+        NodeElement::Node(Node(Opcode::NotEql, params)) => operators::not_eql(eval_each_node(params, fazic)),
+        NodeElement::Node(Node(Opcode::Lt, params)) => operators::lt(eval_each_node(params, fazic)),
+        NodeElement::Node(Node(Opcode::Gt, params)) => operators::gt(eval_each_node(params, fazic)),
+        NodeElement::Node(Node(Opcode::LtEql, params)) => operators::lt_eql(eval_each_node(params, fazic)),
+        NodeElement::Node(Node(Opcode::GtEql, params)) => operators::gt_eql(eval_each_node(params, fazic)),
+        NodeElement::Node(Node(Opcode::Pow, params)) => operators::pow(eval_each_node(params, fazic)),
+
+        // NodeElement::Node(Node(Opcode::Not, params)) => operators::not(eval_each_node(params, fazic)),
+        // NodeElement::Node(Node(Opcode::And, params)) => operators::and(eval_each_node(params, fazic)),
+        // NodeElement::Node(Node(Opcode::Or, params)) => operators::or(eval_each_node(params, fazic)),
+
         NodeElement::Node(Node(Opcode::Abs, params)) => functions::abs(eval_each_node(params, fazic)),
         NodeElement::Node(Node(Opcode::Neg, params)) => functions::neg(eval_each_node(params, fazic)),
+
         NodeElement::Value(_) => node,
         _ => NodeElement::Error("Not implemented".to_string()),
     };

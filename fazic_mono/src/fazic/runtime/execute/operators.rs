@@ -129,3 +129,182 @@ pub fn div(mut params: Vec<NodeElement>) -> NodeElement {
         _ => NodeElement::Error("?TYPE MISMATCH".to_string()),
     }
 }
+
+pub fn pow(mut params: Vec<NodeElement>) -> NodeElement {
+    let right = params.pop();
+    let left = params.pop();
+
+    if params.len() != 0 {
+        return NodeElement::Error("?SYNTAX ERROR".to_string());
+    }
+
+    match (left, right) {
+        (
+            Some(NodeElement::Value(Value::Integer(l))),
+            Some(NodeElement::Value(Value::Integer(r)))
+        ) => NodeElement::Value(Value::Integer(l.pow(r as u32))),
+        (
+            Some(NodeElement::Value(Value::Float(l))),
+            Some(NodeElement::Value(Value::Float(r)))
+        ) => NodeElement::Value(Value::Float(l.powf(r))),
+        (
+            Some(NodeElement::Value(Value::Float(l))),
+            Some(NodeElement::Value(Value::Integer(r)))
+        ) => NodeElement::Value(Value::Float(l.powf(r as f64))),
+        (
+            Some(NodeElement::Value(Value::Integer(l))),
+            Some(NodeElement::Value(Value::Float(r)))
+        ) => NodeElement::Value(Value::Float((l as f64).powf(r as f64))),
+        _ => NodeElement::Error("?TYPE MISMATCH".to_string()),
+    }
+}
+
+pub fn eql(mut params: Vec<NodeElement>) -> NodeElement {
+    let right = params.pop();
+    let left = params.pop();
+
+    if params.len() != 0 {
+        return NodeElement::Error("?SYNTAX ERROR".to_string());
+    }
+
+    match (left, right) {
+        (
+            Some(NodeElement::Value(Value::Integer(l))),
+            Some(NodeElement::Value(Value::Integer(r)))
+        ) => NodeElement::Value(Value::Bool(l == r)),
+        (
+            Some(NodeElement::Value(Value::Float(l))),
+            Some(NodeElement::Value(Value::Float(r)))
+        ) => NodeElement::Value(Value::Bool(l == r)),
+        (
+            Some(NodeElement::Value(Value::String(l))),
+            Some(NodeElement::Value(Value::String(r)))
+        ) => NodeElement::Value(Value::Bool(l == r)),
+        _ => NodeElement::Error("?TYPE MISMATCH".to_string()),
+    }
+}
+pub fn not_eql(mut params: Vec<NodeElement>) -> NodeElement {
+    let right = params.pop();
+    let left = params.pop();
+
+    if params.len() != 0 {
+        return NodeElement::Error("?SYNTAX ERROR".to_string());
+    }
+
+    match (left, right) {
+        (
+            Some(NodeElement::Value(Value::Integer(l))),
+            Some(NodeElement::Value(Value::Integer(r)))
+        ) => NodeElement::Value(Value::Bool(l != r)),
+        (
+            Some(NodeElement::Value(Value::Float(l))),
+            Some(NodeElement::Value(Value::Float(r)))
+        ) => NodeElement::Value(Value::Bool(l != r)),
+        (
+            Some(NodeElement::Value(Value::String(l))),
+            Some(NodeElement::Value(Value::String(r)))
+        ) => NodeElement::Value(Value::Bool(l != r)),
+        _ => NodeElement::Error("?TYPE MISMATCH".to_string()),
+    }
+}
+pub fn lt(mut params: Vec<NodeElement>) -> NodeElement {
+    let right = params.pop();
+    let left = params.pop();
+
+    if params.len() != 0 {
+        return NodeElement::Error("?SYNTAX ERROR".to_string());
+    }
+
+    match (left, right) {
+        (
+            Some(NodeElement::Value(Value::Integer(l))),
+            Some(NodeElement::Value(Value::Integer(r)))
+        ) => NodeElement::Value(Value::Bool(l < r)),
+        (
+            Some(NodeElement::Value(Value::Float(l))),
+            Some(NodeElement::Value(Value::Float(r)))
+        ) => NodeElement::Value(Value::Bool(l < r)),
+        (
+            Some(NodeElement::Value(Value::String(l))),
+            Some(NodeElement::Value(Value::String(r)))
+        ) => NodeElement::Value(Value::Bool(l < r)),
+        _ => NodeElement::Error("?TYPE MISMATCH".to_string()),
+    }
+}
+pub fn gt(mut params: Vec<NodeElement>) -> NodeElement {
+    let right = params.pop();
+    let left = params.pop();
+
+    if params.len() != 0 {
+        return NodeElement::Error("?SYNTAX ERROR".to_string());
+    }
+
+    match (left, right) {
+        (
+            Some(NodeElement::Value(Value::Integer(l))),
+            Some(NodeElement::Value(Value::Integer(r)))
+        ) => NodeElement::Value(Value::Bool(l > r)),
+        (
+            Some(NodeElement::Value(Value::Float(l))),
+            Some(NodeElement::Value(Value::Float(r)))
+        ) => NodeElement::Value(Value::Bool(l > r)),
+        (
+            Some(NodeElement::Value(Value::String(l))),
+            Some(NodeElement::Value(Value::String(r)))
+        ) => NodeElement::Value(Value::Bool(l > r)),
+        _ => NodeElement::Error("?TYPE MISMATCH".to_string()),
+    }
+}
+pub fn lt_eql(mut params: Vec<NodeElement>) -> NodeElement {
+    let right = params.pop();
+    let left = params.pop();
+
+    if params.len() != 0 {
+        return NodeElement::Error("?SYNTAX ERROR".to_string());
+    }
+
+    match (left, right) {
+        (
+            Some(NodeElement::Value(Value::Integer(l))),
+            Some(NodeElement::Value(Value::Integer(r)))
+        ) => NodeElement::Value(Value::Bool(l <= r)),
+        (
+            Some(NodeElement::Value(Value::Float(l))),
+            Some(NodeElement::Value(Value::Float(r)))
+        ) => NodeElement::Value(Value::Bool(l <= r)),
+        (
+            Some(NodeElement::Value(Value::String(l))),
+            Some(NodeElement::Value(Value::String(r)))
+        ) => NodeElement::Value(Value::Bool(l <= r)),
+        _ => NodeElement::Error("?TYPE MISMATCH".to_string()),
+    }
+}
+pub fn gt_eql(mut params: Vec<NodeElement>) -> NodeElement {
+    let right = params.pop();
+    let left = params.pop();
+
+    if params.len() != 0 {
+        return NodeElement::Error("?SYNTAX ERROR".to_string());
+    }
+
+    match (left, right) {
+        (
+            Some(NodeElement::Value(Value::Integer(l))),
+            Some(NodeElement::Value(Value::Integer(r)))
+        ) => NodeElement::Value(Value::Bool(l <= r)),
+        (
+            Some(NodeElement::Value(Value::Float(l))),
+            Some(NodeElement::Value(Value::Float(r)))
+        ) => NodeElement::Value(Value::Bool(l <= r)),
+        (
+            Some(NodeElement::Value(Value::String(l))),
+            Some(NodeElement::Value(Value::String(r)))
+        ) => NodeElement::Value(Value::Bool(l <= r)),
+        _ => NodeElement::Error("?TYPE MISMATCH".to_string()),
+    }
+}
+
+
+// pub fn and(mut params: Vec<NodeElement>) -> NodeElement {}
+// pub fn or(mut params: Vec<NodeElement>) -> NodeElement {}
+// pub fn not(mut params: Vec<NodeElement>) -> NodeElement {}

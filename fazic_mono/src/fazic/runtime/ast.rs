@@ -16,6 +16,7 @@ pub enum Value {
     Integer(i32),
     String(String),
     Float(f64),
+    Bool(bool),
     Var(String),
     Null,
 }
@@ -30,8 +31,18 @@ pub enum Opcode {
     Div,
     Add,
     Sub,
+    Pow,
     Or,
     And,
+    Not,
+
+    //
+    Eql,
+    NotEql,
+    Lt,
+    Gt,
+    GtEql,
+    LtEql,
 
     // Functions
     Abs,
