@@ -1,10 +1,15 @@
 use std::str::FromStr;
 use fazic::runtime::ast::*;
 
-pub fn entry_node(line: Option<NodeElement>, ast: Vec<NodeElement>) -> Entry {
+pub fn entry_node(line: Option<NodeElement>, ast: Vec<Vec<NodeElement>>) -> Entry {
+    let mut flat_ast = vec![];
+    for node in ast.into_iter() {
+        flat_ast.extend(node);
+    }
+
     match line {
-        None => Entry(None, ast),
-        Some(NodeElement::Value(Value::Integer(line))) => Entry(Some(line), ast),
+        None => Entry(None, flat_ast),
+        Some(NodeElement::Value(Value::Integer(line))) => Entry(Some(line), flat_ast),
         _ => unreachable!(),
     }
 }
@@ -31,4 +36,8 @@ pub fn variable_name(string: &str) -> NodeElement {
 
 pub fn node(opcode: Opcode, vec: Vec<NodeElement>) -> NodeElement {
     NodeElement::Node(Node(opcode, vec))
+}
+
+pub fn nodes(opcode: Opcode, vec: Vec<NodeElement>) -> Vec<NodeElement> {
+    vec![node(opcode, vec)]
 }

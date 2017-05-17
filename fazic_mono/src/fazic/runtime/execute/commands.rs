@@ -154,35 +154,17 @@ pub fn next(fazic: &mut ::fazic::Fazic, params: Vec<NodeElement>){
     }
 }
 
-pub fn if_goto(fazic: &mut ::fazic::Fazic, params: Vec<NodeElement>){
-    println!("{:?}", params);
+pub fn if_(fazic: &mut ::fazic::Fazic, params: Vec<NodeElement>){
+    println!("if!");
     let expression = match params[0] {
         NodeElement::Value(Value::Bool(b)) => b,
-        _ => unreachable!("if_goto expression don't match"),
+        _ => unreachable!("if expression don't match"),
     };
 
-    if expression {
-        goto(fazic, vec![params[1].clone()]);
-    } else {
-        let line_no = fazic.program.position.1;
-        let col_no = fazic.program.ast[line_no as usize].len() as u16;
+    if !expression {
+        let line_no = fazic.program.position.0;
+        let col_no = fazic.program.ast[line_no as usize].len() as u16 - 1;
         fazic.program.position = (line_no, col_no);
-        fazic.program.next();
     }
-}
-
-pub fn if_gosub(fazic: &mut ::fazic::Fazic, params: Vec<NodeElement>){
-    let expression = match params[0] {
-        NodeElement::Value(Value::Bool(b)) => b,
-        _ => unreachable!("if_gosub expression don't match"),
-    };
-
-    if expression {
-        gosub(fazic, vec![params[1].clone()]);
-    } else {
-        let line_no = fazic.program.position.1;
-        let col_no = fazic.program.ast[line_no as usize].len() as u16;
-        fazic.program.position = (line_no, col_no);
-        fazic.program.next();
-    }
+    fazic.program.next();
 }

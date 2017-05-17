@@ -5,33 +5,44 @@ pub parse_all -> Entry
     = i:integer _ a:(all ++ ":") { entry_node(Some(i), a) }
     / a:(all ++ ":") { entry_node(None, a) }
 
-all -> NodeElement
+all -> Vec<NodeElement>
     = _ c:command _ { c }
-    / _ e:expression _ { e }
+    / _ e:expression _ { vec![e] }
 
-command -> NodeElement
-    = ("?" / "PRINT" / "print") _ e:expression { node(Opcode::Print, vec![e]) }
+command -> Vec<NodeElement>
+    = ("?" / "PRINT" / "print") _ e:expression { nodes(Opcode::Print, vec![e]) }
 
-    / ("GOTO" / "goto") _ i:integer { node(Opcode::Goto, vec![i]) }
-    / ("GOSUB" / "gosub") _ i:integer { node(Opcode::Gosub, vec![i]) }
+    / ("GOTO" / "goto") _ i:integer { nodes(Opcode::Goto, vec![i]) }
+    / ("GOSUB" / "gosub") _ i:integer { nodes(Opcode::Gosub, vec![i]) }
 
-    / ("LET" / "let") _ v:varname _ "=" _ e:expression { node(Opcode::Let, vec![v, e]) }
+    / ("LET" / "let") _ v:varname _ "=" _ e:expression { nodes(Opcode::Let, vec![v, e]) }
 
-    / ("FOR" / "for") _ v:varname _ "=" _ e:expression _ ("TO" / "to") _ t:expression _ ("STEP" / "step") _ s:expression { node(Opcode::For, vec![v, e, t, s]) }
-    / ("FOR" / "for") _ v:varname _ "=" _ e:expression _ ("TO" / "to") _ t:expression { node(Opcode::For, vec![v, e, t, integer_node("1")]) }
+    / ("FOR" / "for") _ v:varname _ "=" _ e:expression _ ("TO" / "to") _ t:expression _ ("STEP" / "step") _ s:expression { nodes(Opcode::For, vec![v, e, t, s]) }
+    / ("FOR" / "for") _ v:varname _ "=" _ e:expression _ ("TO" / "to") _ t:expression { nodes(Opcode::For, vec![v, e, t, integer_node("1")]) }
 
-    / ("IF" / "if") _ e:expression _ ("GOTO" / "goto") _ i:integer { node(Opcode::IfGoto, vec![e, i]) }
-    / ("IF" / "if") _ e:expression _ ("GOSUB" / "gosub") _ i:integer { node(Opcode::IfGosub, vec![e, i]) }
-    / ("IF" / "if") _ e:expression _ ("THEN" / "then") _ i:integer { node(Opcode::IfGoto, vec![e, i]) }
+    / ("IF" / "if") _ e:expression _ ("GOTO" / "goto") _ i:integer {
+        vec![node(Opcode::If, vec![e]), node(Opcode::Goto, vec![i])]
+    }
+    / ("IF" / "if") _ e:expression _ ("GOSUB" / "gosub") _ i:integer {
+        vec![node(Opcode::If, vec![e]), node(Opcode::Gosub, vec![i])]
+    }
+    / ("IF" / "if") _ e:expression _ ("THEN" / "then") _ i:integer {
+        vec![node(Opcode::If, vec![e]), node(Opcode::Goto, vec![i])]
+    }
+    / ("IF" / "if") _ e:expression _ ("THEN" / "then") _ a:all {
+        let mut vec = nodes(Opcode::If, vec![e]);
+        vec.extend(a);
+        vec
+    }
 
-    / ("NEXT" / "next" ) _ v:(varname ++ (_ "," _) ) { node(Opcode::Next, v) }
-    / ("NEXT" / "next" ) { node(Opcode::Next, vec![]) }
+    / ("NEXT" / "next" ) _ v:(varname ++ (_ "," _) ) { nodes(Opcode::Next, v) }
+    / ("NEXT" / "next" ) { nodes(Opcode::Next, vec![]) }
 
-    / ("RETURN" / "return") { node(Opcode::Return, vec![]) }
-    / ("LIST" / "list")  { node(Opcode::List, vec![]) }
-    / ("REM" / "rem") .* { node(Opcode::Rem, vec![]) }
-    / ("RUN" / "run")  { node(Opcode::Run, vec![]) }
-    / ("END" / "end")  { node(Opcode::End, vec![]) }
+    / ("RETURN" / "return") { nodes(Opcode::Return, vec![]) }
+    / ("LIST" / "list")  { nodes(Opcode::List, vec![]) }
+    / ("REM" / "rem") .* { nodes(Opcode::Rem, vec![]) }
+    / ("RUN" / "run")  { nodes(Opcode::Run, vec![]) }
+    / ("END" / "end")  { nodes(Opcode::End, vec![]) }
 
 function -> NodeElement
     = ("ABS(" / "abs(") _ e:expression _ ")" { node(Opcode::Abs, vec![e]) }
