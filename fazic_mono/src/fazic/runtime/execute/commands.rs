@@ -120,6 +120,12 @@ pub fn for_(fazic: &mut ::fazic::Fazic, params: Vec<NodeElement>){
 }
 
 pub fn next(fazic: &mut ::fazic::Fazic, params: Vec<NodeElement>){
+
+    let next_var = match params[0] {
+        NodeElement::Value(Value::String(ref name)) => Some(name),
+        _ => None,
+    };
+
     loop {
         if fazic.program.stack.len() == 0 {
             fazic.text_buffer.insert_line("?NEXT WITHOUT FOR");
@@ -127,10 +133,12 @@ pub fn next(fazic: &mut ::fazic::Fazic, params: Vec<NodeElement>){
             break;
         }
 
-        let (position, var_name, max_val, step_val) = match fazic.program.stack.last().cloned() {
-            Some(StackEntry::Next(position, ref var_name, max_val, step_val)) => (position, var_name.clone(), max_val, step_val),
+        let (position, var_name, max_val, step_val) = match (next_var, fazic.program.stack.last().cloned()) {
+            (None, Some(StackEntry::Next(position, ref var_name, max_val, step_val))) =>
+                (position, var_name.clone(), max_val, step_val),
+            (Some(next_var), Some(StackEntry::Next(position, ref var_name, max_val, step_val))) if &var_name == &next_var =>
+                (position, var_name.clone(), max_val, step_val),
             _ => {
-                println!("pop");
                 fazic.program.stack.pop();
                 continue;
             }
@@ -155,7 +163,6 @@ pub fn next(fazic: &mut ::fazic::Fazic, params: Vec<NodeElement>){
 }
 
 pub fn if_(fazic: &mut ::fazic::Fazic, params: Vec<NodeElement>){
-    println!("if!");
     let expression = match params[0] {
         NodeElement::Value(Value::Bool(b)) => b,
         _ => unreachable!("if expression don't match"),

@@ -35,7 +35,13 @@ command -> Vec<NodeElement>
         vec
     }
 
-    / ("NEXT" / "next" ) _ v:(varname ++ (_ "," _) ) { nodes(Opcode::Next, v) }
+    / ("NEXT" / "next" ) _ v:(varname ++ (_ "," _) ) {
+        let mut vec = vec![];
+        for varname in v.into_iter() {
+            vec.extend(nodes(Opcode::Next, vec![varname]));
+        };
+        vec
+    }
     / ("NEXT" / "next" ) { nodes(Opcode::Next, vec![]) }
 
     / ("RETURN" / "return") { nodes(Opcode::Return, vec![]) }
