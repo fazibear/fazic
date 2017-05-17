@@ -8,7 +8,7 @@ pub fn print(fazic: &mut ::fazic::Fazic, params: Vec<NodeElement>) {
         NodeElement::Value(Value::Float(f)) => format!("{}", f),
         NodeElement::Value(Value::Bool(b)) => format!("{}", b),
         NodeElement::Error(ref e) => format!("ERROR: {}", e),
-        _ => unreachable!()
+        _ => unreachable!("print output param don't match")
     };
 
     fazic.text_buffer.insert_line(&output);
@@ -18,7 +18,7 @@ pub fn print(fazic: &mut ::fazic::Fazic, params: Vec<NodeElement>) {
 pub fn let_(fazic: &mut ::fazic::Fazic, params: Vec<NodeElement>) {
     let name = match params[0] {
         NodeElement::Value(Value::String(ref name)) => name.to_string(),
-        _ => unreachable!(),
+        _ => unreachable!("let name params don't match"),
     };
 
     fazic.program.variables.insert(name.to_string(), params[1].clone());
@@ -44,7 +44,7 @@ pub fn end(fazic: &mut ::fazic::Fazic){
 pub fn goto(fazic: &mut ::fazic::Fazic, params: Vec<NodeElement>){
     let line_no = match params[0] {
         NodeElement::Value(Value::Integer(ln)) => ln,
-        _ => unreachable!(),
+        _ => unreachable!("goto line_no param don't match"),
     };
 
     if fazic.program.ast[line_no as usize].len() > 0 {
@@ -58,7 +58,7 @@ pub fn goto(fazic: &mut ::fazic::Fazic, params: Vec<NodeElement>){
 pub fn gosub(fazic: &mut ::fazic::Fazic, params: Vec<NodeElement>){
     let line_no = match params[0] {
         NodeElement::Value(Value::Integer(ln)) => ln,
-        _ => unreachable!(),
+        _ => unreachable!("gosub line_no don't match"),
     };
 
     if fazic.program.ast[line_no as usize].len() > 0 {
@@ -93,25 +93,25 @@ pub fn return_(fazic: &mut ::fazic::Fazic){
 pub fn for_(fazic: &mut ::fazic::Fazic, params: Vec<NodeElement>){
     let var_name = match params[0] {
         NodeElement::Value(Value::String(ref name)) => name.to_string(),
-        _ => unreachable!(),
+        _ => unreachable!("for var name don't match"),
     };
 
     let init_val = match params[1] {
         NodeElement::Value(Value::Integer(i)) => i as f64,
         NodeElement::Value(Value::Float(f)) => f,
-        _ => unreachable!(),
+        _ => unreachable!("for init_val don't match"),
     };
 
     let max_val = match params[2] {
         NodeElement::Value(Value::Integer(i)) => i as f64,
         NodeElement::Value(Value::Float(f)) => f,
-        _ => unreachable!(),
+        _ => unreachable!("for max_val don't match"),
     };
 
     let step_val = match params[3] {
         NodeElement::Value(Value::Integer(i)) => i as f64,
         NodeElement::Value(Value::Float(f)) => f,
-        _ => unreachable!(),
+        _ => unreachable!("for step_val don't match"),
     };
 
     fazic.program.variables.insert(var_name.clone(), NodeElement::Value(Value::Float(init_val)));
@@ -138,7 +138,7 @@ pub fn next(fazic: &mut ::fazic::Fazic, params: Vec<NodeElement>){
 
         let var = match fazic.program.variables.get(&var_name) {
             Some(&NodeElement::Value(Value::Float(var))) => var,
-            _ => unreachable!(),
+            _ => unreachable!("next var name don't match"),
         };
 
 
@@ -151,5 +151,38 @@ pub fn next(fazic: &mut ::fazic::Fazic, params: Vec<NodeElement>){
 
         fazic.program.next();
         break;
+    }
+}
+
+pub fn if_goto(fazic: &mut ::fazic::Fazic, params: Vec<NodeElement>){
+    println!("{:?}", params);
+    let expression = match params[0] {
+        NodeElement::Value(Value::Bool(b)) => b,
+        _ => unreachable!("if_goto expression don't match"),
+    };
+
+    if expression {
+        goto(fazic, vec![params[1].clone()]);
+    } else {
+        let line_no = fazic.program.position.1;
+        let col_no = fazic.program.ast[line_no as usize].len() as u16;
+        fazic.program.position = (line_no, col_no);
+        fazic.program.next();
+    }
+}
+
+pub fn if_gosub(fazic: &mut ::fazic::Fazic, params: Vec<NodeElement>){
+    let expression = match params[0] {
+        NodeElement::Value(Value::Bool(b)) => b,
+        _ => unreachable!("if_gosub expression don't match"),
+    };
+
+    if expression {
+        gosub(fazic, vec![params[1].clone()]);
+    } else {
+        let line_no = fazic.program.position.1;
+        let col_no = fazic.program.ast[line_no as usize].len() as u16;
+        fazic.program.position = (line_no, col_no);
+        fazic.program.next();
     }
 }

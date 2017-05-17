@@ -61,4 +61,8 @@ pub enum Opcode {
 
     Gosub,
     Return,
+
+    IfGoto,
+    IfGosub,
+    IfThen,
 }

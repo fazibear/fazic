@@ -20,6 +20,10 @@ command -> NodeElement
     / ("FOR" / "for") _ v:varname _ "=" _ e:expression _ ("TO" / "to") _ t:expression _ ("STEP" / "step") _ s:expression { node(Opcode::For, vec![v, e, t, s]) }
     / ("FOR" / "for") _ v:varname _ "=" _ e:expression _ ("TO" / "to") _ t:expression { node(Opcode::For, vec![v, e, t, integer_node("1")]) }
 
+    / ("IF" / "if") _ e:expression _ ("GOTO" / "goto") _ i:integer { node(Opcode::IfGoto, vec![e, i]) }
+    / ("IF" / "if") _ e:expression _ ("GOSUB" / "gosub") _ i:integer { node(Opcode::IfGosub, vec![e, i]) }
+    / ("IF" / "if") _ e:expression _ ("THEN" / "then") _ i:integer { node(Opcode::IfGoto, vec![e, i]) }
+
     / ("NEXT" / "next" ) _ v:(varname ++ (_ "," _) ) { node(Opcode::Next, v) }
     / ("NEXT" / "next" ) { node(Opcode::Next, vec![]) }
 
