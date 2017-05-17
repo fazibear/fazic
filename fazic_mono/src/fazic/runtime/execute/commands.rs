@@ -121,8 +121,8 @@ pub fn for_(fazic: &mut ::fazic::Fazic, params: Vec<NodeElement>){
 
 pub fn next(fazic: &mut ::fazic::Fazic, params: Vec<NodeElement>){
 
-    let next_var = match params[0] {
-        NodeElement::Value(Value::String(ref name)) => Some(name),
+    let next_var = match params.get(0) {
+        Some(&NodeElement::Value(Value::String(ref name))) => Some(name),
         _ => None,
     };
 

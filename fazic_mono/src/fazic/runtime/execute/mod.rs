@@ -29,7 +29,10 @@ pub fn exec_node(node: NodeElement, fazic: &mut ::fazic::Fazic) {
         NodeElement::Node(Node(Opcode::Gosub, params)) => commands::gosub(fazic, params),
         NodeElement::Node(Node(Opcode::Return, _)) => commands::return_(fazic),
 
-        NodeElement::Node(Node(Opcode::For, params)) => commands::for_(fazic, params),
+        NodeElement::Node(Node(Opcode::For, params)) => {
+            let params = eval_each_node(params, fazic);
+            commands::for_(fazic, params)
+        },
         NodeElement::Node(Node(Opcode::Next, params)) => commands::next(fazic, params),
 
         NodeElement::Node(Node(Opcode::If, params)) => {
