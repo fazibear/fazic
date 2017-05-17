@@ -10,12 +10,13 @@ all -> Vec<NodeElement>
     / _ e:expression _ { vec![e] }
 
 command -> Vec<NodeElement>
-    = ("?" / "PRINT" / "print") _ e:expression { nodes(Opcode::Print, vec![e]) }
+    = v:varname _ "=" _ e:expression { nodes(Opcode::Let, vec![v, e]) }
+    / ("LET" / "let") _ v:varname _ "=" _ e:expression { nodes(Opcode::Let, vec![v, e]) }
+
+    / ("?" / "PRINT" / "print") _ e:expression { nodes(Opcode::Print, vec![e]) }
 
     / ("GOTO" / "goto") _ i:integer { nodes(Opcode::Goto, vec![i]) }
     / ("GOSUB" / "gosub") _ i:integer { nodes(Opcode::Gosub, vec![i]) }
-
-    / ("LET" / "let") _ v:varname _ "=" _ e:expression { nodes(Opcode::Let, vec![v, e]) }
 
     / ("FOR" / "for") _ v:varname _ "=" _ e:expression _ ("TO" / "to") _ t:expression _ ("STEP" / "step") _ s:expression { nodes(Opcode::For, vec![v, e, t, s]) }
     / ("FOR" / "for") _ v:varname _ "=" _ e:expression _ ("TO" / "to") _ t:expression { nodes(Opcode::For, vec![v, e, t, integer_node("1")]) }
