@@ -18,7 +18,7 @@ pub const BASIC_MAX_LINES: u16 = 10000;
 
 pub struct Fazic {
     screen: screen::Screen,
-    text_buffer: text_buffer::TextBuffer,
+    pub text_buffer: text_buffer::TextBuffer,
     program: runtime::program::Program,
     redraw: bool,
 }
