@@ -33,9 +33,14 @@ impl Program {
         self.adjust_lines(line);
     }
 
-    pub fn start(&mut self) {
+    pub fn reset(&mut self) {
         if self.last_line != 0 {
             self.position = (self.first_line, 0);
+        }
+    }
+
+    pub fn start(&mut self) {
+        if self.last_line != 0 {
             self.running = true;
         }
     }
@@ -61,6 +66,7 @@ impl Program {
                 self.position.0 = self.position.0 + 1;
                 if self.position.0 > self.last_line {
                     self.running = false;
+                    self.position = (0,0);
                     break;
                 }
                 if self.ast[self.position.0 as usize].len() != 0 {

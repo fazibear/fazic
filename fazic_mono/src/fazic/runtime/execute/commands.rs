@@ -45,12 +45,17 @@ pub fn clr(fazic: &mut ::fazic::Fazic){
 }
 
 pub fn run(fazic: &mut ::fazic::Fazic){
+    fazic.program.reset();
     clr(fazic);
-    cont(fazic);
+    fazic.program.start();
 }
 
 pub fn cont(fazic: &mut ::fazic::Fazic){
-    fazic.program.start();
+    if fazic.program.position != (0,0) {
+        fazic.program.start();
+    } else {
+        fazic.text_buffer.insert_line("?CAN'T CONTINUE");
+    }
 }
 
 pub fn end(fazic: &mut ::fazic::Fazic){
