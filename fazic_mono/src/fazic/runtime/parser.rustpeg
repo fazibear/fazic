@@ -47,9 +47,12 @@ command -> Vec<NodeElement>
 
     / ("RETURN" / "return") { nodes(Opcode::Return, vec![]) }
     / ("LIST" / "list")  { nodes(Opcode::List, vec![]) }
-    / ("REM" / "rem") .* { nodes(Opcode::Rem, vec![]) }
+    / ("CLR" / "clr")  { nodes(Opcode::Clr, vec![]) }
+    / ("CONT" / "cont")  { nodes(Opcode::Cont, vec![]) }
+    / ("NEW" / "new")  { nodes(Opcode::New, vec![]) }
     / ("RUN" / "run")  { nodes(Opcode::Run, vec![]) }
     / ("END" / "end")  { nodes(Opcode::End, vec![]) }
+    / ("REM" / "rem") .* { nodes(Opcode::Rem, vec![]) }
 
 function -> NodeElement
     = ("ABS(" / "abs(") _ e:expression _ ")" { node(Opcode::Abs, vec![e]) }

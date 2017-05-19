@@ -20,6 +20,9 @@ pub fn exec_node(node: NodeElement, fazic: &mut ::fazic::Fazic) {
             let params = eval_each_node(params, fazic);
             commands::let_(fazic, params)
         },
+        NodeElement::Node(Node(Opcode::New, _)) => commands::clr(fazic),
+        NodeElement::Node(Node(Opcode::Clr, _)) => commands::clr(fazic),
+        NodeElement::Node(Node(Opcode::Cont, _)) => commands::cont(fazic),
         NodeElement::Node(Node(Opcode::List, _)) => commands::list(fazic),
         NodeElement::Node(Node(Opcode::Run, _)) => commands::run(fazic),
         NodeElement::Node(Node(Opcode::End, _)) => commands::end(fazic),

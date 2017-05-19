@@ -1,5 +1,6 @@
 use fazic::runtime::ast::*;
 use fazic::runtime::stack::*;
+use std::collections::HashMap;
 
 pub fn print(fazic: &mut ::fazic::Fazic, params: Vec<NodeElement>) {
     let output = match params[0] {
@@ -33,7 +34,22 @@ pub fn list(fazic: &mut ::fazic::Fazic){
     fazic.program.stop();
 }
 
+pub fn new(fazic: &mut ::fazic::Fazic){
+    clr(fazic);
+    fazic.program.ast = vec![];
+}
+
+pub fn clr(fazic: &mut ::fazic::Fazic){
+    fazic.program.stack = vec![];
+    fazic.program.variables = HashMap::new();
+}
+
 pub fn run(fazic: &mut ::fazic::Fazic){
+    clr(fazic);
+    cont(fazic);
+}
+
+pub fn cont(fazic: &mut ::fazic::Fazic){
     fazic.program.start();
 }
 

@@ -55,6 +55,9 @@ pub enum Opcode {
     Run,
     End,
     Goto,
+    Clr,
+    Cont,
+    New,
 
     For,
     Next,
