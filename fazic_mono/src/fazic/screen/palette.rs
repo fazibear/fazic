@@ -15,6 +15,23 @@ pub const LIGHT_GREEN: (u8, u8, u8) = (160, 255, 160);
 pub const LIGHT_BLUE:  (u8, u8, u8) = (160, 160, 255);
 pub const LIGHT_GREY:  (u8, u8, u8) = (192, 192, 192);
 
+// pub const BLACK:       (u8, u8, u8) = (  0,   0,   0);
+// pub const WHITE:       (u8, u8, u8) = (255, 255, 255);
+// pub const RED:         (u8, u8, u8) = (136,   0,   0);
+// pub const CYAN:        (u8, u8, u8) = (170, 255, 238);
+// pub const MAGENTA:     (u8, u8, u8) = (204,  68, 204);
+// pub const GREEN:       (u8, u8, u8) = (  0, 204,  85);
+// pub const BLUE:        (u8, u8, u8) = (  0,   0, 170);
+// pub const YELLOW:      (u8, u8, u8) = (238, 238, 119);
+// pub const ORNAGE:      (u8, u8, u8) = (221, 136,  85);
+// pub const BROWN:       (u8, u8, u8) = (102,  68,   0);
+// pub const PINK:        (u8, u8, u8) = (255, 119, 119);
+// pub const DARK_GREY:   (u8, u8, u8) = ( 51,  51,  51);
+// pub const GREY:        (u8, u8, u8) = (119, 119, 119);
+// pub const LIGHT_GREEN: (u8, u8, u8) = (170, 255, 102);
+// pub const LIGHT_BLUE:  (u8, u8, u8) = (  0, 136, 255);
+// pub const LIGHT_GREY:  (u8, u8, u8) = (187, 187, 187);
+
 pub enum Color {
     Black,
     White,
