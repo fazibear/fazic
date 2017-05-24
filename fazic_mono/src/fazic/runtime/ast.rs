@@ -47,6 +47,7 @@ pub enum Opcode {
     // Functions
     Abs,
     Neg,
+    Rnd,
 
     // Commands
     List,

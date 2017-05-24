@@ -85,6 +85,7 @@ pub fn eval_node(node: NodeElement, fazic: &mut ::fazic::Fazic) -> NodeElement {
         NodeElement::Node(Node(Opcode::Or, params)) => operators::or(eval_each_node(params, fazic)),
 
         NodeElement::Node(Node(Opcode::Abs, params)) => functions::abs(eval_each_node(params, fazic)),
+        NodeElement::Node(Node(Opcode::Rnd, params)) => functions::rnd(eval_each_node(params, fazic)),
 
         NodeElement::Value(_) => node,
         _ => NodeElement::Error("Not implemented".to_string()),

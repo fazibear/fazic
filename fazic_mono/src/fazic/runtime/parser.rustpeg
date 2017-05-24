@@ -43,10 +43,10 @@ command -> Vec<NodeElement>
         };
         vec
     }
+    / ("DOT" / "dot") _ x:expression _ "," _ y:expression { nodes(Opcode::Dot, vec![x, y]) }
     / ("NEXT" / "next" ) { nodes(Opcode::Next, vec![]) }
 
     / ("GRAPHIC" / "graphic") { nodes(Opcode::Graphic, vec![]) }
-    / ("DOT" / "dot") _ x:expression _ "," _ y:expression { nodes(Opcode::Dot, vec![x, y]) }
 
     / ("RETURN" / "return") { nodes(Opcode::Return, vec![]) }
     / ("LIST" / "list")  { nodes(Opcode::List, vec![]) }
@@ -60,6 +60,7 @@ command -> Vec<NodeElement>
 
 function -> NodeElement
     = ("ABS(" / "abs(") _ e:expression _ ")" { node(Opcode::Abs, vec![e]) }
+    / ("RND(" / "rnd(") _ e:expression _ ")" { node(Opcode::Rnd, vec![e]) }
 
 expression -> NodeElement
     = #infix<term> {

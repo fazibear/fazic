@@ -211,9 +211,10 @@ pub fn if_(fazic: &mut ::fazic::Fazic, params: Vec<NodeElement>){
 
 pub fn stop(fazic: &mut ::fazic::Fazic) {
     if fazic.program.running {
+        let position = fazic.program.position.0;
         next_step(fazic);
         stop_program(fazic);
-        fazic.text_buffer.insert_line(&format!("BREAK AT {}", fazic.program.position.0));
+        fazic.text_buffer.insert_line(&format!("BREAK AT {}", position));
         fazic.text_buffer.prompt();
     }
 }
@@ -238,6 +239,7 @@ pub fn dot(fazic: &mut ::fazic::Fazic, params: Vec<NodeElement>){
 
     let color = fazic.screen.current_color;
 
+    //println!("dot {}, {}, {}", x,y,color);
     fazic.screen.put_pixel(x, y, color);
 
     fazic.redraw = true;
