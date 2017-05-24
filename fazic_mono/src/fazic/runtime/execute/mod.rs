@@ -26,6 +26,7 @@ pub fn exec_node(node: NodeElement, fazic: &mut ::fazic::Fazic) {
         NodeElement::Node(Node(Opcode::List, _)) => commands::list(fazic),
         NodeElement::Node(Node(Opcode::Run, _)) => commands::run(fazic),
         NodeElement::Node(Node(Opcode::End, _)) => commands::end(fazic),
+        NodeElement::Node(Node(Opcode::Stop, _)) => commands::stop(fazic),
         NodeElement::Node(Node(Opcode::Rem, _)) => (),
         NodeElement::Node(Node(Opcode::Goto, params)) => commands::goto(fazic, params),
 
@@ -41,6 +42,12 @@ pub fn exec_node(node: NodeElement, fazic: &mut ::fazic::Fazic) {
         NodeElement::Node(Node(Opcode::If, params)) => {
             let params = eval_each_node(params, fazic);
             commands::if_(fazic, params);
+        },
+
+        NodeElement::Node(Node(Opcode::Graphic, _)) => commands::graphic(fazic),
+        NodeElement::Node(Node(Opcode::Dot, params)) => {
+            let params = eval_each_node(params, fazic);
+            commands::dot(fazic, params);
         },
 
         NodeElement::Node(_) => (),

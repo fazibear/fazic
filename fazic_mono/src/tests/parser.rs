@@ -2,12 +2,12 @@ use fazic::runtime::parser::parse_all;
 
 #[test]
 fn expression() {
-    assert!(parse_all("2+(5+6)*5").is_ok())
+    assert!(parse_all("? 2+(5+6)*5").is_ok())
 }
 
 #[test]
 fn expression_with_funcition() {
-    assert!(parse_all("ABS(5+5-3*(3*3))").is_ok())
+    assert!(parse_all("? ABS(5+5-3*(3*3))").is_ok())
 }
 
 #[test]

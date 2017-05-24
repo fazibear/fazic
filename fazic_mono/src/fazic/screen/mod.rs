@@ -45,8 +45,8 @@ impl Screen {
         self.current_color = color;
     }
 
-    pub fn clear(&mut self) {
-        let (r,g,b) = palette::rgb_for(self.current_color);
+    pub fn clear(&mut self, color: u8) {
+        let (r,g,b) = palette::rgb_for(color);
 
         for i in 0..::fazic::SCREEN_PIXELS {
             let i3 = i * 3;
@@ -59,7 +59,7 @@ impl Screen {
     }
 
     pub fn put_pixel(&mut self, x: u16, y: u16, color: u8) {
-        // println!("putpixel({}, {}, {})", x, y, color);
+        //println!("putpixel({}, {}, {})", x, y, color);
         if x < ::fazic::SCREEN_WIDTH && y < ::fazic::SCREEN_HEIGHT {
 
             let i = x as usize + y as usize * ::fazic::SCREEN_WIDTH as usize;
@@ -74,8 +74,7 @@ impl Screen {
     }
 
     pub fn draw_text_buffer(&mut self, text : &::fazic::text_buffer::TextBuffer) {
-        self.set_current_color(text.background_color);
-        self.clear();
+        self.clear(text.background_color);
 
         for i in 0..::fazic::TEXT_BUFFER_CHARS {
             let is_cursor = text.cursor == i && text.show_cursor;

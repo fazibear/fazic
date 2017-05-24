@@ -2,6 +2,18 @@ use fazic::runtime::ast::*;
 use fazic::runtime::stack::*;
 use std::collections::HashMap;
 
+fn next_step(fazic: &mut ::fazic::Fazic) {
+    match fazic.program.next() {
+        false => fazic.text_mode = true,
+        true => ()
+    }
+}
+
+fn stop_program(fazic: &mut ::fazic::Fazic) {
+    fazic.program.running = false;
+    fazic.text_mode = true
+}
+
 pub fn print(fazic: &mut ::fazic::Fazic, params: Vec<NodeElement>) {
     let output = match params[0] {
         NodeElement::Value(Value::String(ref s)) => format!("{}", s),
@@ -13,7 +25,7 @@ pub fn print(fazic: &mut ::fazic::Fazic, params: Vec<NodeElement>) {
     };
 
     fazic.text_buffer.insert_line(&output);
-    fazic.program.next();
+    next_step(fazic);
 }
 
 pub fn let_(fazic: &mut ::fazic::Fazic, params: Vec<NodeElement>) {
@@ -23,7 +35,7 @@ pub fn let_(fazic: &mut ::fazic::Fazic, params: Vec<NodeElement>) {
     };
 
     fazic.program.variables.insert(name.to_string(), params[1].clone());
-    fazic.program.next();
+    next_step(fazic);
 }
 
 
@@ -31,7 +43,7 @@ pub fn list(fazic: &mut ::fazic::Fazic){
     for &(_, ref string) in &fazic.program.lines {
         fazic.text_buffer.insert_line(&string);
     }
-    fazic.program.stop();
+    stop_program(fazic);
 }
 
 pub fn new(fazic: &mut ::fazic::Fazic){
@@ -59,7 +71,7 @@ pub fn cont(fazic: &mut ::fazic::Fazic){
 }
 
 pub fn end(fazic: &mut ::fazic::Fazic){
-    fazic.program.stop();
+    stop_program(fazic);
 }
 
 pub fn goto(fazic: &mut ::fazic::Fazic, params: Vec<NodeElement>){
@@ -72,7 +84,7 @@ pub fn goto(fazic: &mut ::fazic::Fazic, params: Vec<NodeElement>){
         fazic.program.position = (line_no as u16, 0)
     } else {
         fazic.text_buffer.insert_line("?LINE NOT EXISTS");
-        fazic.program.stop();
+        stop_program(fazic);
     };
 }
 
@@ -87,7 +99,7 @@ pub fn gosub(fazic: &mut ::fazic::Fazic, params: Vec<NodeElement>){
         fazic.program.position = (line_no as u16, 0);
     } else {
         fazic.text_buffer.insert_line("?LINE NOT EXISTS");
-        fazic.program.stop();
+        stop_program(fazic);
     };
 }
 
@@ -95,7 +107,7 @@ pub fn return_(fazic: &mut ::fazic::Fazic){
     loop {
         if fazic.program.stack.len() == 0 {
             fazic.text_buffer.insert_line("?RETURN WITHOUT GOSUB");
-            fazic.program.stop();
+            stop_program(fazic);
             break;
         }
         match fazic.program.stack.pop() {
@@ -150,7 +162,7 @@ pub fn next(fazic: &mut ::fazic::Fazic, params: Vec<NodeElement>){
     loop {
         if fazic.program.stack.len() == 0 {
             fazic.text_buffer.insert_line("?NEXT WITHOUT FOR");
-            fazic.program.stop();
+            stop_program(fazic);
             break;
         }
 
@@ -178,7 +190,7 @@ pub fn next(fazic: &mut ::fazic::Fazic, params: Vec<NodeElement>){
             fazic.program.stack.pop();
         }
 
-        fazic.program.next();
+        next_step(fazic);
         break;
     }
 }
@@ -194,5 +206,40 @@ pub fn if_(fazic: &mut ::fazic::Fazic, params: Vec<NodeElement>){
         let col_no = fazic.program.ast[line_no as usize].len() as u16 - 1;
         fazic.program.position = (line_no, col_no);
     }
-    fazic.program.next();
+    next_step(fazic);
+}
+
+pub fn stop(fazic: &mut ::fazic::Fazic) {
+    if fazic.program.running {
+        next_step(fazic);
+        stop_program(fazic);
+        fazic.text_buffer.insert_line(&format!("BREAK AT {}", fazic.program.position.0));
+        fazic.text_buffer.prompt();
+    }
+}
+
+pub fn graphic(fazic: &mut ::fazic::Fazic){
+    fazic.text_mode = false;
+    next_step(fazic);
+}
+
+pub fn dot(fazic: &mut ::fazic::Fazic, params: Vec<NodeElement>){
+    let x = match params[0] {
+        NodeElement::Value(Value::Integer(i)) => i as u16,
+        NodeElement::Value(Value::Float(f)) => f as u16,
+        _ => unreachable!("dot expression don't match"),
+    };
+
+    let y = match params[1] {
+        NodeElement::Value(Value::Integer(i)) => i as u16,
+        NodeElement::Value(Value::Float(f)) => f as u16,
+        _ => unreachable!("dot expression don't match"),
+    };
+
+    let color = fazic.screen.current_color;
+
+    fazic.screen.put_pixel(x, y, color);
+
+    fazic.redraw = true;
+    next_step(fazic);
 }

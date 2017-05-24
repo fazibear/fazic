@@ -7,7 +7,7 @@ pub parse_all -> Entry
 
 all -> Vec<NodeElement>
     = _ c:command _ { c }
-    / _ e:expression _ { vec![e] }
+    // _ e:expression _ { vec![e] }
 
 command -> Vec<NodeElement>
     = v:varname _ "=" _ e:expression { nodes(Opcode::Let, vec![v, e]) }
@@ -45,10 +45,14 @@ command -> Vec<NodeElement>
     }
     / ("NEXT" / "next" ) { nodes(Opcode::Next, vec![]) }
 
+    / ("GRAPHIC" / "graphic") { nodes(Opcode::Graphic, vec![]) }
+    / ("DOT" / "dot") _ x:expression _ "," _ y:expression { nodes(Opcode::Dot, vec![x, y]) }
+
     / ("RETURN" / "return") { nodes(Opcode::Return, vec![]) }
     / ("LIST" / "list")  { nodes(Opcode::List, vec![]) }
     / ("CLR" / "clr")  { nodes(Opcode::Clr, vec![]) }
     / ("CONT" / "cont")  { nodes(Opcode::Cont, vec![]) }
+    / ("STOP" / "stop")  { nodes(Opcode::Stop, vec![]) }
     / ("NEW" / "new")  { nodes(Opcode::New, vec![]) }
     / ("RUN" / "run")  { nodes(Opcode::Run, vec![]) }
     / ("END" / "end")  { nodes(Opcode::End, vec![]) }

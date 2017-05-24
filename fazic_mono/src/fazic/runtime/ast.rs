@@ -58,6 +58,7 @@ pub enum Opcode {
     Clr,
     Cont,
     New,
+    Stop,
 
     For,
     Next,
@@ -66,4 +67,8 @@ pub enum Opcode {
     Return,
 
     If,
+
+    // Graphic
+    Graphic,
+    Dot,
 }

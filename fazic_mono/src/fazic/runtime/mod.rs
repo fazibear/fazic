@@ -44,11 +44,3 @@ pub fn exec(fazic: &mut ::fazic::Fazic) {
         }
     };
 }
-
-pub fn stop(fazic: &mut ::fazic::Fazic) {
-    if fazic.program.running {
-        fazic.program.stop();
-        fazic.text_buffer.insert_line(&format!("BREAK AT {}", fazic.program.position.0));
-        fazic.text_buffer.prompt();
-    }
-}

@@ -53,11 +53,11 @@ impl Program {
         self.ast[self.position.0 as usize][self.position.1 as usize].clone()
     }
 
-    pub fn next(&mut self) {
+    pub fn next(&mut self) -> bool {
         let length = self.ast[self.position.0 as usize].len();
 
         if length == 0 {
-            return;
+            return false;
         }
 
         if self.position.1 as usize == length - 1 {
@@ -67,7 +67,7 @@ impl Program {
                 if self.position.0 > self.last_line {
                     self.running = false;
                     self.position = (0,0);
-                    break;
+                    return false;
                 }
                 if self.ast[self.position.0 as usize].len() != 0 {
                     break;
@@ -76,6 +76,7 @@ impl Program {
         } else {
             self.position.1 = self.position.1 + 1;
         }
+        return true;
     }
 
     /* private */
