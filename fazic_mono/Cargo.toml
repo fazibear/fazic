@@ -9,6 +9,8 @@ peg = { version = "0.5" }
 
 [dependencies]
 rand = "~ 0.3"
+hyper = "~ 0.10"
+hyper-native-tls = "~ 0.2"
 
 [dependencies.sdl2]
 version = "0.29"
