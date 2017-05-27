@@ -47,8 +47,11 @@ pub fn list(fazic: &mut ::fazic::Fazic){
 }
 
 pub fn new(fazic: &mut ::fazic::Fazic){
-    clr(fazic);
-    fazic.program.ast = vec![];
+    fazic.program = ::fazic::runtime::program::Program::new();
+    // clr(fazic);
+    // fazic.program.reset();
+    // fazic.program.ast = vec![];
+    // fazic.program.lines = vec![];
 }
 
 pub fn clr(fazic: &mut ::fazic::Fazic){
@@ -248,20 +251,51 @@ pub fn dot(fazic: &mut ::fazic::Fazic, params: Vec<NodeElement>){
 
 pub fn load(fazic: &mut ::fazic::Fazic, params: Vec<NodeElement>){
     let name = match params[0] {
-        NodeElement::Value(Value::String(ref s)) => s,
+        NodeElement::Value(Value::String(ref s)) => s.to_string(),
         _ => unreachable!("load expression don't match"),
     };
-    println!("load: {}", name);
+
+    match ::targets::load(&name) {
+        Ok(resp) => {
+            new(fazic);
+
+            for line in resp.lines() {
+                ::fazic::runtime::parse(fazic, line.to_string());
+            }
+
+            fazic.text_buffer.insert_line("LOADED");
+        },
+        Err(resp) => {
+            let msg = format!("? {}", resp.to_uppercase());
+            fazic.text_buffer.insert_line(&msg);
+        },
+
+    }
     stop_program(fazic);
 }
 
 pub fn save(fazic: &mut ::fazic::Fazic, params: Vec<NodeElement>){
     let name = match params[0] {
-        NodeElement::Value(Value::String(ref s)) => s,
+        NodeElement::Value(Value::String(ref s)) => s.to_string(),
         _ => unreachable!("save expression don't match"),
     };
 
-    println!("save: {}", name);
+    let mut program = String::new();
+
+    for &(_, ref string) in &fazic.program.lines {
+        program.push_str(string);
+        program.push_str("\n");
+    }
+
+    match ::targets::save(&name, &program) {
+        Ok(resp) => {
+            fazic.text_buffer.insert_line(&resp);
+        },
+        Err(resp) => {
+            let msg = format!("? {}", resp.to_uppercase());
+            fazic.text_buffer.insert_line(&msg);
+        },
+    }
 
     stop_program(fazic);
 }

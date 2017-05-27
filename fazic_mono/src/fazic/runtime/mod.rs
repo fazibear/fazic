@@ -24,7 +24,10 @@ pub fn exec(fazic: &mut ::fazic::Fazic) {
         return;
     }
     fazic.text_buffer.enter();
+    parse(fazic, input)
+}
 
+pub fn parse(fazic: &mut ::fazic::Fazic, input: String) {
     match parser::parse_all(&input) {
         Ok(ast::Entry(None, nodes)) => {
             println!("{:?}", nodes);

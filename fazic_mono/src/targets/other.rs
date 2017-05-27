@@ -6,8 +6,11 @@ use self::hyper::net::HttpsConnector;
 use self::hyper_native_tls::NativeTlsClient;
 use std::io::Read;
 
-pub fn get(url: String) -> Result<String, String> {
+const HOST: &str = "http://localhost:8080";
+
+pub fn load(name: &String) -> Result<String, String> {
     let mut resp = String::new();
+    let url = format!("{}/file/{}", HOST, name);
 
     let response = http()
         .get(&url)
@@ -25,12 +28,14 @@ pub fn get(url: String) -> Result<String, String> {
 }
 
 
-pub fn post(url: String, body: String) -> Result<String, String> {
+pub fn save(name: &String, body: &String) -> Result<String, String> {
     let mut resp = String::new();
+
+    let url = format!("{}/file/{}", HOST, name);
 
     let response = http()
         .post(&url)
-        .body(&body)
+        .body(body)
         .send();
 
     match response {
