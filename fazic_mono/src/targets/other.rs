@@ -8,6 +8,12 @@ use std::io::Read;
 
 const HOST: &str = "http://localhost:8080";
 
+pub fn set_main_loop_callback<F>(mut f: F) where F: FnMut() {
+    loop {
+        f();
+    }
+}
+
 pub fn load(name: &String) -> Result<String, String> {
     let mut resp = String::new();
     let url = format!("{}/file/{}", HOST, name);
@@ -53,10 +59,4 @@ fn http() -> Client {
     let ssl = NativeTlsClient::new().unwrap();
     let connector = HttpsConnector::new(ssl);
     Client::with_connector(connector)
-}
-
-pub fn set_main_loop_callback<F>(mut f: F) where F: FnMut() {
-    loop {
-        f();
-    }
 }
