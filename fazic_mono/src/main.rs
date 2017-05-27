@@ -13,7 +13,6 @@ pub mod tests;
 use std::{process};
 use sdl2::event::{Event};
 use sdl2::keyboard::*;
-use sdl2::render;
 use sdl2::pixels::PixelFormatEnum;
 
 const SCALE: u16 = 2;
@@ -25,29 +24,22 @@ pub fn main() {
     let ctx = sdl2::init().unwrap();
     let video_ctx = ctx.video().unwrap();
 
-    let window = match video_ctx
+
+    let window = video_ctx
         .window("fazic", WIDTH, HEIGHT)
         .position_centered()
-        .resizable()
         .opengl()
-        .build() {
-            Ok(window) => window,
-            Err(err)   => panic!("failed to create window: {}", err)
-        };
+        .build()
+        .unwrap();
 
-    let mut renderer = match window
-        .renderer()
-        .accelerated()
-        .build() {
-            Ok(renderer) => renderer,
-            Err(err) => panic!("failed to create renderer: {}", err)
-        };
+    let mut canvas = window.into_canvas().build().unwrap();
+    let texture_creator = canvas.texture_creator();
 
-    let mut texture = renderer.create_texture(PixelFormatEnum::RGB24,
-                                              render::TextureAccess::Streaming,
-                                              fazic::SCREEN_WIDTH as u32,
-                                              fazic::SCREEN_HEIGHT as u32
-                                             ).unwrap();
+     let mut texture = texture_creator.create_texture_streaming(
+         PixelFormatEnum::RGB24,
+         fazic::SCREEN_WIDTH as u32,
+         fazic::SCREEN_HEIGHT as u32
+    ).unwrap();
 
     let mut events = ctx.event_pump().unwrap();
 
@@ -108,8 +100,8 @@ pub fn main() {
                            fazic.get_rgb_pixels(),
                            RGB_WIDTH).unwrap();
 
-            let _ = renderer.copy(&texture, None, None);
-            renderer.present();
+            let _ = canvas.copy(&texture, None, None);
+            canvas.present();
             fazic.redrawed();
         }
 
