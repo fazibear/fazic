@@ -245,3 +245,23 @@ pub fn dot(fazic: &mut ::fazic::Fazic, params: Vec<NodeElement>){
     fazic.redraw = true;
     next_step(fazic);
 }
+
+pub fn load(fazic: &mut ::fazic::Fazic, params: Vec<NodeElement>){
+    let name = match params[0] {
+        NodeElement::Value(Value::String(ref s)) => s,
+        _ => unreachable!("load expression don't match"),
+    };
+    println!("load: {}", name);
+    stop_program(fazic);
+}
+
+pub fn save(fazic: &mut ::fazic::Fazic, params: Vec<NodeElement>){
+    let name = match params[0] {
+        NodeElement::Value(Value::String(ref s)) => s,
+        _ => unreachable!("save expression don't match"),
+    };
+
+    println!("save: {}", name);
+
+    stop_program(fazic);
+}

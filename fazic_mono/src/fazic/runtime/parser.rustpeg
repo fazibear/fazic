@@ -35,6 +35,7 @@ command -> Vec<NodeElement>
         vec.extend(a);
         vec
     }
+    / ("DOT" / "dot") _ x:expression _ "," _ y:expression { nodes(Opcode::Dot, vec![x, y]) }
 
     / ("NEXT" / "next" ) _ v:(varname ++ (_ "," _) ) {
         let mut vec = vec![];
@@ -43,7 +44,10 @@ command -> Vec<NodeElement>
         };
         vec
     }
-    / ("DOT" / "dot") _ x:expression _ "," _ y:expression { nodes(Opcode::Dot, vec![x, y]) }
+
+    / ("LOAD" / "load") _ s:string { nodes(Opcode::Load, vec![s]) }
+    / ("SAVE" / "save") _ s:string { nodes(Opcode::Save, vec![s]) }
+
     / ("NEXT" / "next" ) { nodes(Opcode::Next, vec![]) }
 
     / ("GRAPHIC" / "graphic") { nodes(Opcode::Graphic, vec![]) }

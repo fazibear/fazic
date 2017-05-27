@@ -72,4 +72,7 @@ pub enum Opcode {
     // Graphic
     Graphic,
     Dot,
+
+    Load,
+    Save
 }

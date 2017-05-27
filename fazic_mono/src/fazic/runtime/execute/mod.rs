@@ -28,8 +28,10 @@ pub fn exec_node(node: NodeElement, fazic: &mut ::fazic::Fazic) {
         NodeElement::Node(Node(Opcode::End, _)) => commands::end(fazic),
         NodeElement::Node(Node(Opcode::Stop, _)) => commands::stop(fazic),
         NodeElement::Node(Node(Opcode::Rem, _)) => (),
-        NodeElement::Node(Node(Opcode::Goto, params)) => commands::goto(fazic, params),
+        NodeElement::Node(Node(Opcode::Load, params)) => commands::load(fazic, params),
+        NodeElement::Node(Node(Opcode::Save, params)) => commands::save(fazic, params),
 
+        NodeElement::Node(Node(Opcode::Goto, params)) => commands::goto(fazic, params),
         NodeElement::Node(Node(Opcode::Gosub, params)) => commands::gosub(fazic, params),
         NodeElement::Node(Node(Opcode::Return, _)) => commands::return_(fazic),
 
