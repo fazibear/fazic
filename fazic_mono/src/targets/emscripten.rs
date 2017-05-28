@@ -5,6 +5,8 @@ use std::cell::RefCell;
 use std::ptr::null_mut;
 use std::os::raw::{c_int, c_void};
 
+const HOST: &str = "http://localhost:8080";
+
 #[allow(non_camel_case_types)]
 type em_callback_func = unsafe extern fn();
 
@@ -27,4 +29,13 @@ pub fn set_main_loop_callback<F>(callback: F) where F: FnMut() {
             (*closure)();
         });
     }
+}
+
+pub fn load(name: &String) -> Result<String, String> {
+    Err("NOT IMPEMENTED".to_string())
+}
+
+
+pub fn save(name: &String, body: &String) -> Result<String, String> {
+    Err("NOT IMPEMENTED".to_string())
 }
