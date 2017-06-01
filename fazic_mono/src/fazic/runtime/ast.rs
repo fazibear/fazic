@@ -70,8 +70,10 @@ pub enum Opcode {
     If,
 
     // Graphic
-    Graphic,
+    Mode,
+    Flip,
     Dot,
+    Color,
 
     Load,
     Save

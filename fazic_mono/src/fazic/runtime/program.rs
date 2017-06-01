@@ -1,6 +1,7 @@
 use fazic::runtime::ast::*;
 use fazic::runtime::stack::*;
 use std::collections::HashMap;
+use fazic::config::*;
 
 pub struct Program {
     pub lines: Vec<(u16, String)>,
@@ -17,10 +18,10 @@ impl Program {
     pub fn new() -> Program {
         Program {
             lines: vec![],
-            ast: vec![vec![]; ::fazic::BASIC_MAX_LINES as usize],
+            ast: vec![vec![]; BASIC_MAX_LINES as usize],
             running: false,
             position: (0, 0),
-            first_line: ::fazic::BASIC_MAX_LINES - 1,
+            first_line: BASIC_MAX_LINES - 1,
             last_line: 0,
             variables: HashMap::new(),
             stack: vec![],

@@ -14,11 +14,12 @@ use std::{process};
 use sdl2::event::{Event};
 use sdl2::keyboard::*;
 use sdl2::pixels::PixelFormatEnum;
+use fazic::config::*;
 
 const SCALE: u16 = 2;
-const WIDTH: u32 = (fazic::SCREEN_WIDTH * SCALE) as u32;
-const HEIGHT: u32 = (fazic::SCREEN_HEIGHT * SCALE) as u32;
-const RGB_WIDTH: usize = fazic::SCREEN_WIDTH as usize * 3;
+const WIDTH: u32 = (SCREEN_WIDTH * SCALE) as u32;
+const HEIGHT: u32 = (SCREEN_HEIGHT * SCALE) as u32;
+const RGB_WIDTH: usize = SCREEN_WIDTH as usize * 3;
 
 pub fn main() {
     let ctx = sdl2::init().unwrap();
@@ -37,8 +38,8 @@ pub fn main() {
 
      let mut texture = texture_creator.create_texture_streaming(
          PixelFormatEnum::RGB24,
-         fazic::SCREEN_WIDTH as u32,
-         fazic::SCREEN_HEIGHT as u32
+         SCREEN_WIDTH as u32,
+         SCREEN_HEIGHT as u32
     ).unwrap();
 
     let mut events = ctx.event_pump().unwrap();
@@ -95,14 +96,13 @@ pub fn main() {
 
         fazic.tick();
 
-        if fazic.redraw() {
+        if fazic.need_to_redraw() {
             texture.update(None,
                            fazic.get_rgb_pixels(),
                            RGB_WIDTH).unwrap();
 
             let _ = canvas.copy(&texture, None, None);
             canvas.present();
-            fazic.redrawed();
         }
 
         if timer.ticks() - fps_last_tick > 1000 {

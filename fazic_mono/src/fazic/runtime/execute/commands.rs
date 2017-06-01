@@ -4,14 +4,14 @@ use std::collections::HashMap;
 
 fn next_step(fazic: &mut ::fazic::Fazic) {
     match fazic.program.next() {
-        false => fazic.text_mode = true,
+        false => fazic.mode = 0,
         true => ()
     }
 }
 
 fn stop_program(fazic: &mut ::fazic::Fazic) {
     fazic.program.running = false;
-    fazic.text_mode = true
+    fazic.mode = 0
 }
 
 pub fn print(fazic: &mut ::fazic::Fazic, params: Vec<NodeElement>) {
@@ -222,10 +222,27 @@ pub fn stop(fazic: &mut ::fazic::Fazic) {
     }
 }
 
-pub fn graphic(fazic: &mut ::fazic::Fazic){
-    fazic.text_mode = false;
+pub fn mode(fazic: &mut ::fazic::Fazic, params: Vec<NodeElement>){
+    let m = match params[0] {
+        NodeElement::Value(Value::Integer(i)) => i as u8,
+        _ => unreachable!("dot expression don't match"),
+    };
+
+    fazic.mode = m;
     next_step(fazic);
 }
+
+pub fn color(fazic: &mut ::fazic::Fazic, params: Vec<NodeElement>){
+    let c = match params[0] {
+        NodeElement::Value(Value::Integer(i)) => i as u8,
+        _ => unreachable!("dot expression don't match"),
+    };
+
+    fazic.screen.current_color = c;
+    fazic.text_buffer.current_color = c;
+    next_step(fazic);
+}
+
 
 pub fn dot(fazic: &mut ::fazic::Fazic, params: Vec<NodeElement>){
     let x = match params[0] {
@@ -245,8 +262,13 @@ pub fn dot(fazic: &mut ::fazic::Fazic, params: Vec<NodeElement>){
     //println!("dot {}, {}, {}", x,y,color);
     fazic.screen.put_pixel(x, y, color);
 
-    fazic.redraw = true;
+    fazic.redraw();
     next_step(fazic);
+}
+
+
+pub fn flip(fazic: &mut ::fazic::Fazic) {
+    fazic.redraw = true;
 }
 
 pub fn load(fazic: &mut ::fazic::Fazic, params: Vec<NodeElement>){

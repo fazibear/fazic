@@ -50,7 +50,9 @@ command -> Vec<NodeElement>
 
     / ("NEXT" / "next" ) { nodes(Opcode::Next, vec![]) }
 
-    / ("GRAPHIC" / "graphic") { nodes(Opcode::Graphic, vec![]) }
+    / ("COLOR" / "color") _ i:integer { nodes(Opcode::Color, vec![i]) }
+    / ("FLIP" / "flip") { nodes(Opcode::Flip, vec![]) }
+    / ("MODE" / "mode") _ i:integer { nodes(Opcode::Mode, vec![i]) }
 
     / ("RETURN" / "return") { nodes(Opcode::Return, vec![]) }
     / ("LIST" / "list")  { nodes(Opcode::List, vec![]) }
