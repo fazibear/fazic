@@ -65,12 +65,12 @@ fn fetch(name: &String, method: &str, data: &String) -> (i32, String) {
     let method = CString::new(method).unwrap();
 
     unsafe {
-        let mut resp_p = Vec::with_capacity(1024);
+        let mut resp_p = Vec::with_capacity(102400);
         let size_p: c_int = 0;
 
         js_fetch(url.as_ptr(), method.as_ptr(), data.as_ptr(), &code, resp_p.as_ptr(), &size_p);
 
-        resp_p.set_len(size_p as usize - 1);
+        resp_p.set_len(size_p as usize);
 
         resp = CString::from_vec_unchecked(resp_p)
             .to_string_lossy()

@@ -17,8 +17,9 @@ mergeInto(LibraryManager.library, {
       response = "CAN'T CONNECT"
     }
 
-    var size = new Blob([response]).size + 1;
-    stringToUTF8(response, resp_p, size);
+    stringToUTF8(response, resp_p, 102400);
+
+    var size = new Blob([response]).size;
 
     setValue(size_p, size, 'i32');
     setValue(code_p, code, 'i32');
