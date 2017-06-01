@@ -24,15 +24,19 @@ pub fn load(name: &String) -> Result<String, String> {
 
     match response {
         Ok(mut res) => {
-            let _ = res.read_to_string(&mut resp);
-            Ok(resp)
+            if res.status.is_success() {
+                let _ = res.read_to_string(&mut resp);
+                Ok(resp)
+            } else {
+                let err = res.status.canonical_reason();
+                Err(err.unwrap().to_string())
+            }
         },
         Err(error) => {
             Err(error.to_string())
         },
     }
 }
-
 
 pub fn save(name: &String, body: &String) -> Result<String, String> {
     let mut resp = String::new();
@@ -46,14 +50,20 @@ pub fn save(name: &String, body: &String) -> Result<String, String> {
 
     match response {
         Ok(mut res) => {
-            let _ = res.read_to_string(&mut resp);
-            Ok(resp)
+            if res.status.is_success() {
+                let _ = res.read_to_string(&mut resp);
+                Ok(resp)
+            } else {
+                let err = res.status.canonical_reason();
+                Err(err.unwrap().to_string())
+            }
         },
         Err(error) => {
             Err(error.to_string())
         },
     }
 }
+
 
 fn http() -> Client {
     let ssl = NativeTlsClient::new().unwrap();

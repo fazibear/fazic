@@ -114,6 +114,6 @@ pub fn rgb_for(color: u8) -> (u8, u8, u8) {
         13 => LIGHT_GREEN,
         14 => LIGHT_BLUE,
         15 => LIGHT_GREY,
-         _ => unreachable!()
+         _ => BLACK,
     }
 }

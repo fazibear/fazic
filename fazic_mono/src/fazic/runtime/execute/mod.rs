@@ -46,7 +46,11 @@ pub fn exec_node(node: NodeElement, fazic: &mut ::fazic::Fazic) {
             commands::if_(fazic, params);
         },
 
-        NodeElement::Node(Node(Opcode::Color, params)) => commands::color(fazic, params),
+        NodeElement::Node(Node(Opcode::Color, params)) => {
+            let params = eval_each_node(params, fazic);
+            commands::color(fazic, params)
+
+        },
         NodeElement::Node(Node(Opcode::Mode, params)) => commands::mode(fazic, params),
         NodeElement::Node(Node(Opcode::Flip, _)) => commands::flip(fazic),
         NodeElement::Node(Node(Opcode::Dot, params)) => {

@@ -235,6 +235,7 @@ pub fn mode(fazic: &mut ::fazic::Fazic, params: Vec<NodeElement>){
 pub fn color(fazic: &mut ::fazic::Fazic, params: Vec<NodeElement>){
     let c = match params[0] {
         NodeElement::Value(Value::Integer(i)) => i as u8,
+        NodeElement::Value(Value::Float(f)) => f as u8,
         _ => unreachable!("dot expression don't match"),
     };
 
@@ -269,6 +270,7 @@ pub fn dot(fazic: &mut ::fazic::Fazic, params: Vec<NodeElement>){
 
 pub fn flip(fazic: &mut ::fazic::Fazic) {
     fazic.redraw = true;
+    next_step(fazic);
 }
 
 pub fn load(fazic: &mut ::fazic::Fazic, params: Vec<NodeElement>){
