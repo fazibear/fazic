@@ -11,25 +11,6 @@ pub mod parser {
     include!(concat!(env!("OUT_DIR"), "/parser.rs"));
 }
 
-pub fn step(fazic: &mut ::fazic::Fazic) {
-    if fazic.program.running {
-        execute::exec_node(fazic.program.current_node(), fazic);
-        if !fazic.program.running {
-            fazic.text_buffer.prompt();
-        }
-    }
-}
-
-pub fn exec(fazic: &mut ::fazic::Fazic) {
-    let input = fazic.text_buffer.get_current_line_string();
-    if input.len() == 0 {
-        fazic.text_buffer.insert_line("");
-        return;
-    }
-    fazic.text_buffer.enter();
-    parse(fazic, input)
-}
-
 pub fn parse(fazic: &mut ::fazic::Fazic, input: String) {
     match parser::parse_all(&input) {
         Ok(ast::Entry(None, nodes)) => {
@@ -120,7 +101,13 @@ impl Fazic {
 
     pub fn enter_key(&mut self) {
         if self.text_mode() {
-            exec(self);
+            let input = self.text_buffer.get_current_line_string();
+            if input.len() == 0 {
+                self.text_buffer.insert_line("");
+                return;
+            }
+            self.text_buffer.enter();
+            parse(self, input)
         }
     }
 
@@ -160,7 +147,12 @@ impl Fazic {
     }
 
     pub fn tick(&mut self) {
-        step(self);
+        if self.program.running {
+            execute::exec_node(self.program.current_node(), self);
+            if !self.program.running {
+                self.text_buffer.prompt();
+            }
+        }
         if self.text_mode() && self.text_buffer.changed {
             self.screen.draw_text_buffer(&self.text_buffer);
             self.text_buffer.refreshed();
