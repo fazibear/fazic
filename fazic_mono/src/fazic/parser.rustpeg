@@ -1,5 +1,5 @@
-use fazic::runtime::ast::*;
-use fazic::runtime::node_builder::*;
+use fazic::ast::*;
+use fazic::node_builder::*;
 
 pub parse_all -> Entry
     = i:integer _ a:(all ++ ":") { entry_node(Some(i), a) }

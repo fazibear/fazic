@@ -1,5 +1,5 @@
-use fazic::runtime::ast::*;
-use fazic::runtime::stack::*;
+use fazic::ast::*;
+use fazic::stack::*;
 use std::collections::HashMap;
 use fazic::config::*;
 

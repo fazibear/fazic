@@ -1,4 +1,4 @@
-use fazic::runtime::ast::{NodeElement, Value};
+use fazic::ast::{NodeElement, Value};
 extern crate rand;
 
 pub fn abs(params: Vec<NodeElement>) -> NodeElement {

@@ -2,7 +2,7 @@ pub mod operators;
 pub mod commands;
 pub mod functions;
 
-use ::fazic::runtime::ast::*;
+use ::fazic::ast::*;
 
 pub fn exec_each_node(nodes: Vec<NodeElement>, fazic: &mut ::fazic::Fazic) {
     for node in nodes {

@@ -1,4 +1,4 @@
-use fazic::runtime::ast::{NodeElement, Value};
+use fazic::ast::{NodeElement, Value};
 
 pub fn neg(params: Vec<NodeElement>) -> NodeElement {
     if params.len() != 1 {

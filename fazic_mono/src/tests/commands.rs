@@ -1,6 +1,6 @@
 use ::fazic::*;
-use ::fazic::runtime::ast::*;
-use ::fazic::runtime::execute::commands::*;
+use ::fazic::ast::*;
+use ::fazic::execute::commands::*;
 
 const TRUE: NodeElement = NodeElement::Value(Value::Bool(true));
 const FALSE: NodeElement = NodeElement::Value(Value::Bool(false));

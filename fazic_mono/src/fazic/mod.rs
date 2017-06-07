@@ -1,12 +1,60 @@
 pub mod screen;
 pub mod text_buffer;
-pub mod runtime;
 pub mod config;
+pub mod ast;
+pub mod stack;
+pub mod node_builder;
+pub mod program;
+pub mod execute;
+
+pub mod parser {
+    include!(concat!(env!("OUT_DIR"), "/parser.rs"));
+}
+
+pub fn step(fazic: &mut ::fazic::Fazic) {
+    if fazic.program.running {
+        execute::exec_node(fazic.program.current_node(), fazic);
+        if !fazic.program.running {
+            fazic.text_buffer.prompt();
+        }
+    }
+}
+
+pub fn exec(fazic: &mut ::fazic::Fazic) {
+    let input = fazic.text_buffer.get_current_line_string();
+    if input.len() == 0 {
+        fazic.text_buffer.insert_line("");
+        return;
+    }
+    fazic.text_buffer.enter();
+    parse(fazic, input)
+}
+
+pub fn parse(fazic: &mut ::fazic::Fazic, input: String) {
+    match parser::parse_all(&input) {
+        Ok(ast::Entry(None, nodes)) => {
+            println!("{:?}", nodes);
+            execute::exec_each_node(nodes, fazic);
+            if !fazic.program.running {
+                fazic.text_buffer.prompt();
+            }
+        },
+        Ok(ast::Entry(Some(line), nodes)) => {
+             fazic.program.add_line(line as u16, nodes, input.clone());
+        },
+        Err(e) => {
+            println!("Parse error!: {:?}", e);
+            fazic.text_buffer.insert_line(&format!("{: >1$}", "^", e.column));
+            fazic.text_buffer.insert_line("?SYNTAX ERROR");
+            fazic.text_buffer.prompt();
+        }
+    };
+}
 
 pub struct Fazic {
     screen: screen::Screen,
     pub text_buffer: text_buffer::TextBuffer,
-    program: runtime::program::Program,
+    program: program::Program,
     redraw: bool,
     mode: u8,
 }
@@ -16,7 +64,7 @@ impl Fazic {
         Fazic {
             screen: screen::Screen::new(),
             text_buffer: text_buffer::TextBuffer::new(),
-            program: runtime::program::Program::new(),
+            program: program::Program::new(),
             redraw: true,
             mode: 0,
         }
@@ -72,12 +120,12 @@ impl Fazic {
 
     pub fn enter_key(&mut self) {
         if self.text_mode() {
-            runtime::exec(self);
+            exec(self);
         }
     }
 
     pub fn stop_key(&mut self) {
-        runtime::execute::commands::stop(self);
+        execute::commands::stop(self);
     }
 
     pub fn insert_string(&mut self, string: String) {
@@ -112,7 +160,7 @@ impl Fazic {
     }
 
     pub fn tick(&mut self) {
-        runtime::step(self);
+        step(self);
         if self.text_mode() && self.text_buffer.changed {
             self.screen.draw_text_buffer(&self.text_buffer);
             self.text_buffer.refreshed();

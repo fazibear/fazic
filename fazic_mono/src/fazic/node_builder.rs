@@ -1,5 +1,5 @@
 use std::str::FromStr;
-use fazic::runtime::ast::*;
+use fazic::ast::*;
 
 pub fn entry_node(line: Option<NodeElement>, ast: Vec<Vec<NodeElement>>) -> Entry {
     let mut flat_ast = vec![];

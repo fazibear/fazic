@@ -1,5 +1,5 @@
-use fazic::runtime::ast::*;
-use fazic::runtime::stack::*;
+use fazic::ast::*;
+use fazic::stack::*;
 use std::collections::HashMap;
 
 fn next_step(fazic: &mut ::fazic::Fazic) {
@@ -47,7 +47,7 @@ pub fn list(fazic: &mut ::fazic::Fazic){
 }
 
 pub fn new(fazic: &mut ::fazic::Fazic){
-    fazic.program = ::fazic::runtime::program::Program::new();
+    fazic.program = ::fazic::program::Program::new();
     // clr(fazic);
     // fazic.program.reset();
     // fazic.program.ast = vec![];
@@ -284,7 +284,7 @@ pub fn load(fazic: &mut ::fazic::Fazic, params: Vec<NodeElement>){
             new(fazic);
 
             for line in resp.lines() {
-                ::fazic::runtime::parse(fazic, line.to_string());
+                ::fazic::parse(fazic, line.to_string());
             }
 
             fazic.text_buffer.insert_line("LOADED");
