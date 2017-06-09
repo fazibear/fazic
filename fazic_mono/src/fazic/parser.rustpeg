@@ -112,7 +112,7 @@ string -> NodeElement
 variable -> NodeElement
     = v:$([a-zA-Z]+) { variable_node(v) }
 
- varname -> NodeElement
-     = v:$([a-zA-Z]+) { variable_name(v) }
+varname -> NodeElement
+    = v:$([a-zA-Z]+) { variable_name(v) }
 
 _ = #quiet<" "*>

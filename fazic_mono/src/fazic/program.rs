@@ -3,6 +3,8 @@ use fazic::stack::*;
 use std::collections::HashMap;
 use fazic::config::*;
 
+use std::time::Instant;
+
 pub struct Program {
     pub lines: Vec<(u16, String)>,
     pub ast: Vec<Vec<NodeElement>>,
@@ -12,6 +14,7 @@ pub struct Program {
     pub last_line: u16,
     pub variables: HashMap<String, NodeElement>,
     pub stack: Vec<StackEntry>,
+    pub instant: Instant,
 }
 
 impl Program {
@@ -25,6 +28,7 @@ impl Program {
             last_line: 0,
             variables: HashMap::new(),
             stack: vec![],
+            instant: Instant::now(),
         }
     }
 
@@ -43,11 +47,13 @@ impl Program {
     pub fn start(&mut self) {
         if self.last_line != 0 {
             self.running = true;
+            self.instant = Instant::now();
         }
     }
 
     pub fn stop(&mut self) {
         self.running = false;
+        println!("{:?}", self.instant.elapsed());
     }
 
     pub fn current_node(&mut self) -> NodeElement {

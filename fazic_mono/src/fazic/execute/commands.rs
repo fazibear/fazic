@@ -4,14 +4,14 @@ use std::collections::HashMap;
 
 fn next_step(fazic: &mut ::fazic::Fazic) {
     match fazic.program.next() {
-        false => fazic.mode = 0,
+        false => stop_program(fazic),
         true => ()
     }
 }
 
 fn stop_program(fazic: &mut ::fazic::Fazic) {
-    fazic.program.running = false;
-    fazic.mode = 0
+    fazic.program.stop();
+    fazic.mode = 0;
 }
 
 pub fn print(fazic: &mut ::fazic::Fazic, params: Vec<NodeElement>) {
