@@ -149,10 +149,27 @@ impl Fazic {
         }
     }
 
-    pub fn tick(&mut self) {
+    pub fn tick_1(&mut self) {
+        if self.program.running {
+            //for _ in 0..500 {
+                execute::exec_node(self.program.current_node(), self);
+            //}
+            if !self.program.running {
+                self.text_buffer.prompt();
+            }
+        }
+        if self.text_mode() && self.text_buffer.changed {
+            self.screen.draw_text_buffer(&self.text_buffer);
+            self.text_buffer.refreshed();
+            self.redraw = true;
+        }
+    }
+
+    pub fn tick_2(&mut self) {
         if self.vm.running {
-            vm::step(self);
-            //execute::exec_node(self.program.current_node(), self);
+            //for _ in 0..500 {
+                vm::step(self);
+            //}
             if !self.vm.running {
                 self.text_buffer.prompt();
             }

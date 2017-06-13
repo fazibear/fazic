@@ -28,7 +28,9 @@ pub fn set_main_loop_callback<F>(callback: F) where F: FnMut() {
     unsafe extern "C" fn wrapper<F>() where F: FnMut() {
         MAIN_LOOP_CALLBACK.with(|z| {
             let closure = *z.borrow_mut() as *mut F;
-            (*closure)();
+            //for _ in 0..1000000 {
+                (*closure)();
+            //}
         });
     }
 }
