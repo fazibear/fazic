@@ -6,6 +6,7 @@ pub mod stack;
 pub mod node_builder;
 pub mod program;
 pub mod execute;
+pub mod vm;
 
 pub mod parser {
     include!(concat!(env!("OUT_DIR"), "/parser.rs"));
@@ -38,6 +39,7 @@ pub struct Fazic {
     program: program::Program,
     redraw: bool,
     mode: u8,
+    vm: vm::VM,
 }
 
 impl Fazic {
@@ -48,6 +50,7 @@ impl Fazic {
             program: program::Program::new(),
             redraw: true,
             mode: 0,
+            vm: vm::VM::new(),
         }
     }
 
@@ -55,9 +58,9 @@ impl Fazic {
         self.mode == 0
     }
 
-    fn flip_mode(&mut self) -> bool {
-        self.mode == 1
-    }
+    // fn flip_mode(&mut self) -> bool {
+    //     self.mode == 1
+    // }
 
     fn instant_mode(&mut self) -> bool {
         self.mode == 2
@@ -147,9 +150,10 @@ impl Fazic {
     }
 
     pub fn tick(&mut self) {
-        if self.program.running {
-            execute::exec_node(self.program.current_node(), self);
-            if !self.program.running {
+        if self.vm.running {
+            vm::step(self);
+            //execute::exec_node(self.program.current_node(), self);
+            if !self.vm.running {
                 self.text_buffer.prompt();
             }
         }

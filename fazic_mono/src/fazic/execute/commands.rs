@@ -63,6 +63,7 @@ pub fn run(fazic: &mut ::fazic::Fazic){
     fazic.program.reset();
     clr(fazic);
     fazic.program.start();
+    fazic.vm.start();
 }
 
 pub fn cont(fazic: &mut ::fazic::Fazic){

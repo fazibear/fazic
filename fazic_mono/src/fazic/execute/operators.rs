@@ -120,8 +120,8 @@ pub fn div(mut params: Vec<NodeElement>) -> NodeElement {
             Some(NodeElement::Value(Value::Integer(0)))
         ) => NodeElement::Error("?DIVISION BY ZERO".to_string()),
         (   _,
-            Some(NodeElement::Value(Value::Float(0.0_f64)))
-        ) => NodeElement::Error("?DIVISION BY ZERO".to_string()),
+            Some(NodeElement::Value(Value::Float(f)))
+        ) if f == 0.0 => NodeElement::Error("?DIVISION BY ZERO".to_string()),
         (
             Some(NodeElement::Value(Value::Integer(l))),
             Some(NodeElement::Value(Value::Integer(r)))
