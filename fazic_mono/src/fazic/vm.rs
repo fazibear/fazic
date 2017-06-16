@@ -1,4 +1,4 @@
-use std::collections::HashMap;
+use std::collections::BTreeMap;
 use std::time::Instant;
 
 #[derive(Debug, Clone)]
@@ -32,7 +32,7 @@ pub struct VM {
     pub instructions: Vec<Instruction>,
     pub position: usize,
     pub running: bool,
-    pub variables: HashMap<String, Value>,
+    pub variables: BTreeMap<String, Value>,
     pub instant: Instant,
 }
 
@@ -74,7 +74,7 @@ impl VM {
             ],
             position: 0,
             running: false,
-            variables: HashMap::new(),
+            variables: BTreeMap::new(),
             instant: Instant::now(),
 
         }
@@ -108,7 +108,7 @@ impl VM {
 //     fazic.vm.stop();
 // }
 
-fn get_var(variables: &HashMap<String, Value>, variable: &str) -> Value {
+fn get_var(variables: &BTreeMap<String, Value>, variable: &str) -> Value {
     match variables.get(variable) {
         Some(value) => value.clone(),
         None => Value::Integer(0),

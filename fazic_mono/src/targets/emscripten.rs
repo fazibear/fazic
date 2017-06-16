@@ -1,9 +1,9 @@
-#[link_args = "-g0 -Oz --closure 1 --llvm-lto 1 --memory-init-file 0 -s USE_SDL=2 --js-library src/targets/emscripten.js"]
+#[link_args = "-g0 -O3 --memory-init-file 0 -s USE_SDL=2 --js-library src/targets/emscripten.js"]
 extern {}
 
 use std::cell::RefCell;
 use std::ptr::null_mut;
-use std::os::raw::{c_int, c_void, c_char};
+use std::os::raw::{c_int, c_void, c_char, c_double};
 use std::ffi::CString;
 
 const HOST: &str = "http://localhost:8080";
@@ -28,9 +28,7 @@ pub fn set_main_loop_callback<F>(callback: F) where F: FnMut() {
     unsafe extern "C" fn wrapper<F>() where F: FnMut() {
         MAIN_LOOP_CALLBACK.with(|z| {
             let closure = *z.borrow_mut() as *mut F;
-            //for _ in 0..1000000 {
                 (*closure)();
-            //}
         });
     }
 }
