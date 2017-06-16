@@ -37,7 +37,7 @@ pub struct Fazic {
     screen: screen::Screen,
     pub text_buffer: text_buffer::TextBuffer,
     program: program::Program,
-    redraw: bool,
+    pub redraw: bool,
     mode: u8,
     vm: vm::VM,
 }
