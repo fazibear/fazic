@@ -1,4 +1,4 @@
-#[link_args = "-g0 -O3 --memory-init-file 0 -s USE_SDL=2 --js-library src/targets/emscripten.js"]
+#[link_args = "-g0 -O2 --llvm-opts 2 --memory-init-file 0 -s USE_SDL=2 --js-library src/targets/emscripten.js"]
 extern {}
 
 use std::cell::RefCell;

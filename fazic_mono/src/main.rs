@@ -110,11 +110,10 @@ pub fn main() {
             canvas.present();
         }
 
-        // if timer.ticks() - blink_last_tick > 250 {
-        //     fazic.blink_cursor();
-        //     blink_last_tick = timer.ticks();
-        // }
-
+        if timer.ticks() - blink_last_tick > 250 {
+            fazic.blink_cursor();
+            blink_last_tick = timer.ticks();
+        }
 
 
         if timer.ticks() - fps_last_time > 1000 {
