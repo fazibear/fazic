@@ -46,8 +46,6 @@ pub fn main() {
     let mut timer = ctx.timer().unwrap();
 
     let mut fps_last_time = 0;
-    let mut blink_last_time = 0;
-    let mut event_last_time = 0;
     let mut main_loop_time = 0;
 
     let mut fps = 0;
@@ -55,13 +53,10 @@ pub fn main() {
 
     let mut fazic = fazic::Fazic::new();
 
-
     let main_loop = || {
         main_loop_time = timer.ticks();
 
-        if timer.ticks() - event_last_time > 60 {
-            event_last_time = timer.ticks();
-
+        if fps % 5 == 0 {
             for event in events.poll_iter() {
                 match event {
                     Event::Quit {..} => process::exit(1),
@@ -99,6 +94,10 @@ pub fn main() {
             }
         }
 
+        if fps == 1 || fps == 30 {
+            fazic.blink_cursor();
+        }
+
         if fazic.need_to_redraw() {
             texture.update(
                 None,
@@ -109,12 +108,6 @@ pub fn main() {
             let _ = canvas.copy(&texture, None, None);
             canvas.present();
         }
-
-        if timer.ticks() - blink_last_tick > 250 {
-            fazic.blink_cursor();
-            blink_last_tick = timer.ticks();
-        }
-
 
         if timer.ticks() - fps_last_time > 1000 {
             println!("FPS: {}", fps);
