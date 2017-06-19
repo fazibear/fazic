@@ -1,9 +1,9 @@
-#[link_args = "-g0 -O2 --llvm-opts 2 --memory-init-file 0 -s USE_SDL=2 --js-library src/targets/emscripten.js"]
+#[link_args = "-g0 -O3 --llvm-opts 2 --memory-init-file 0 -s USE_SDL=2 --js-library src/targets/emscripten.js"]
 extern {}
 
 use std::cell::RefCell;
 use std::ptr::null_mut;
-use std::os::raw::{c_int, c_void, c_char, c_double};
+use std::os::raw::{c_int, c_void, c_char};
 use std::ffi::CString;
 
 const HOST: &str = "http://localhost:8080";
