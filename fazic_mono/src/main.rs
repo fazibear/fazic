@@ -122,7 +122,7 @@ pub fn main() {
 
         while timer.ticks() - main_loop_time < 16 {
             tps = tps + 1;
-            fazic.tick_2();
+            fazic.tick();
             if fazic.redraw {
                 break;
             }

@@ -1,11 +1,9 @@
 pub mod screen;
 pub mod text_buffer;
 pub mod config;
-pub mod ast;
 pub mod stack;
-pub mod node_builder;
+pub mod ast;
 pub mod program;
-pub mod execute;
 pub mod vm;
 
 pub mod parser {
@@ -16,8 +14,8 @@ pub fn parse(fazic: &mut ::fazic::Fazic, input: String) {
     match parser::parse_all(&input) {
         Ok(ast::Entry(None, nodes)) => {
             println!("{:?}", nodes);
-            execute::exec_each_node(nodes, fazic);
-            if !fazic.program.running {
+            // execute
+            if !fazic.vm.running {
                 fazic.text_buffer.prompt();
             }
         },
@@ -115,7 +113,7 @@ impl Fazic {
     }
 
     pub fn stop_key(&mut self) {
-        execute::commands::stop(self);
+        //execute::commands::stop(self);
     }
 
     pub fn insert_string(&mut self, string: String) {
@@ -149,27 +147,9 @@ impl Fazic {
         }
     }
 
-    pub fn tick_1(&mut self) {
-        if self.program.running {
-            //for _ in 0..500 {
-                execute::exec_node(self.program.current_node(), self);
-            //}
-            if !self.program.running {
-                self.text_buffer.prompt();
-            }
-        }
-        if self.text_mode() && self.text_buffer.changed {
-            self.screen.draw_text_buffer(&self.text_buffer);
-            self.text_buffer.refreshed();
-            self.redraw = true;
-        }
-    }
-
-    pub fn tick_2(&mut self) {
+    pub fn tick(&mut self) {
         if self.vm.running {
-            //for _ in 0..500 {
-                vm::step(self);
-            //}
+            vm::step(self);
             if !self.vm.running {
                 self.text_buffer.prompt();
             }
