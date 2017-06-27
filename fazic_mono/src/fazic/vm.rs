@@ -31,7 +31,7 @@ pub struct VM {
     pub instructions: Vec<Instruction>,
     pub position: usize,
     pub running: bool,
-    pub variables: Vec<Option<Value>>,
+    pub variables: Vec<Value>,
     pub instant: Instant,
 }
 
@@ -58,7 +58,6 @@ impl VM {
                 Instruction::LtEq(7, 9, 0),
                 Instruction::JmpIf(10, 0),
 
-
                 Instruction::Add(4, 5, 4),
                 Instruction::LtEq(4, 6, 0),
                 Instruction::JmpIf(7, 0),
@@ -74,7 +73,7 @@ impl VM {
             ],
             position: 0,
             running: false,
-            variables: vec![None; 100],
+            variables: vec![Value::Null; 100],
             instant: Instant::now(),
 
         }
@@ -108,16 +107,13 @@ impl VM {
 //     fazic.vm.stop();
 // }
 
-fn get_var(variables: &Vec<Option<Value>>, variable: usize) -> Value {
+fn get_var(variables: &Vec<Value>, variable: usize) -> Value {
     // println!("get: {}={:?}", variable, variables[variable]);
-    match variables[variable] {
-        Some(ref value) => value.clone(),
-        _ => Value::Integer(0),
-    }
+    return variables[variable].clone()
 }
 
-fn set_var(variables: & mut Vec<Option<Value>>, variable: usize, value: &Value) {
-    variables[variable] = Some(value.clone());
+fn set_var(variables: & mut Vec<Value>, variable: usize, value: &Value) {
+    variables[variable] = value.clone();
     //println!("set: {}={:?}", variable, variables[variable]);
 }
 
