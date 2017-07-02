@@ -16,10 +16,13 @@ pub enum Value {
 #[derive(Debug)]
 pub enum Instruction {
     Stop,
+    Push(Stack),
+    Pop,
     Jmp(usize),
     JmpIf(usize, usize),
     SetVar(usize, Value),
 
+    Next,
     Flip,
     Print(usize),
     Dot(usize, usize),
@@ -30,14 +33,20 @@ pub enum Instruction {
     Gt(usize, usize, usize),
     Lt(usize, usize, usize),
     LtEq(usize, usize, usize),
+
 }
 
+#[derive(Debug, Clone)]
+pub enum Stack {
+    Next(usize, usize, usize, usize)
+}
 
 pub struct VM {
     pub instructions: Vec<Instruction>,
     pub position: usize,
     pub running: bool,
     pub variables: Vec<Value>,
+    pub stack: Vec<Stack>,
     pub instant: Instant,
 }
 
@@ -49,37 +58,38 @@ impl VM {
                 Instruction::SetVar(1, Value::Integer(0)),
                 Instruction::SetVar(2, Value::Integer(1)),
                 Instruction::SetVar(3, Value::Integer(15)),
+                Instruction::Push(Stack::Next(1,2,3,5)),
 
                 Instruction::SetVar(4, Value::Integer(0)),
                 Instruction::SetVar(5, Value::Integer(1)),
                 Instruction::SetVar(6, Value::Integer(240)),
+                Instruction::Push(Stack::Next(4,5,6,9)),
 
                 Instruction::SetVar(7, Value::Integer(0)),
                 Instruction::SetVar(8, Value::Integer(1)),
                 Instruction::SetVar(9, Value::Integer(320)),
+                Instruction::Push(Stack::Next(7,8,9,13)),
 
                 Instruction::Dot(7,4),
 
-                Instruction::Add(7, 8, 7),
-                Instruction::LtEq(7, 9, 0),
-                Instruction::JmpIf(10, 0),
+                Instruction::Next,
+                Instruction::Pop,
 
-                Instruction::Add(4, 5, 4),
-                Instruction::LtEq(4, 6, 0),
-                Instruction::JmpIf(7, 0),
+                Instruction::Next,
+                Instruction::Pop,
 
                 Instruction::Flip,
                 Instruction::Color(1),
 
-                Instruction::Add(1, 2, 1),
-                Instruction::LtEq(1, 3, 0),
-                Instruction::JmpIf(4, 0),
+                Instruction::Next,
+                Instruction::Pop,
 
                 Instruction::Stop
             ],
             position: 0,
             running: false,
             variables: vec![Value::Null; 100],
+            stack: vec![],
             instant: Instant::now(),
 
         }
@@ -119,13 +129,18 @@ impl VM {
 //     fazic.text_buffer.prompt();
 //     fazic.vm.stop();
 // }
+//
+
 
 pub fn step(fazic: &mut ::fazic::Fazic) {
     match fazic.vm.current() {
         &Instruction::Stop =>             fazic.vm.stop(),
+
+        &Instruction::Pop =>              { fazic.vm.stack.pop();                fazic.vm.step() },
+        &Instruction::Push(_) =>          { other::push(fazic);                  fazic.vm.step() },
         &Instruction::Jmp(pos) =>         { other::jmp(pos, fazic); },
         &Instruction::JmpIf(pos, var) =>  { other::jmpif(pos, var, fazic); },
-        &Instruction::SetVar(name, _) =>  { other::set_var(name, fazic); fazic.vm.step() },
+        &Instruction::SetVar(name, _) =>  { other::set_var(name, fazic);         fazic.vm.step() },
 
         &Instruction::Flip =>             { commands::flip(fazic);               fazic.vm.step() },
         &Instruction::Print(var) =>       { commands::print(var, fazic);         fazic.vm.step() },
@@ -137,5 +152,13 @@ pub fn step(fazic: &mut ::fazic::Fazic) {
         &Instruction::Gt(a, b, dst) =>    { expressions::gt(a, b, dst, fazic);   fazic.vm.step() },
         &Instruction::Lt(a, b, dst) =>    { expressions::lt(a, b, dst, fazic);   fazic.vm.step() },
         &Instruction::LtEq(a, b, dst) =>  { expressions::lteq(a, b, dst, fazic); fazic.vm.step() },
+
+        &Instruction::Next =>             {
+            let &Stack::Next(var, step, max, jmp) = fazic.vm.stack.last().unwrap();
+
+            expressions::add(var, step, var, fazic);
+            expressions::lteq(var, max, 0, fazic);
+            other::jmpif(jmp, 0, fazic);
+        },
     }
 }

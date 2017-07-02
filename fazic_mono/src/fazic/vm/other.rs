@@ -1,6 +1,15 @@
 use ::fazic::vm::Instruction;
 use ::fazic::vm::Value;
 
+pub fn push(fazic: &mut ::fazic::Fazic) {
+    let val = match fazic.vm.current() {
+        &Instruction::Push(ref stack) => stack.clone(),
+        _ => unreachable!(),
+    };
+    fazic.vm.stack.push(val);
+
+}
+
 pub fn set_var(name: usize, fazic: &mut ::fazic::Fazic) {
     fazic.vm.variables[name] = match fazic.vm.current() {
         &Instruction::SetVar(_, ref val) => val.clone(),
