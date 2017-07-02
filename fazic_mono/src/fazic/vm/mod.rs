@@ -2,6 +2,7 @@ use std::time::Instant;
 
 pub mod commands;
 pub mod expressions;
+pub mod other;
 
 #[derive(Debug, Clone)]
 pub enum Value {
@@ -14,19 +15,21 @@ pub enum Value {
 
 #[derive(Debug)]
 pub enum Instruction {
-    Print(usize),
-    Dot(usize, usize),
+    Stop,
     Jmp(usize),
     JmpIf(usize, usize),
-    Mode(u8),
     SetVar(usize, Value),
+
+    Flip,
+    Print(usize),
+    Dot(usize, usize),
+    Mode(u8),
+    Color(usize),
+
     Add(usize, usize, usize),
     Gt(usize, usize, usize),
     Lt(usize, usize, usize),
     LtEq(usize, usize, usize),
-    Flip,
-    Color(usize),
-    Stop,
 }
 
 
@@ -117,42 +120,12 @@ impl VM {
 //     fazic.vm.stop();
 // }
 
-
-pub fn set_var(name: usize, fazic: &mut ::fazic::Fazic) {
-    fazic.vm.variables[name] = match fazic.vm.current() {
-        &Instruction::SetVar(_, ref val) => val.clone(),
-        _ => unreachable!(),
-    };
-}
-
-pub fn jmp(pos: usize, fazic: &mut ::fazic::Fazic) {
-    fazic.vm.position = pos;
-}
-
-pub fn jmpif(pos: usize, var: usize, fazic: &mut ::fazic::Fazic) {
-    let cond = match &fazic.vm.variables[var] {
-        &Value::String(_) => false,
-        &Value::Integer(i) if i == 0 => false,
-        &Value::Integer(_) => true,
-        &Value::Float(f) if f == 0.0 => false,
-        &Value::Float(_) => true,
-        &Value::Bool(b) => b,
-        &Value::Null => false,
-    };
-
-    if cond {
-        fazic.vm.position = pos
-    } else {
-        fazic.vm.position += 1
-    };
-}
-
 pub fn step(fazic: &mut ::fazic::Fazic) {
     match fazic.vm.current() {
         &Instruction::Stop =>             fazic.vm.stop(),
-        &Instruction::Jmp(pos) =>         { jmp(pos, fazic); },
-        &Instruction::JmpIf(pos, var) =>  { jmpif(pos, var, fazic); },
-        &Instruction::SetVar(name, _) =>  { set_var(name, fazic); fazic.vm.step() },
+        &Instruction::Jmp(pos) =>         { other::jmp(pos, fazic); },
+        &Instruction::JmpIf(pos, var) =>  { other::jmpif(pos, var, fazic); },
+        &Instruction::SetVar(name, _) =>  { other::set_var(name, fazic); fazic.vm.step() },
 
         &Instruction::Flip =>             { commands::flip(fazic);               fazic.vm.step() },
         &Instruction::Print(var) =>       { commands::print(var, fazic);         fazic.vm.step() },
