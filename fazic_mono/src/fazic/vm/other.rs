@@ -7,7 +7,6 @@ pub fn push(fazic: &mut ::fazic::Fazic) {
         _ => unreachable!(),
     };
     fazic.vm.stack.push(val);
-
 }
 
 pub fn set_var(name: usize, fazic: &mut ::fazic::Fazic) {

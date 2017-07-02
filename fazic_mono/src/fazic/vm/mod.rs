@@ -89,7 +89,7 @@ impl VM {
             position: 0,
             running: false,
             variables: vec![Value::Null; 100],
-            stack: vec![],
+            stack: Vec::with_capacity(100),
             instant: Instant::now(),
 
         }
@@ -136,10 +136,11 @@ pub fn step(fazic: &mut ::fazic::Fazic) {
     match fazic.vm.current() {
         &Instruction::Stop =>             fazic.vm.stop(),
 
-        &Instruction::Pop =>              { fazic.vm.stack.pop();                fazic.vm.step() },
-        &Instruction::Push(_) =>          { other::push(fazic);                  fazic.vm.step() },
         &Instruction::Jmp(pos) =>         { other::jmp(pos, fazic); },
         &Instruction::JmpIf(pos, var) =>  { other::jmpif(pos, var, fazic); },
+
+        &Instruction::Pop =>              { fazic.vm.stack.pop();                fazic.vm.step() },
+        &Instruction::Push(_) =>          { other::push(fazic);                  fazic.vm.step() },
         &Instruction::SetVar(name, _) =>  { other::set_var(name, fazic);         fazic.vm.step() },
 
         &Instruction::Flip =>             { commands::flip(fazic);               fazic.vm.step() },
