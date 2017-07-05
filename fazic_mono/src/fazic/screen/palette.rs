@@ -98,7 +98,6 @@ impl Color {
 
 pub fn rgb_for(color: u8) -> (u8, u8, u8) {
     match color {
-        0 => BLACK,
         1 => WHITE,
         2 => RED,
         3 => CYAN,

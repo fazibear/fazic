@@ -102,26 +102,26 @@ impl TextBuffer {
 
     pub fn left(&mut self) {
         if self.cursor_char != 0 {
-            self.cursor_char = self.cursor_char - 1;
+            self.cursor_char -= 1;
             self.update_cursor();
         }
     }
 
     pub fn right(&mut self) {
         if self.cursor_char != self.lines[self.cursor_line as usize].len() as u16 {
-            self.cursor_char = self.cursor_char + 1;
+            self.cursor_char += 1;
             self.update_cursor();
         }
     }
 
     pub fn up(&mut self) {
         if self.cursor_line != 0 {
-            self.cursor_line = self.cursor_line - 1;
+            self.cursor_line -= 1;
             if self.cursor_char as usize > self.lines[self.cursor_line as usize].len() {
                 self.cursor_char = self.lines[self.cursor_line as usize].len() as u16;
             }
             if self.cursor_line < self.line_offset {
-                self.line_offset = self.line_offset - 1;
+                self.line_offset -= 1;
                 self.update_chars();
             }
             self.update_cursor();
@@ -130,12 +130,12 @@ impl TextBuffer {
 
     pub fn down(&mut self) {
         if self.cursor_line + 1 != self.lines.len() as u16 {
-            self.cursor_line = self.cursor_line + 1;
+            self.cursor_line += 1;
             if self.cursor_char as usize > self.lines[self.cursor_line as usize].len() {
                 self.cursor_char = self.lines[self.cursor_line as usize].len() as u16;
             }
             if self.cursor_line > self.line_offset + TEXT_BUFFER_LINES - 1 - self.additional_lines {
-                self.line_offset = self.line_offset + 1;
+                self.line_offset += 1;
                 self.update_chars();
             }
             self.update_cursor();
@@ -144,9 +144,9 @@ impl TextBuffer {
 
     pub fn enter(&mut self) {
         self.add_buffer_line();
-        self.cursor_line = self.cursor_line + 1;
+        self.cursor_line += 1;
         if self.cursor_line > self.line_offset + TEXT_BUFFER_LINES - 1 - self.additional_lines {
-            self.line_offset = self.line_offset + 1;
+            self.line_offset += 1;
         }
         self.cursor_char = 0;
         self.update_chars();
@@ -160,7 +160,7 @@ impl TextBuffer {
             } else {
                 self.lines[self.cursor_line as usize][self.cursor_char as usize] = (char, self.current_color);
             }
-            self.cursor_char = self.cursor_char + 1;
+            self.cursor_char += 1;
         }
         self.update_chars();
         self.update_cursor();
@@ -171,7 +171,7 @@ impl TextBuffer {
         if self.cursor_char != 0 {
             self.lines[self.cursor_line as usize].remove(self.cursor_char as usize - 1);
             self.changed = true;
-            self.cursor_char = self.cursor_char - 1;
+            self.cursor_char -= 1;
             self.update_chars();
             self.update_cursor();
         }
@@ -195,13 +195,13 @@ impl TextBuffer {
     fn update_cursor(&mut self) {
         let mut pos: u16 = 0;
         for line in self.line_offset..self.cursor_line  {
-            pos = pos + self.lines[line as usize].len() as u16;
-            pos = pos + TEXT_BUFFER_CHARS_PER_LINE;
-            pos = pos - pos % TEXT_BUFFER_CHARS_PER_LINE;
+            pos += self.lines[line as usize].len() as u16;
+            pos += TEXT_BUFFER_CHARS_PER_LINE;
+            pos -= pos % TEXT_BUFFER_CHARS_PER_LINE;
         }
-        pos = pos + self.cursor_char;
+        pos += self.cursor_char;
         if pos >= TEXT_BUFFER_CHARS {
-            pos = pos - self.cursor_char + self.cursor_char % TEXT_BUFFER_CHARS_PER_LINE;
+            pos -= self.cursor_char + self.cursor_char % TEXT_BUFFER_CHARS_PER_LINE;
         }
         self.cursor = pos;
         self.changed = true;
@@ -220,7 +220,7 @@ impl TextBuffer {
 
         self.additional_lines = 0;
         for line in self.lines[start..end].iter() {
-            self.additional_lines = self.additional_lines + line.len() as u16 / TEXT_BUFFER_CHARS_PER_LINE;
+            self.additional_lines += line.len() as u16 / TEXT_BUFFER_CHARS_PER_LINE;
             for &(char, color) in line {
                 if pos >= TEXT_BUFFER_CHARS { break; }
                 self.chars[pos as usize] = char;
@@ -235,21 +235,21 @@ impl TextBuffer {
                     }
                     self.chars = chars;
                     self.colors = colors;
-                    pos = pos - TEXT_BUFFER_CHARS_PER_LINE;
-                    self.line_offset = self.line_offset + 1;
+                    pos -= TEXT_BUFFER_CHARS_PER_LINE;
+                    self.line_offset += 1;
                 }
-                pos = pos + 1;
+                pos += 1;
             }
             if pos < TEXT_BUFFER_CHARS {
                 for _ in 0..TEXT_BUFFER_CHARS_PER_LINE - pos % TEXT_BUFFER_CHARS_PER_LINE {
                     self.chars[pos as usize] = ' ';
-                    pos = pos + 1;
+                    pos += 1;
                 }
             }
         }
         while pos < TEXT_BUFFER_CHARS {
             self.chars[pos as usize] = ' ';
-            pos = pos + 1;
+            pos += 1;
         }
         self.changed = true;
     }
@@ -258,7 +258,7 @@ impl TextBuffer {
         if self.lines.len() - 1 == self.cursor_line as usize {
             if self.lines.len() == TEXT_BUFFER_MAX_LINES as usize {
                 self.lines.remove(0);
-                self.cursor_line = self.cursor_line - 1;
+                self.cursor_line -= 1;
             }
             self.lines.push(Vec::with_capacity(TEXT_BUFFER_MAX_LINE_CHARS as usize));
         }

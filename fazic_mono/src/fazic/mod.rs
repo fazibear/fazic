@@ -103,7 +103,7 @@ impl Fazic {
     pub fn enter_key(&mut self) {
         if self.text_mode() {
             let input = self.text_buffer.get_current_line_string();
-            if input.len() == 0 {
+            if input.is_empty() {
                 self.text_buffer.insert_line("");
                 return;
             }

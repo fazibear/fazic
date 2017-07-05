@@ -8,7 +8,7 @@ pub fn add(a: usize, b: usize, dst: usize, fazic: &mut ::fazic::Fazic) {
         (&Value::Integer(l), &Value::Float(r)) => Value::Float(l as f64 + r),
         (&Value::String(ref l), &Value::String(ref r)) => {
             let mut str = l.clone();
-            str.push_str(&r);
+            str.push_str(r);
             Value::String(str)
         },
         (_, _) => {

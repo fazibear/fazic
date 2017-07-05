@@ -23,7 +23,7 @@ impl Screen {
 
         for char in string.chars() {
             self.put_char(char, x, y, color, true);
-            x = x + 8;
+            x += 8;
         }
     }
 
@@ -35,10 +35,8 @@ impl Screen {
                 if !reverse {
                     self.put_pixel(x + (xx % 8), y + (xx / 8), color);
                 }
-            } else {
-                if reverse {
-                    self.put_pixel(x + (xx % 8), y + (xx / 8), color);
-                }
+            } else if reverse {
+                self.put_pixel(x + (xx % 8), y + (xx / 8), color);
             }
         }
     }

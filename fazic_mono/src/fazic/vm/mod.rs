@@ -133,28 +133,28 @@ impl VM {
 
 
 pub fn step(fazic: &mut ::fazic::Fazic) {
-    match fazic.vm.current() {
-        &Instruction::Stop =>             fazic.vm.stop(),
+    match *fazic.vm.current() {
+        Instruction::Stop =>             fazic.vm.stop(),
 
-        &Instruction::Jmp(pos) =>         { other::jmp(pos, fazic); },
-        &Instruction::JmpIf(pos, var) =>  { other::jmpif(pos, var, fazic); },
+        Instruction::Jmp(pos) =>         { other::jmp(pos, fazic); },
+        Instruction::JmpIf(pos, var) =>  { other::jmpif(pos, var, fazic); },
 
-        &Instruction::Pop =>              { fazic.vm.stack.pop();                fazic.vm.step() },
-        &Instruction::Push(_) =>          { other::push(fazic);                  fazic.vm.step() },
-        &Instruction::SetVar(name, _) =>  { other::set_var(name, fazic);         fazic.vm.step() },
+        Instruction::Pop =>              { fazic.vm.stack.pop();                fazic.vm.step() },
+        Instruction::Push(_) =>          { other::push(fazic);                  fazic.vm.step() },
+        Instruction::SetVar(name, _) =>  { other::set_var(name, fazic);         fazic.vm.step() },
 
-        &Instruction::Flip =>             { commands::flip(fazic);               fazic.vm.step() },
-        &Instruction::Print(var) =>       { commands::print(var, fazic);         fazic.vm.step() },
-        &Instruction::Color(var) =>       { commands::color(var, fazic);         fazic.vm.step() },
-        &Instruction::Dot(x, y) =>        { commands::dot(x, y, fazic);          fazic.vm.step() },
-        &Instruction::Mode(mode) =>       { commands::mode(mode, fazic);         fazic.vm.step() },
+        Instruction::Flip =>             { commands::flip(fazic);               fazic.vm.step() },
+        Instruction::Print(var) =>       { commands::print(var, fazic);         fazic.vm.step() },
+        Instruction::Color(var) =>       { commands::color(var, fazic);         fazic.vm.step() },
+        Instruction::Dot(x, y) =>        { commands::dot(x, y, fazic);          fazic.vm.step() },
+        Instruction::Mode(mode) =>       { commands::mode(mode, fazic);         fazic.vm.step() },
 
-        &Instruction::Add(a, b, dst) =>   { expressions::add(a, b, dst, fazic);  fazic.vm.step() },
-        &Instruction::Gt(a, b, dst) =>    { expressions::gt(a, b, dst, fazic);   fazic.vm.step() },
-        &Instruction::Lt(a, b, dst) =>    { expressions::lt(a, b, dst, fazic);   fazic.vm.step() },
-        &Instruction::LtEq(a, b, dst) =>  { expressions::lteq(a, b, dst, fazic); fazic.vm.step() },
+        Instruction::Add(a, b, dst) =>   { expressions::add(a, b, dst, fazic);  fazic.vm.step() },
+        Instruction::Gt(a, b, dst) =>    { expressions::gt(a, b, dst, fazic);   fazic.vm.step() },
+        Instruction::Lt(a, b, dst) =>    { expressions::lt(a, b, dst, fazic);   fazic.vm.step() },
+        Instruction::LtEq(a, b, dst) =>  { expressions::lteq(a, b, dst, fazic); fazic.vm.step() },
 
-        &Instruction::Next =>             {
+        Instruction::Next =>             {
             let &Stack::Next(var, step, max, jmp) = fazic.vm.stack.last().unwrap();
 
             expressions::add(var, step, var, fazic);

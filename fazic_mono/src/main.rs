@@ -118,10 +118,10 @@ pub fn main() {
             tps = 0;
 
         }
-        fps = fps + 1;
+        fps += 1;
 
         while timer.ticks() - main_loop_time < 16 {
-            tps = tps + 1;
+            tps += 1;
             fazic.tick();
             if fazic.redraw {
                 break;
