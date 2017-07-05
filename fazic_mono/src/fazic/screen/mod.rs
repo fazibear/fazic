@@ -9,13 +9,19 @@ pub struct Screen {
     pub current_color: u8,
 }
 
-impl Screen {
-    pub fn new() -> Screen {
+impl Default for Screen {
+    fn default() -> Screen {
         Screen {
             pixels: [0; SCREEN_PIXELS as usize],
             rgb_pixels: [0; SCREEN_RGB_PIXELS as usize],
             current_color: 0,
         }
+    }
+}
+
+impl Screen {
+    pub fn new() -> Screen {
+        Screen::default()
     }
 
     pub fn put_string(&mut self, string: String, mut x: u16, y: u16, color: u8) {

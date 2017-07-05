@@ -40,8 +40,9 @@ pub struct Fazic {
     vm: vm::VM,
 }
 
-impl Fazic {
-    pub fn new() -> Fazic {
+
+impl Default for Fazic {
+    fn default() -> Fazic {
         Fazic {
             screen: screen::Screen::new(),
             text_buffer: text_buffer::TextBuffer::new(),
@@ -50,6 +51,12 @@ impl Fazic {
             mode: 0,
             vm: vm::VM::new(),
         }
+    }
+}
+
+impl Fazic {
+    pub fn new() -> Fazic {
+        Fazic::default()
     }
 
     fn text_mode(&mut self) -> bool {

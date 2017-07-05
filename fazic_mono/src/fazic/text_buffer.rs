@@ -16,8 +16,8 @@ pub struct TextBuffer {
     pub additional_lines: u16,
 }
 
-impl TextBuffer {
-    pub fn new() -> TextBuffer {
+impl Default for TextBuffer {
+    fn default() -> TextBuffer {
         let mut buffer = TextBuffer {
             chars: [' '; TEXT_BUFFER_CHARS as usize],
             colors: [14; TEXT_BUFFER_CHARS as usize],
@@ -81,6 +81,13 @@ impl TextBuffer {
         buffer.update_cursor();
         buffer
     }
+}
+
+impl TextBuffer {
+    pub fn new() -> TextBuffer {
+        TextBuffer::default()
+    }
+
     pub fn prompt(&mut self) {
         self.insert_line("READY.");
     }

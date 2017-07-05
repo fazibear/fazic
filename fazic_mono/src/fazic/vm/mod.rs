@@ -50,8 +50,8 @@ pub struct VM {
     pub instant: Instant,
 }
 
-impl VM {
-    pub fn new() -> VM {
+impl Default for VM {
+    fn default() -> VM {
         VM {
             instructions: vec![
                 Instruction::Mode(1),
@@ -93,6 +93,12 @@ impl VM {
             instant: Instant::now(),
 
         }
+    }
+}
+
+impl VM {
+    pub fn new() -> VM {
+        VM::default()
     }
 
     pub fn set_instructions(&mut self, instructions: Vec<Instruction>) {

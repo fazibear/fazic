@@ -1,8 +1,8 @@
 use fazic::ast::*;
 
 pub parse_all -> Entry
-    = i:integer _ a:(all ++ ":") { entry_node(Some(i), a) }
-    / a:(all ++ ":") { entry_node(None, a) }
+    = i:integer _ a:(all ++ ":") { entry_node(&Some(i), a) }
+    / a:(all ++ ":") { entry_node(&None, a) }
 
 all -> Vec<NodeElement>
     = _ c:command _ { c }

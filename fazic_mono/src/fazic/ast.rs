@@ -23,13 +23,13 @@ pub enum Value {
     Null,
 }
 
-pub fn entry_node(line: Option<NodeElement>, ast: Vec<Vec<NodeElement>>) -> Entry {
+pub fn entry_node(line: &Option<NodeElement>, ast: Vec<Vec<NodeElement>>) -> Entry {
     let mut flat_ast = vec![];
     for node in ast.into_iter() {
         flat_ast.extend(node);
     }
 
-    match line {
+    match *line {
         None => Entry(None, flat_ast),
         Some(NodeElement::Value(Value::Integer(line))) => Entry(Some(line), flat_ast),
         _ => unreachable!(),
