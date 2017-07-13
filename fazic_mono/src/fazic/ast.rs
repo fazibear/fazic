@@ -25,7 +25,7 @@ pub enum Value {
 
 pub fn entry_node(line: &Option<NodeElement>, ast: Vec<Vec<NodeElement>>) -> Entry {
     let mut flat_ast = vec![];
-    for node in ast.into_iter() {
+    for node in ast {
         flat_ast.extend(node);
     }
 

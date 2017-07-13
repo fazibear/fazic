@@ -20,7 +20,6 @@ pub fn color(var: usize, fazic: &mut ::fazic::Fazic) {
         Value::Float(f) => f as u8,
         _ => 0,
     };
-
     fazic.screen.current_color = color;
     fazic.text_buffer.current_color = color;
 }
