@@ -1,6 +1,12 @@
 use std::str::FromStr;
 use ::fazic::enums::*;
 
+#[derive(Debug)]
+pub struct Entry(pub Option<i32>, pub Vec<NodeElement>);
+
+#[derive(Debug, Clone)]
+pub struct Node(pub String, pub Vec<NodeElement>);
+
 pub fn entry_node(line: &Option<NodeElement>, ast: Vec<Vec<NodeElement>>) -> Entry {
     let mut flat_ast = vec![];
     for node in ast {

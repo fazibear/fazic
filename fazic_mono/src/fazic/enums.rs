@@ -1,6 +1,4 @@
-
-#[derive(Debug)]
-pub struct Entry(pub Option<i32>, pub Vec<NodeElement>);
+use ::fazic::nodes::Node;
 
 #[derive(Debug, Clone)]
 pub enum NodeElement {
@@ -10,15 +8,11 @@ pub enum NodeElement {
 }
 
 #[derive(Debug, Clone)]
-pub struct Node(pub String, pub Vec<NodeElement>);
-
-#[derive(Debug, Clone)]
 pub enum Value {
     Integer(i32),
     String(String),
     Float(f64),
     Bool(bool),
-//    Var(String),
     Null,
 }
 
