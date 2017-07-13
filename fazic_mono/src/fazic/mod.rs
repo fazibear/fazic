@@ -2,7 +2,8 @@ pub mod screen;
 pub mod text_buffer;
 pub mod config;
 pub mod stack;
-pub mod ast;
+pub mod enums;
+pub mod nodes;
 pub mod program;
 pub mod vm;
 
@@ -12,14 +13,14 @@ pub mod parser {
 
 pub fn parse(fazic: &mut ::fazic::Fazic, input: String) {
     match parser::parse_all(&input) {
-        Ok(ast::Entry(None, nodes)) => {
+        Ok(enums::Entry(None, nodes)) => {
             println!("{:?}", nodes);
             // execute
             if !fazic.vm.running {
                 fazic.text_buffer.prompt();
             }
         },
-        Ok(ast::Entry(Some(line), nodes)) => {
+        Ok(enums::Entry(Some(line), nodes)) => {
              fazic.program.add_line(line as u16, nodes, input.clone());
         },
         Err(e) => {
@@ -38,6 +39,8 @@ pub struct Fazic {
     pub redraw: bool,
     mode: u8,
     vm: vm::VM,
+    variables: Vec<enums::Value>,
+    stack: Vec<enums::Stack>,
 }
 
 
@@ -50,6 +53,8 @@ impl Default for Fazic {
             redraw: true,
             mode: 0,
             vm: vm::VM::new(),
+            variables: vec![enums::Value::Null; 100],
+            stack: Vec::with_capacity(100),
         }
     }
 }

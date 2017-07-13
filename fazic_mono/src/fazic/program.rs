@@ -1,4 +1,4 @@
-use fazic::ast::*;
+use fazic::enums::*;
 
 pub struct Program {
     pub lines: Vec<(u16, String, Vec<NodeElement>)>,

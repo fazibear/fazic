@@ -1,4 +1,5 @@
-use fazic::ast::*;
+use fazic::enums::*;
+use fazic::nodes::*;
 
 pub parse_all -> Entry
     = i:integer _ a:(all ++ ":") { entry_node(&Some(i), a) }
