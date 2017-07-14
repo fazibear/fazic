@@ -8,8 +8,13 @@ pub mod other;
 pub struct VM {
     pub instructions: Vec<Instruction>,
     pub position: usize,
+
     pub running: bool,
     pub instant: Instant,
+
+    pub tmp_instructions: Vec<Instruction>,
+    pub tmp_position: usize,
+    pub tmp_mode: bool,
 }
 
 impl Default for VM {
@@ -49,9 +54,13 @@ impl Default for VM {
                 Instruction::Stop
             ],
             position: 0,
+
             running: false,
             instant: Instant::now(),
 
+            tmp_instructions: vec![],
+            tmp_position: 0,
+            tmp_mode: false,
         }
     }
 }
@@ -81,11 +90,19 @@ impl VM {
     }
 
     pub fn step(&mut self) {
-        self.position += 1;
+        if self.tmp_mode {
+            self.tmp_position += 1;
+        } else {
+            self.position += 1;
+        }
     }
 
     pub fn current(&mut self) -> &Instruction {
-        &self.instructions[self.position]
+        if self.tmp_mode {
+            &self.tmp_instructions[self.tmp_position]
+        } else {
+            &self.instructions[self.position]
+        }
     }
 }
 
