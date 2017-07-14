@@ -110,14 +110,9 @@ impl VM {
 // }
 //
 
-pub fn tmp_start(fazic: &mut ::fazic::Fazic, nodes: Vec<NodeElement>) {
-    fazic.vm.tmp_instructions = ::fazic::compiler::compile(nodes);
-
-    if fazic.vm.tmp_instructions.is_empty() {
-        return
-    };
-
+pub fn tmp_start(fazic: &mut ::fazic::Fazic, nodes: &[NodeElement]) {
     fazic.vm.instant = Instant::now();
+    fazic.vm.tmp_instructions = ::fazic::compiler::compile(nodes);
     fazic.vm.tmp_position = 0;
     fazic.vm.tmp_mode = true;
     fazic.vm.running = true;
