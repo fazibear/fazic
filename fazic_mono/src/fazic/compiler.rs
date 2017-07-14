@@ -39,7 +39,7 @@ pub fn compile(nodes: &[NodeElement]) -> Vec<Instruction> {
     let mut instructions: Vec<Instruction> = vec![];
 
     for node in nodes {
-        translate(&mut instructions, &node)
+        translate(&mut instructions, node)
     }
 
     instructions.push(Instruction::Stop);
