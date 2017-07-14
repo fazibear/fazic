@@ -3,7 +3,7 @@ use ::fazic::nodes::Node;
 
 fn match_string_node(name: &str, params: Vec<NodeElement>) -> Vec<Instruction> {
     match name {
-        "runo" => vec![Instruction::Run],
+        "run" => vec![Instruction::Run],
         _ => vec![Instruction::Stop],
     }
 }
@@ -17,7 +17,6 @@ fn translate(node: NodeElement) -> Vec<Instruction> {
         }
     }
 }
-
 
 pub fn compile(nodes: Vec<NodeElement>) -> Vec<Instruction> {
     let mut instructions: Vec<Instruction> = vec![];
