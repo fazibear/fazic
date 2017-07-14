@@ -5,8 +5,7 @@ use std::cell::RefCell;
 use std::ptr::null_mut;
 use std::os::raw::{c_int, c_void, c_char};
 use std::ffi::CString;
-
-const HOST: &str = "http://localhost:8080";
+use fazic::config::HOST;
 
 #[allow(non_camel_case_types)]
 type em_callback_func = unsafe extern fn();

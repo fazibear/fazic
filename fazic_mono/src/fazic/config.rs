@@ -15,3 +15,5 @@ pub const BASIC_MAX_LINES: u16 = 10000;
 pub const TEXT_MODE: u8 = 0;
 pub const FLIP_MODE: u8 = 1;
 pub const INST_MODE: u8 = 2;
+
+pub const HOST: &str = "http://localhost:8080";

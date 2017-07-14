@@ -6,7 +6,7 @@ use self::hyper::net::HttpsConnector;
 use self::hyper_native_tls::NativeTlsClient;
 use std::io::Read;
 
-const HOST: &str = "http://localhost:8080";
+use fazic::config::HOST;
 
 pub fn set_main_loop_callback<F>(mut f: F) where F: FnMut() {
     loop {
