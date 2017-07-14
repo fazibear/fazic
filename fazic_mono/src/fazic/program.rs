@@ -17,9 +17,10 @@ impl Program {
         Program::default()
     }
 
-    pub fn add_line(&mut self, line: u16, nodes: Vec<NodeElement>, string: String) {
+    pub fn add_line(&mut self, line: u16, nodes: Vec<NodeElement>, string: &str) {
         self.lines.retain(|&(l, _, _)| l != line);
-        self.lines.push((line, string, nodes));
+        self.lines.push((line, string.to_string(), nodes));
         self.lines.sort_by(|&(a, _, _), &(b, _, _),| a.cmp(&b));
+        println!("{:?}", self.lines)
     }
 }

@@ -11,8 +11,8 @@ pub mod parser {
     include!(concat!(env!("OUT_DIR"), "/parser.rs"));
 }
 
-pub fn parse(fazic: &mut ::fazic::Fazic, input: String) {
-    match parser::parse_all(&input) {
+pub fn parse(fazic: &mut ::fazic::Fazic, input: &str) {
+    match parser::parse_all(input) {
         Ok(nodes::Entry(None, nodes)) => {
             println!("{:?}", nodes);
             // execute
@@ -21,7 +21,7 @@ pub fn parse(fazic: &mut ::fazic::Fazic, input: String) {
             }
         },
         Ok(nodes::Entry(Some(line), nodes)) => {
-             fazic.program.add_line(line as u16, nodes, input.clone());
+             fazic.program.add_line(line as u16, nodes, input);
         },
         Err(e) => {
             println!("Parse error!: {:?}", e);
@@ -120,7 +120,7 @@ impl Fazic {
                 return;
             }
             self.text_buffer.enter();
-            parse(self, input)
+            parse(self, &input)
         }
     }
 

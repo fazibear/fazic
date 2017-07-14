@@ -4,7 +4,7 @@ pub fn print(var: usize, fazic: &mut ::fazic::Fazic) {
     println!("print: {:?}", fazic.variables[var]);
 
     let string = match fazic.variables[var] {
-        Value::String(ref s) => format!("{}", s),
+        Value::String(ref s) => s.to_string(), //format!("{}", s),
         Value::Integer(i) => format!("{}", i),
         Value::Float(f) => format!("{}", f),
         Value::Bool(b) => format!("{}", b),
