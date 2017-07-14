@@ -6,6 +6,7 @@ pub mod enums;
 pub mod nodes;
 pub mod program;
 pub mod vm;
+pub mod compiler;
 
 pub mod parser {
     include!(concat!(env!("OUT_DIR"), "/parser.rs"));
@@ -15,10 +16,7 @@ pub fn parse(fazic: &mut ::fazic::Fazic, input: &str) {
     match parser::parse_all(input) {
         Ok(nodes::Entry(None, nodes)) => {
             println!("{:?}", nodes);
-            // execute
-            if !fazic.vm.running {
-                fazic.text_buffer.prompt();
-            }
+            vm::tmp_start(fazic, nodes);
         },
         Ok(nodes::Entry(Some(line), nodes)) => {
              fazic.program.add_line(line as u16, nodes, input);
@@ -125,7 +123,7 @@ impl Fazic {
     }
 
     pub fn stop_key(&mut self) {
-        //execute::commands::stop(self);
+        vm::stop(self);
     }
 
     pub fn insert_string(&mut self, string: String) {
@@ -162,9 +160,6 @@ impl Fazic {
     pub fn tick(&mut self) {
         if self.vm.running {
             vm::step(self);
-            if !self.vm.running {
-                self.text_buffer.prompt();
-            }
         }
         if self.text_mode() && self.text_buffer.changed {
             self.screen.draw_text_buffer(&self.text_buffer);

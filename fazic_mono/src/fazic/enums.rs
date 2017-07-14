@@ -30,6 +30,8 @@ pub enum Instruction {
     JmpIf(usize, usize),
     SetVar(usize, Value),
 
+    Run,
+    List,
     Next,
     Flip,
     Print(usize),

@@ -75,18 +75,14 @@ impl VM {
     }
 
     pub fn start(&mut self) {
-        self.position = 0;
-        self.running = true;
         self.instant = Instant::now();
+        self.position = 0;
+        self.tmp_mode = false;
+        self.running = true;
     }
 
     pub fn cont(&mut self) {
         self.running = true;
-    }
-
-    pub fn stop(&mut self) {
-        self.running = false;
-        println!("{:?}", self.instant.elapsed());
     }
 
     pub fn step(&mut self) {
@@ -114,18 +110,34 @@ impl VM {
 // }
 //
 
+pub fn tmp_start(fazic: &mut ::fazic::Fazic, nodes: Vec<NodeElement>) {
+    fazic.vm.instant = Instant::now();
+    fazic.vm.tmp_position = 0;
+    fazic.vm.tmp_instructions = ::fazic::compiler::compile(nodes);
+    fazic.vm.tmp_mode = true;
+    fazic.vm.running = true;
+}
+
+pub fn stop(fazic: &mut ::fazic::Fazic) {
+    fazic.vm.running = false;
+    fazic.mode = 0;
+    fazic.text_buffer.prompt();
+    println!("{:?}", fazic.vm.instant.elapsed());
+}
 
 pub fn step(fazic: &mut ::fazic::Fazic) {
     match *fazic.vm.current() {
-        Instruction::Stop =>             fazic.vm.stop(),
+        Instruction::Run =>              fazic.vm.start(),
+        Instruction::Stop =>             stop(fazic),
 
         Instruction::Jmp(pos) =>         { other::jmp(pos, fazic); },
         Instruction::JmpIf(pos, var) =>  { other::jmpif(pos, var, fazic); },
 
-        Instruction::Pop =>              { fazic.stack.pop();                fazic.vm.step() },
+        Instruction::Pop =>              { fazic.stack.pop();                   fazic.vm.step() },
         Instruction::Push(_) =>          { other::push(fazic);                  fazic.vm.step() },
         Instruction::SetVar(name, _) =>  { other::set_var(name, fazic);         fazic.vm.step() },
 
+        Instruction::List =>             { commands::list(fazic);               fazic.vm.step() },
         Instruction::Flip =>             { commands::flip(fazic);               fazic.vm.step() },
         Instruction::Print(var) =>       { commands::print(var, fazic);         fazic.vm.step() },
         Instruction::Color(var) =>       { commands::color(var, fazic);         fazic.vm.step() },

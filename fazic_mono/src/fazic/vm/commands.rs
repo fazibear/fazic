@@ -50,3 +50,7 @@ pub fn flip(fazic: &mut ::fazic::Fazic) {
 pub fn mode(mode: u8, fazic: &mut ::fazic::Fazic) {
     fazic.mode = mode;
 }
+
+pub fn list(fazic: &mut ::fazic::Fazic) {
+    println!("list")
+}
