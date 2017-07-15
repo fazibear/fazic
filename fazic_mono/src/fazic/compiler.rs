@@ -1,46 +1,36 @@
 use ::fazic::enums::*;
 use ::fazic::nodes::Node;
 
-fn match_node(instructions: &mut Vec<Instruction>, name: &str, params: &[NodeElement]) {
+fn process_node(instructions: &mut Vec<Instruction>, name: &str, params: &[NodeElement]) {
+    process_nodes(instructions, params);
+
     match name {
         "run" => instructions.push(Instruction::Run),
-        "print" => {
-            let val = match params[0] {
-                NodeElement::Value(ref v) => v,
-                _ => unreachable!()
-            };
-
-            instructions.push(Instruction::SetVar(0, val.clone()));
-            instructions.push(Instruction::Print(0));
-        }
+        "print" => instructions.push(Instruction::Print(0)),
+        "add" => instructions.push(Instruction::Add(0,1,0)),
         _ => {
             println!("Can't translate: {}", name);
         }
     };
 }
 
-fn match_value(value: &Value) {
-    ()
-}
-
-fn match_error(error: &str) {
-    ()
-}
-
-fn translate(instructions: &mut Vec<Instruction>, node: &NodeElement) {
-    match *node {
-        NodeElement::Node(Node(ref str, ref params)) => match_node(instructions, str, params),
-        NodeElement::Value(ref v) => match_value(v),
-        NodeElement::Error(ref s) => match_error(s),
+fn process_nodes(instructions: &mut Vec<Instruction>, nodes: &[NodeElement]) {
+    for (i, node) in nodes.iter().enumerate() {
+        match *node {
+            NodeElement::Node(Node(ref str, ref params)) => {
+                process_node(instructions, str, params);
+            }
+            NodeElement::Value(ref val) => {
+                instructions.push(Instruction::SetVar(i, val.clone()));
+            }
+        }
     };
 }
 
 pub fn compile(nodes: &[NodeElement]) -> Vec<Instruction> {
     let mut instructions: Vec<Instruction> = vec![];
 
-    for node in nodes {
-        translate(&mut instructions, node)
-    }
+    process_nodes(&mut instructions, nodes);
 
     instructions.push(Instruction::Stop);
     instructions

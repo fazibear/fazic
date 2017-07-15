@@ -4,7 +4,6 @@ use ::fazic::nodes::Node;
 pub enum NodeElement {
     Node(Node),
     Value(Value),
-    Error(String),
 }
 
 #[derive(Debug, Clone)]
