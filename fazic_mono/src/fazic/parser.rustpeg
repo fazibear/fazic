@@ -10,16 +10,16 @@ all -> Vec<NodeElement>
     // _ e:expression _ { vec![e] }
 
 command -> Vec<NodeElement>
-    = v:varname _ "=" _ e:expression { nodes("let", vec![v, e]) }
-    / ("LET" / "let") _ v:varname _ "=" _ e:expression { nodes("let", vec![v, e]) }
+    = v:variable _ "=" _ e:expression { nodes("let", vec![v, e]) }
+    / ("LET" / "let") _ v:variable _ "=" _ e:expression { nodes("let", vec![v, e]) }
 
     / ("?" / "PRINT" / "print") _ e:expression { nodes("print", vec![e]) }
 
     / ("GOTO" / "goto") _ i:integer { nodes("goto", vec![i]) }
     / ("GOSUB" / "gosub") _ i:integer { nodes("gosub", vec![i]) }
 
-    / ("FOR" / "for") _ v:varname _ "=" _ e:expression _ ("TO" / "to") _ t:expression _ ("STEP" / "step") _ s:expression { nodes("for", vec![v, e, t, s]) }
-    / ("FOR" / "for") _ v:varname _ "=" _ e:expression _ ("TO" / "to") _ t:expression { nodes("for", vec![v, e, t, integer_node("1")]) }
+    / ("FOR" / "for") _ v:variable _ "=" _ e:expression _ ("TO" / "to") _ t:expression _ ("STEP" / "step") _ s:expression { nodes("for", vec![v, e, t, s]) }
+    / ("FOR" / "for") _ v:variable _ "=" _ e:expression _ ("TO" / "to") _ t:expression { nodes("for", vec![v, e, t, integer_node("1")]) }
 
     / ("IF" / "if") _ e:expression _ ("GOTO" / "goto") _ i:integer {
         vec![node("if", vec![e]), node("goto", vec![i])]
@@ -37,10 +37,10 @@ command -> Vec<NodeElement>
     }
     / ("DOT" / "dot") _ x:expression _ "," _ y:expression { nodes("dot", vec![x, y]) }
 
-    / ("NEXT" / "next" ) _ v:(varname ++ (_ "," _) ) {
+    / ("NEXT" / "next" ) _ v:(variable ++ (_ "," _) ) {
         let mut vec = vec![];
-        for varname in v.into_iter() {
-            vec.extend(nodes("next", vec![varname]));
+        for variable in v.into_iter() {
+            vec.extend(nodes("next", vec![variable]));
         };
         vec
     }
@@ -111,8 +111,5 @@ string -> NodeElement
 
 variable -> NodeElement
     = v:$([a-zA-Z]+) { variable_node(v) }
-
-varname -> NodeElement
-    = v:$([a-zA-Z]+) { variable_name(v) }
 
 _ = #quiet<" "*>

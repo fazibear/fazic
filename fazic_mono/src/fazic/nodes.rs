@@ -33,11 +33,7 @@ pub fn float_node(string: &str) -> NodeElement {
 }
 
 pub fn variable_node(string: &str) -> NodeElement {
-    NodeElement::Node(Node("var".to_string(), vec![NodeElement::Value(Value::String(string.to_string().to_uppercase()))]))
-}
-
-pub fn variable_name(string: &str) -> NodeElement {
-    NodeElement::Value(Value::String(string.to_string().to_uppercase()))
+    NodeElement::Var(string.to_string().to_uppercase())
 }
 
 pub fn node(name: &str, vec: Vec<NodeElement>) -> NodeElement {
