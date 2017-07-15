@@ -5,9 +5,12 @@ fn process_node(instructions: &mut Vec<Instruction>, name: &str, params: &[NodeE
     process_nodes(instructions, params);
 
     match name {
-        "run" => instructions.push(Instruction::Run),
-        "print" => instructions.push(Instruction::Print(0)),
-        "add" => instructions.push(Instruction::Add(0,1,0)),
+        "run"     => instructions.push(Instruction::Run),
+        "print"   => instructions.push(Instruction::Print(0)),
+        "add"     => instructions.push(Instruction::Add(0,1,0)),
+        "lt"      => instructions.push(Instruction::Lt(0,1,0)),
+        "gt"      => instructions.push(Instruction::Gt(0,1,0)),
+        "lteq"    => instructions.push(Instruction::LtEq(0,1,0)),
         _ => {
             println!("Can't translate: {}", name);
         }
