@@ -1,5 +1,5 @@
-pub mod chars;
-pub mod palette;
+mod chars;
+mod palette;
 
 use ::fazic::config::*;
 

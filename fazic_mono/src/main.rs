@@ -3,11 +3,8 @@
 extern crate sdl2;
 extern crate rand;
 
-pub mod targets;
-pub mod fazic;
-
-#[cfg(test)]
-pub mod tests;
+mod targets;
+mod fazic;
 
 use std::{process};
 use sdl2::event::{Event};
@@ -121,10 +118,7 @@ pub fn main() {
 
         while timer.ticks() - main_loop_time < 16 {
             tps += 1;
-            fazic.tick();
-            if fazic.redraw {
-                break;
-            }
+            if fazic.tick() { break };
         }
     };
 

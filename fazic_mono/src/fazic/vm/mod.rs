@@ -1,9 +1,9 @@
 use std::time::Instant;
 use ::fazic::enums::*;
 
-pub mod commands;
-pub mod expressions;
-pub mod other;
+mod commands;
+mod expressions;
+mod other;
 
 pub struct VM {
     pub instructions: Vec<Instruction>,

@@ -1,5 +1,5 @@
 #[link_args = "-g0 -O3 --llvm-opts 2 --memory-init-file 0 -s USE_SDL=2 --js-library src/targets/emscripten.js"]
-extern {}
+pub extern {}
 
 use std::cell::RefCell;
 use std::ptr::null_mut;

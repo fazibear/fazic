@@ -1,15 +1,19 @@
-pub mod screen;
-pub mod text_buffer;
+mod screen;
+mod text_buffer;
+mod stack;
+mod program;
+mod vm;
+mod compiler;
+mod variables;
+
 pub mod config;
-pub mod stack;
 pub mod enums;
 pub mod nodes;
-pub mod program;
-pub mod vm;
-pub mod compiler;
-pub mod variables;
 
-pub mod parser {
+#[cfg(test)]
+mod tests;
+
+mod parser {
     include!(concat!(env!("OUT_DIR"), "/parser.rs"));
 }
 
@@ -33,9 +37,9 @@ pub fn parse(fazic: &mut ::fazic::Fazic, input: &str) {
 
 pub struct Fazic {
     screen: screen::Screen,
-    pub text_buffer: text_buffer::TextBuffer,
+    text_buffer: text_buffer::TextBuffer,
     program: program::Program,
-    pub redraw: bool,
+    redraw: bool,
     mode: u8,
     vm: vm::VM,
     //variables: Vec<enums::Value>,
@@ -73,9 +77,9 @@ impl Fazic {
     //     self.mode == 1
     // }
 
-    fn instant_mode(&mut self) -> bool {
-        self.mode == 2
-    }
+    //fn instant_mode(&mut self) -> bool {
+    //    self.mode == 2
+    //}
 
     pub fn set_current_text_color(&mut self, color: u8) {
         if self.text_mode() {
@@ -145,11 +149,11 @@ impl Fazic {
         &mut self.screen.rgb_pixels
     }
 
-    pub fn redraw(&mut self) {
-        if self.instant_mode() {
-            self.redraw = true;
-        }
-    }
+    //pub fn redraw(&mut self) {
+    //    if self.instant_mode() {
+    //        self.redraw = true;
+    //    }
+    //}
 
     pub fn need_to_redraw(&mut self) -> bool {
         if self.redraw {
@@ -160,7 +164,7 @@ impl Fazic {
         }
     }
 
-    pub fn tick(&mut self) {
+    pub fn tick(&mut self) -> bool {
         if self.vm.running {
             vm::step(self);
         }
@@ -169,5 +173,6 @@ impl Fazic {
             self.text_buffer.refreshed();
             self.redraw = true;
         }
+        self.redraw
     }
 }
