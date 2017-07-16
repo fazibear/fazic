@@ -28,7 +28,7 @@ pub enum Instruction {
     Pop,
     Jmp(usize),
     JmpIf(usize, usize),
-    SetVar(usize, Value),
+    Set(usize, Value),
 
     Run,
     List,
@@ -38,6 +38,8 @@ pub enum Instruction {
     Dot(usize, usize),
     Mode(u8),
     Color(usize),
+
+    Mov(usize, usize),
 
     Add(usize, usize, usize),
     Gt(usize, usize, usize),

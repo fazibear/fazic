@@ -1,9 +1,7 @@
 use ::fazic::vm::Value;
 
 pub fn print(var: usize, fazic: &mut ::fazic::Fazic) {
-    println!("print: {:?}", fazic.variables[var]);
-
-    let string = match fazic.variables[var] {
+    let string = match *fazic.variables.get(var) {
         Value::String(ref s) => s.to_string(), //format!("{}", s),
         Value::Integer(i) => format!("{}", i),
         Value::Float(f) => format!("{}", f),
@@ -15,7 +13,7 @@ pub fn print(var: usize, fazic: &mut ::fazic::Fazic) {
 }
 
 pub fn color(var: usize, fazic: &mut ::fazic::Fazic) {
-    let color = match fazic.variables[var] {
+    let color = match *fazic.variables.get(var) {
         Value::Integer(i) => i as u8,
         Value::Float(f) => f as u8,
         _ => 0,
@@ -25,13 +23,13 @@ pub fn color(var: usize, fazic: &mut ::fazic::Fazic) {
 }
 
 pub fn dot(x: usize, y: usize, fazic: &mut ::fazic::Fazic) {
-    let x = match fazic.variables[x] {
+    let x = match *fazic.variables.get(x) {
         Value::Integer(x) => x as u16,
         Value::Float(x) => x as u16,
         _ => 0
     };
 
-    let y = match fazic.variables[y] {
+    let y = match *fazic.variables.get(y) {
         Value::Integer(y) => y as u16,
         Value::Float(y) => y as u16,
         _ => 0

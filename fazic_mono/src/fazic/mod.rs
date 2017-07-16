@@ -7,6 +7,7 @@ pub mod nodes;
 pub mod program;
 pub mod vm;
 pub mod compiler;
+pub mod variables;
 
 pub mod parser {
     include!(concat!(env!("OUT_DIR"), "/parser.rs"));
@@ -37,7 +38,8 @@ pub struct Fazic {
     pub redraw: bool,
     mode: u8,
     vm: vm::VM,
-    variables: Vec<enums::Value>,
+    //variables: Vec<enums::Value>,
+    variables: variables::Variables,
     stack: Vec<enums::Stack>,
 }
 
@@ -51,7 +53,8 @@ impl Default for Fazic {
             redraw: true,
             mode: 0,
             vm: vm::VM::new(),
-            variables: vec![enums::Value::Null; 100],
+            //variables: vec![enums::Value::Null; 100],
+            variables: variables::Variables::new(),
             stack: Vec::with_capacity(100),
         }
     }

@@ -22,19 +22,19 @@ impl Default for VM {
         VM {
             instructions: vec![
                 Instruction::Mode(1),
-                Instruction::SetVar(1, Value::Integer(0)),
-                Instruction::SetVar(2, Value::Integer(1)),
-                Instruction::SetVar(3, Value::Integer(15)),
+                Instruction::Set(1, Value::Integer(0)),
+                Instruction::Set(2, Value::Integer(15)),
+                Instruction::Set(3, Value::Integer(1)),
                 Instruction::Push(Stack::Next(1,2,3,5)),
 
-                Instruction::SetVar(4, Value::Integer(0)),
-                Instruction::SetVar(5, Value::Integer(1)),
-                Instruction::SetVar(6, Value::Integer(240)),
+                Instruction::Set(4, Value::Integer(0)),
+                Instruction::Set(5, Value::Integer(240)),
+                Instruction::Set(6, Value::Integer(1)),
                 Instruction::Push(Stack::Next(4,5,6,9)),
 
-                Instruction::SetVar(7, Value::Integer(0)),
-                Instruction::SetVar(8, Value::Integer(1)),
-                Instruction::SetVar(9, Value::Integer(320)),
+                Instruction::Set(7, Value::Integer(0)),
+                Instruction::Set(8, Value::Integer(320)),
+                Instruction::Set(9, Value::Integer(1)),
                 Instruction::Push(Stack::Next(7,8,9,13)),
 
                 Instruction::Dot(7,4),
@@ -85,6 +85,14 @@ impl VM {
         self.running = true;
     }
 
+    pub fn jump(&mut self, value: usize) {
+        if self.tmp_mode {
+            self.tmp_position = value;
+        } else {
+            self.position = value;
+        }
+    }
+
     pub fn step(&mut self) {
         if self.tmp_mode {
             self.tmp_position += 1;
@@ -112,7 +120,7 @@ impl VM {
 
 pub fn tmp_start(fazic: &mut ::fazic::Fazic, nodes: &[NodeElement]) {
     fazic.vm.instant = Instant::now();
-    fazic.vm.tmp_instructions = ::fazic::compiler::compile(nodes);
+    fazic.vm.tmp_instructions = ::fazic::compiler::compile(nodes, &mut fazic.variables);
     fazic.vm.tmp_position = 0;
     fazic.vm.tmp_mode = true;
     fazic.vm.running = true;
@@ -129,13 +137,14 @@ pub fn step(fazic: &mut ::fazic::Fazic) {
     match *fazic.vm.current() {
         Instruction::Run =>              fazic.vm.start(),
         Instruction::Stop =>             stop(fazic),
-
-        Instruction::Jmp(pos) =>         { other::jmp(pos, fazic); },
-        Instruction::JmpIf(pos, var) =>  { other::jmpif(pos, var, fazic); },
+        Instruction::Jmp(pos) =>         fazic.vm.jump(pos),
+        Instruction::JmpIf(pos, var) =>  other::jmpif(pos, var, fazic),
 
         Instruction::Pop =>              { fazic.stack.pop();                   fazic.vm.step() },
         Instruction::Push(_) =>          { other::push(fazic);                  fazic.vm.step() },
-        Instruction::SetVar(name, _) =>  { other::set_var(name, fazic);         fazic.vm.step() },
+
+        Instruction::Mov(to, from) =>    { other::mov(to, from, fazic);         fazic.vm.step() },
+        Instruction::Set(name, _) =>     { other::set_var(name, fazic);         fazic.vm.step() },
 
         Instruction::List =>             { commands::list(fazic);               fazic.vm.step() },
         Instruction::Flip =>             { commands::flip(fazic);               fazic.vm.step() },
@@ -150,7 +159,7 @@ pub fn step(fazic: &mut ::fazic::Fazic) {
         Instruction::LtEq(a, b, dst) =>  { expressions::lteq(a, b, dst, fazic); fazic.vm.step() },
 
         Instruction::Next =>             {
-            let &Stack::Next(var, step, max, jmp) = fazic.stack.last().unwrap();
+            let &Stack::Next(var, max, step, jmp) = fazic.stack.last().unwrap();
 
             expressions::add(var, step, var, fazic);
             expressions::lteq(var, max, 0, fazic);
