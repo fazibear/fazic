@@ -1,6 +1,5 @@
 mod screen;
 mod text_buffer;
-mod stack;
 mod program;
 mod vm;
 mod compiler;
