@@ -19,6 +19,11 @@ fn process_node(instructions: &mut Vec<Instruction>, name: &str, nodes: &[NodeEl
 
     match name {
         "run"     => instructions.push(Instruction::Run),
+        "list"    => instructions.push(Instruction::List),
+        "color"   => {
+            let p0 = process_param(0, &params, instructions);
+            instructions.push(Instruction::Color(p0));
+        },
         "print"   => {
             let p0 = process_param(0, &params, instructions);
             instructions.push(Instruction::Print(p0));

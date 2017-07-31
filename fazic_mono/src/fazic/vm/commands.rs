@@ -50,5 +50,7 @@ pub fn mode(mode: u8, fazic: &mut ::fazic::Fazic) {
 }
 
 pub fn list(fazic: &mut ::fazic::Fazic) {
-    println!("list")
+    for &(_, ref string, _) in &fazic.program.lines {
+        fazic.text_buffer.insert_line(string);
+    }
 }
