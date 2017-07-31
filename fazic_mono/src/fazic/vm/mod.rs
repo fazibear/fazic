@@ -84,10 +84,6 @@ impl VM {
          self.running = true;
      }
 
-    pub fn set_instructions(&mut self, instructions: Vec<Instruction>) {
-        self.instructions = instructions;
-    }
-
     pub fn cont(&mut self) {
         self.running = true;
     }
@@ -124,10 +120,6 @@ impl VM {
 //     fazic.vm.stop();
 // }
 //
-
-pub fn tmp_start(fazic: &mut ::fazic::Fazic, nodes: &[NodeElement]) {
-    fazic.vm.start(true, ::fazic::compiler::compile(nodes, &mut fazic.variables));
-}
 
 pub fn start(fazic: &mut ::fazic::Fazic) {
     let mut nodes = vec![];
