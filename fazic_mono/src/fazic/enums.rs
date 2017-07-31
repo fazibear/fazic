@@ -1,5 +1,12 @@
 use ::fazic::nodes::Node;
 
+#[derive(Debug)]
+pub enum Param {
+    Node(usize),
+    Variable(usize),
+    Value(Value),
+}
+
 #[derive(Debug, Clone)]
 pub enum NodeElement {
     Node(Node),

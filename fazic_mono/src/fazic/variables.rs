@@ -11,9 +11,9 @@ pub struct Variables {
 impl Default for Variables {
     fn default() -> Variables {
         Variables {
-            variables: vec![Value::Null; 10],
+            variables: vec![],
             map: HashMap::new(),
-            counter: 9,
+            counter: 0,
             empty: Value::Null,
         }
     }
@@ -43,9 +43,12 @@ impl Variables {
             return *i;
         }
 
-        self.counter += 1;
-        self.map.insert(name.to_string(), self.counter);
+        let i = self.counter;
+
+        println!("alocating {}, {}", name, i);
+        self.map.insert(name.to_string(), i);
         self.variables.push(Value::Null);
-        self.counter
+        self.counter += 1;
+        i
     }
 }
