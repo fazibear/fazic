@@ -5,10 +5,10 @@ authors = ["Michał Kalbarczyk <fazibear@gmail.com>"]
 build = "build.rs"
 
 [build-dependencies]
-peg = { version = "0.5" }
+peg = { version = "*" }
 
 [dependencies]
-rand = "~ 0.3"
+rand = "*"
 
 [dependencies.sdl2]
 version = "0.30"
