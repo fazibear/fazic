@@ -70,15 +70,22 @@ impl VM {
         VM::default()
     }
 
+    pub fn start(&mut self, tmp: bool, instructions: Vec<Instruction>) {
+        self.instant = Instant::now();
+        self.tmp_mode = tmp;
+        if tmp {
+            self.tmp_position = 0;
+            self.tmp_instructions = instructions;
+        } else {
+            self.position = 0;
+            self.instructions = instructions;
+        }
+
+         self.running = true;
+     }
+
     pub fn set_instructions(&mut self, instructions: Vec<Instruction>) {
         self.instructions = instructions;
-    }
-
-    pub fn start(&mut self) {
-        self.instant = Instant::now();
-        self.position = 0;
-        self.tmp_mode = false;
-        self.running = true;
     }
 
     pub fn cont(&mut self) {
@@ -119,11 +126,13 @@ impl VM {
 //
 
 pub fn tmp_start(fazic: &mut ::fazic::Fazic, nodes: &[NodeElement]) {
-    fazic.vm.instant = Instant::now();
-    fazic.vm.tmp_instructions = ::fazic::compiler::compile(nodes, &mut fazic.variables);
-    fazic.vm.tmp_position = 0;
-    fazic.vm.tmp_mode = true;
-    fazic.vm.running = true;
+    fazic.vm.start(true, ::fazic::compiler::compile(nodes, &mut fazic.variables));
+}
+
+pub fn start(fazic: &mut ::fazic::Fazic) {
+    let mut nodes = vec![];
+    fazic.program.nodes(&mut nodes);
+    fazic.vm.start(false, ::fazic::compiler::compile(&nodes, &mut fazic.variables));
 }
 
 pub fn stop(fazic: &mut ::fazic::Fazic) {
@@ -135,7 +144,7 @@ pub fn stop(fazic: &mut ::fazic::Fazic) {
 
 pub fn step(fazic: &mut ::fazic::Fazic) {
     match *fazic.vm.current() {
-        Instruction::Run =>              fazic.vm.start(),
+        Instruction::Run =>              start(fazic),
         Instruction::Stop =>             stop(fazic),
         Instruction::Jmp(pos) =>         fazic.vm.jump(pos),
         Instruction::JmpIf(pos, var) =>  other::jmpif(pos, var, fazic),

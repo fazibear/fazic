@@ -20,7 +20,7 @@ pub fn parse(fazic: &mut ::fazic::Fazic, input: &str) {
     match parser::parse_all(input) {
         Ok(nodes::Entry(None, nodes)) => {
             println!("{:?}", nodes);
-            vm::tmp_start(fazic, &nodes);
+            fazic.vm.start(true, ::fazic::compiler::compile(&nodes, &mut fazic.variables));
         },
         Ok(nodes::Entry(Some(line), nodes)) => {
              fazic.program.add_line(line as u16, nodes, input);
