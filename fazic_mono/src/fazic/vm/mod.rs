@@ -20,39 +20,7 @@ pub struct VM {
 impl Default for VM {
     fn default() -> VM {
         VM {
-            instructions: vec![
-                Instruction::Mode(1),
-                Instruction::Set(1, Value::Integer(0)),
-                Instruction::Set(2, Value::Integer(15)),
-                Instruction::Set(3, Value::Integer(1)),
-                Instruction::Push(Stack::Next(1,2,3,5)),
-
-                Instruction::Set(4, Value::Integer(0)),
-                Instruction::Set(5, Value::Integer(240)),
-                Instruction::Set(6, Value::Integer(1)),
-                Instruction::Push(Stack::Next(4,5,6,9)),
-
-                Instruction::Set(7, Value::Integer(0)),
-                Instruction::Set(8, Value::Integer(320)),
-                Instruction::Set(9, Value::Integer(1)),
-                Instruction::Push(Stack::Next(7,8,9,13)),
-
-                Instruction::Dot(7,4),
-
-                Instruction::Next,
-                Instruction::Pop,
-
-                Instruction::Next,
-                Instruction::Pop,
-
-                Instruction::Flip,
-                Instruction::Color(1),
-
-                Instruction::Next,
-                Instruction::Pop,
-
-                Instruction::Stop
-            ],
+            instructions: vec![],
             position: 0,
 
             running: false,
