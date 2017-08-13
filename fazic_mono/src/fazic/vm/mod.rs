@@ -138,6 +138,8 @@ pub fn step(fazic: &mut ::fazic::Fazic) {
     match *fazic.vm.current() {
         Instruction::Run =>              start(fazic),
         Instruction::Stop =>             stop(fazic),
+        Instruction::Clr =>              { fazic.variables = ::fazic::variables::Variables::new(); fazic.vm.step() } ,
+        Instruction::New =>              { fazic.program = ::fazic::program::Program::new(); stop(fazic) },
         Instruction::Jmp(pos) =>         fazic.vm.jump(pos),
         Instruction::JmpIf(pos, var) =>  other::jmpif(pos, var, fazic),
 

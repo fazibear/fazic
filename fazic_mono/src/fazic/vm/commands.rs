@@ -61,6 +61,8 @@ pub fn load(name: usize, fazic: &mut ::fazic::Fazic) {
         _ => "".to_string(),
     };
 
+    fazic.program = ::fazic::program::Program::new();
+
     match ::targets::load(&name) {
         Ok(resp) => {
             // new(fazic);

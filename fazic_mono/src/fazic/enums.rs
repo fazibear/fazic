@@ -39,6 +39,8 @@ pub enum Instruction {
 
     Run,
     List,
+    Clr,
+    New,
     Load(usize),
     Save(usize),
     Next,

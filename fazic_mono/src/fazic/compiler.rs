@@ -20,6 +20,8 @@ fn process_node(instructions: &mut Vec<Instruction>, name: &str, nodes: &[NodeEl
     match name {
         "run"     => instructions.push(Instruction::Run),
         "list"    => instructions.push(Instruction::List),
+        "new"    => instructions.push(Instruction::New),
+        "clr"    => instructions.push(Instruction::Clr),
         "load"   => {
             let p0 = process_param(0, &params, instructions);
             instructions.push(Instruction::Load(p0));
