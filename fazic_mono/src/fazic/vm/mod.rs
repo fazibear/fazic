@@ -148,6 +148,8 @@ pub fn step(fazic: &mut ::fazic::Fazic) {
         Instruction::Set(name, _) =>     { other::set_var(name, fazic);         fazic.vm.step() },
 
         Instruction::List =>             { commands::list(fazic);               fazic.vm.step() },
+        Instruction::Load(var) =>        { commands::load(var, fazic);              stop(fazic) },
+        Instruction::Save(var) =>        { commands::save(var, fazic);              stop(fazic) },
         Instruction::Flip =>             { commands::flip(fazic);               fazic.vm.step() },
         Instruction::Print(var) =>       { commands::print(var, fazic);         fazic.vm.step() },
         Instruction::Color(var) =>       { commands::color(var, fazic);         fazic.vm.step() },

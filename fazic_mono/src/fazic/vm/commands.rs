@@ -54,3 +54,51 @@ pub fn list(fazic: &mut ::fazic::Fazic) {
         fazic.text_buffer.insert_line(string);
     }
 }
+
+pub fn load(name: usize, fazic: &mut ::fazic::Fazic) {
+    let name = match *fazic.variables.get(name) {
+        Value::String(ref s) => s.to_string(), //format!("{}", s),
+        _ => "".to_string(),
+    };
+
+    match ::targets::load(&name) {
+        Ok(resp) => {
+            // new(fazic);
+
+            for line in resp.lines() {
+                ::fazic::parse(fazic, line);
+            }
+
+            fazic.text_buffer.insert_line("LOADED");
+        },
+        Err(resp) => {
+            let msg = format!("? {}", resp.to_uppercase());
+            fazic.text_buffer.insert_line(&msg);
+        },
+
+    }
+}
+
+pub fn save(name: usize, fazic: &mut ::fazic::Fazic) {
+    let name = match *fazic.variables.get(name) {
+        Value::String(ref s) => s.to_string(), //format!("{}", s),
+        _ => "".to_string(),
+    };
+
+    let mut program = String::new();
+
+    for &(_, ref string, _) in &fazic.program.lines {
+        program.push_str(string);
+        program.push_str("\n");
+    }
+
+    match ::targets::save(&name, &program) {
+        Ok(resp) => {
+            fazic.text_buffer.insert_line(&resp);
+        },
+        Err(resp) => {
+            let msg = format!("? {}", resp.to_uppercase());
+            fazic.text_buffer.insert_line(&msg);
+        },
+    }
+}

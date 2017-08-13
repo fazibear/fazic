@@ -39,6 +39,8 @@ pub enum Instruction {
 
     Run,
     List,
+    Load(usize),
+    Save(usize),
     Next,
     Flip,
     Print(usize),
