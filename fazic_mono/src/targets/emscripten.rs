@@ -12,7 +12,7 @@ type em_callback_func = unsafe extern fn();
 
 extern {
     fn emscripten_set_main_loop(func: em_callback_func, fps: c_int, simulate_infinite_loop: c_int);
-    fn js_fetch(url: *const c_char, method: *const c_char, data: *const c_char, code: *const c_int, resp: *const c_char, size: *const c_int) -> *const c_char;
+    fn js_fetch(url: *const c_char, method: *const c_char, data: *const c_char, code: *const c_int, resp: *const u8, size: *const c_int) -> *const c_char;
 }
 
 thread_local!(static MAIN_LOOP_CALLBACK: RefCell<*mut c_void> = RefCell::new(null_mut()));
