@@ -14,9 +14,9 @@ rand = "*"
 version = "0.30"
 default-features = true
 
-[target.'cfg(not(target_os = "emscripten"))'.dependencies]
-hyper = "~ 0.10"
-hyper-native-tls = "~ 0.2"
+#[target.'cfg(not(target_os = "emscripten"))'.dependencies]
+#hyper = "~ 0.10"
+#hyper-native-tls = "~ 0.2"
 
 # [target.'cfg(target_os = "emscripten")'.dependencies]
 # emscripten-sys = "*"

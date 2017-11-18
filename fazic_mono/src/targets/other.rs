@@ -1,12 +1,7 @@
-extern crate hyper;
-extern crate hyper_native_tls;
-
-use self::hyper::Client;
-use self::hyper::net::HttpsConnector;
-use self::hyper_native_tls::NativeTlsClient;
-use std::io::Read;
-
-use fazic::config::HOST;
+use std::error::Error;
+use std::fs::File;
+use std::io::prelude::*;
+use std::path::Path;
 
 pub fn set_main_loop_callback<F>(mut f: F) where F: FnMut() {
     loop {
@@ -15,58 +10,28 @@ pub fn set_main_loop_callback<F>(mut f: F) where F: FnMut() {
 }
 
 pub fn load(name: &String) -> Result<String, String> {
-    let mut resp = String::new();
-    let url = format!("{}/file/{}", HOST, name);
+    let with_path = format!("files/{}.bas", name);
+    let path = Path::new(&with_path);
+    let mut result = String::new();
 
-    let response = http()
-        .get(&url)
-        .send();
-
-    match response {
-        Ok(mut res) => {
-            if res.status.is_success() {
-                let _ = res.read_to_string(&mut resp);
-                Ok(resp)
-            } else {
-                let err = res.status.canonical_reason();
-                Err(err.unwrap().to_string())
-            }
+    match File::open(&path) {
+        Ok(mut file) => match file.read_to_string(&mut result) {
+            Ok(_) => Ok(result),
+            _ => Err("NOT FOUND".to_string())
         },
-        Err(error) => {
-            Err(error.to_string())
-        },
+        _ => Err("NOT_FOUND".to_string())
     }
 }
 
 pub fn save(name: &String, body: &String) -> Result<String, String> {
-    let mut resp = String::new();
+    let with_path = format!("files/{}.bas", name);
+    let path = Path::new(&with_path);
 
-    let url = format!("{}/file/{}", HOST, name);
-
-    let response = http()
-        .post(&url)
-        .body(body)
-        .send();
-
-    match response {
-        Ok(mut res) => {
-            if res.status.is_success() {
-                let _ = res.read_to_string(&mut resp);
-                Ok(resp)
-            } else {
-                let err = res.status.canonical_reason();
-                Err(err.unwrap().to_string())
-            }
+    match File::create(&path) {
+        Ok(mut file) =>  match file.write_all(body.as_bytes()) {
+            Ok(_) => Ok("OK".to_string()),
+            _ => Err("NOT SAVED".to_string()),
         },
-        Err(error) => {
-            Err(error.to_string())
-        },
+        _ => Err("NOT SAVED".to_string()),
     }
-}
-
-
-fn http() -> Client {
-    let ssl = NativeTlsClient::new().unwrap();
-    let connector = HttpsConnector::new(ssl);
-    Client::with_connector(connector)
 }
