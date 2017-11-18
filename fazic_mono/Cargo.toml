@@ -11,7 +11,7 @@ peg = { version = "*" }
 rand = "*"
 
 [dependencies.sdl2]
-version = "0.30"
+version = "0.31"
 default-features = true
 
 #[target.'cfg(not(target_os = "emscripten"))'.dependencies]
