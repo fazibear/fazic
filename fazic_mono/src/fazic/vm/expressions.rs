@@ -1,4 +1,5 @@
 use ::fazic::enums::Value;
+use std::ops::Neg;
 
 pub fn add(a: usize, b: usize, dst: usize, fazic: &mut ::fazic::Fazic) {
     let ret = match (fazic.variables.get(a), fazic.variables.get(b)) {
@@ -54,6 +55,18 @@ pub fn lteq(a: usize, b: usize, dst: usize, fazic: &mut ::fazic::Fazic) {
         (&Value::Float(l), &Value::Integer(r)) => Value::Bool(l <= (r as f64)),
         (&Value::Integer(l), &Value::Float(r)) => Value::Bool((l as f64) <= r),
         (_, _) => {
+            // error("TYPE MISMATCH".to_string(), fazic);
+            Value::Null
+        },
+    };
+    fazic.variables.set(dst, ret);
+}
+
+pub fn neg(a: usize, dst: usize, fazic: &mut ::fazic::Fazic) {
+    let ret = match fazic.variables.get(a) {
+        &Value::Integer(l) => Value::Integer(l.neg()),
+        &Value::Float(l)  => Value::Float(l.neg()),
+        _ => {
             // error("TYPE MISMATCH".to_string(), fazic);
             Value::Null
         },

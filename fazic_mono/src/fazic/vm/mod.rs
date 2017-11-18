@@ -4,6 +4,7 @@ use ::fazic::enums::*;
 mod commands;
 mod expressions;
 mod other;
+mod functions;
 
 pub struct VM {
     pub instructions: Vec<Instruction>,
@@ -130,6 +131,9 @@ pub fn step(fazic: &mut ::fazic::Fazic) {
         Instruction::Gt(a, b, dst) =>    { expressions::gt(a, b, dst, fazic);   fazic.vm.step() },
         Instruction::Lt(a, b, dst) =>    { expressions::lt(a, b, dst, fazic);   fazic.vm.step() },
         Instruction::LtEq(a, b, dst) =>  { expressions::lteq(a, b, dst, fazic); fazic.vm.step() },
+        Instruction::Neg(a, dst) =>      { expressions::neg(a, dst, fazic);     fazic.vm.step() },
+
+        Instruction::Abs(a, dst) =>      { functions::abs(a, dst, fazic);       fazic.vm.step() },
 
         Instruction::Next =>             {
             let &Stack::Next(var, max, step, jmp) = fazic.stack.last().unwrap();

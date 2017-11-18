@@ -100,6 +100,17 @@ fn process_node(instructions: &mut Vec<Instruction>, name: &str, nodes: &[NodeEl
             let jmp = instructions.len() + 1;
             instructions.push(Instruction::Push(Stack::Next(p, max, step, jmp)));
         },
+
+        "abs" => {
+            let p0 = process_param(0, &params, instructions);
+            instructions.push(Instruction::Abs(p0, ii));
+        },
+
+        "neg" => {
+            let p0 = process_param(0, &params, instructions);
+            instructions.push(Instruction::Neg(p0, ii));
+        },
+
         _ => {
             println!("Can't translate: {}", name);
         }

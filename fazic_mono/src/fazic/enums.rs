@@ -56,5 +56,7 @@ pub enum Instruction {
     Gt(usize, usize, usize),
     Lt(usize, usize, usize),
     LtEq(usize, usize, usize),
+    Neg(usize, usize),
 
+    Abs(usize, usize),
 }
