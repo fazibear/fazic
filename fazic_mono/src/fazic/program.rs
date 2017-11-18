@@ -6,9 +6,7 @@ pub struct Program {
 
 impl Default for Program {
     fn default() -> Program {
-        Program {
-            lines: vec![],
-        }
+        Program { lines: vec![] }
     }
 }
 

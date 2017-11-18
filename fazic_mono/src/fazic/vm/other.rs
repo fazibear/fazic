@@ -1,5 +1,5 @@
-use ::fazic::vm::Instruction;
-use ::fazic::vm::Value;
+use fazic::vm::Instruction;
+use fazic::vm::Value;
 
 pub fn push(fazic: &mut ::fazic::Fazic) {
     let val = match *fazic.vm.current() {

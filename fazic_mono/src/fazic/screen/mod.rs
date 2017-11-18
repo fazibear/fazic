@@ -1,7 +1,7 @@
 mod chars;
 mod palette;
 
-use ::fazic::config::*;
+use fazic::config::*;
 
 pub struct Screen {
     pub pixels: [u8; SCREEN_PIXELS as usize],
@@ -52,34 +52,33 @@ impl Screen {
     }
 
     pub fn clear(&mut self, color: u8) {
-        let (r,g,b) = palette::rgb_for(color);
+        let (r, g, b) = palette::rgb_for(color);
 
         for i in 0..SCREEN_PIXELS {
             let i3 = i * 3;
 
             self.pixels[i] = self.current_color;
-            self.rgb_pixels[i3]   = r;
-            self.rgb_pixels[i3+1] = g;
-            self.rgb_pixels[i3+2] = b;
+            self.rgb_pixels[i3] = r;
+            self.rgb_pixels[i3 + 1] = g;
+            self.rgb_pixels[i3 + 2] = b;
         }
     }
 
     pub fn put_pixel(&mut self, x: u16, y: u16, color: u8) {
         //println!("putpixel({}, {}, {})", x, y, color);
         if x < SCREEN_WIDTH && y < SCREEN_HEIGHT {
-
             let i = x as usize + y as usize * SCREEN_WIDTH as usize;
             let i3 = i * 3;
-            let (r,g,b) = palette::rgb_for(color);
+            let (r, g, b) = palette::rgb_for(color);
 
             self.pixels[i] = color;
-            self.rgb_pixels[i3]   = r;
-            self.rgb_pixels[i3+1] = g;
-            self.rgb_pixels[i3+2] = b;
+            self.rgb_pixels[i3] = r;
+            self.rgb_pixels[i3 + 1] = g;
+            self.rgb_pixels[i3 + 2] = b;
         }
     }
 
-    pub fn draw_text_buffer(&mut self, text : &::fazic::text_buffer::TextBuffer) {
+    pub fn draw_text_buffer(&mut self, text: &::fazic::text_buffer::TextBuffer) {
         self.clear(text.background_color);
 
         for i in 0..TEXT_BUFFER_CHARS {
@@ -97,7 +96,7 @@ impl Screen {
                 (i / TEXT_BUFFER_CHARS_PER_LINE * 8),
                 color,
                 is_cursor,
-                );
+            );
         }
     }
 }

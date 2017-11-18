@@ -1,6 +1,6 @@
-use ::fazic::enums::*;
-use ::fazic::nodes::Node;
-use ::fazic::variables::Variables;
+use fazic::enums::*;
+use fazic::nodes::Node;
+use fazic::variables::Variables;
 
 fn process_param(idx: usize, params: &[Param], instructions: &mut Vec<Instruction>) -> usize {
     match params[idx] {
@@ -13,7 +13,13 @@ fn process_param(idx: usize, params: &[Param], instructions: &mut Vec<Instructio
     }
 }
 
-fn process_node(instructions: &mut Vec<Instruction>, name: &str, nodes: &[NodeElement], variables: &mut Variables, ii: usize) {
+fn process_node(
+    instructions: &mut Vec<Instruction>,
+    name: &str,
+    nodes: &[NodeElement],
+    variables: &mut Variables,
+    ii: usize,
+) {
     let params = process_nodes(instructions, nodes, variables);
     println!("{}: {:?}", name, params);
 
@@ -26,19 +32,19 @@ fn process_node(instructions: &mut Vec<Instruction>, name: &str, nodes: &[NodeEl
         "load" => {
             let p0 = process_param(0, &params, instructions);
             instructions.push(Instruction::Load(p0));
-        },
+        }
         "save" => {
             let p0 = process_param(0, &params, instructions);
             instructions.push(Instruction::Save(p0));
-        },
+        }
         "color" => {
             let p0 = process_param(0, &params, instructions);
             instructions.push(Instruction::Color(p0));
-        },
+        }
         "print" => {
             let p0 = process_param(0, &params, instructions);
             instructions.push(Instruction::Print(p0));
-        },
+        }
         "dot" => {
             let p0 = process_param(0, &params, instructions);
             let p1 = process_param(1, &params, instructions);
@@ -74,12 +80,12 @@ fn process_node(instructions: &mut Vec<Instruction>, name: &str, nodes: &[NodeEl
         "next" => {
             instructions.push(Instruction::Next);
             instructions.push(Instruction::Pop);
-        },
+        }
         "mode" => {
             if let Param::Value(Value::Integer(i)) = params[0] {
                 instructions.push(Instruction::Mode(i as u8))
             };
-        },
+        }
         "for" => {
             let p = process_param(0, &params, instructions);
             let max = variables.alloc(&format!("{}-MAX", p));
@@ -99,17 +105,17 @@ fn process_node(instructions: &mut Vec<Instruction>, name: &str, nodes: &[NodeEl
             }
             let jmp = instructions.len() + 1;
             instructions.push(Instruction::Push(Stack::Next(p, max, step, jmp)));
-        },
+        }
 
         "abs" => {
             let p0 = process_param(0, &params, instructions);
             instructions.push(Instruction::Abs(p0, ii));
-        },
+        }
 
         "neg" => {
             let p0 = process_param(0, &params, instructions);
             instructions.push(Instruction::Neg(p0, ii));
-        },
+        }
 
         _ => {
             println!("Can't translate: {}", name);
@@ -117,7 +123,11 @@ fn process_node(instructions: &mut Vec<Instruction>, name: &str, nodes: &[NodeEl
     }
 }
 
-fn process_nodes(instructions: &mut Vec<Instruction>, nodes: &[NodeElement], variables: &mut Variables) -> Vec<Param> {
+fn process_nodes(
+    instructions: &mut Vec<Instruction>,
+    nodes: &[NodeElement],
+    variables: &mut Variables,
+) -> Vec<Param> {
     let mut params: Vec<Param> = vec![];
     for (i, node) in nodes.iter().enumerate() {
         let tmp = variables.alloc(&format!("{}-TMP", i));
@@ -125,15 +135,15 @@ fn process_nodes(instructions: &mut Vec<Instruction>, nodes: &[NodeElement], var
             NodeElement::Node(Node(ref str, ref nodes)) => {
                 process_node(instructions, str, nodes, variables, tmp);
                 params.push(Param::Node(tmp));
-            },
+            }
             NodeElement::Value(ref val) => {
                 params.push(Param::Value(val.clone()));
-            },
+            }
             NodeElement::Var(ref name) => {
                 params.push(Param::Variable(variables.alloc(name)));
             }
         }
-    };
+    }
     params
 }
 

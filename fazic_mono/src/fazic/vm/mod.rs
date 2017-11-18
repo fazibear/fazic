@@ -1,5 +1,5 @@
 use std::time::Instant;
-use ::fazic::enums::*;
+use fazic::enums::*;
 
 mod commands;
 mod expressions;
@@ -50,8 +50,8 @@ impl VM {
             self.instructions = instructions;
         }
 
-         self.running = true;
-     }
+        self.running = true;
+    }
 
     pub fn cont(&mut self) {
         self.running = true;
@@ -93,7 +93,10 @@ impl VM {
 pub fn start(fazic: &mut ::fazic::Fazic) {
     let mut nodes = vec![];
     fazic.program.nodes(&mut nodes);
-    fazic.vm.start(false, ::fazic::compiler::compile(&nodes, &mut fazic.variables));
+    fazic.vm.start(
+        false,
+        ::fazic::compiler::compile(&nodes, &mut fazic.variables),
+    );
 }
 
 pub fn stop(fazic: &mut ::fazic::Fazic) {
@@ -105,42 +108,102 @@ pub fn stop(fazic: &mut ::fazic::Fazic) {
 
 pub fn step(fazic: &mut ::fazic::Fazic) {
     match *fazic.vm.current() {
-        Instruction::Run =>              start(fazic),
-        Instruction::Stop =>             stop(fazic),
-        Instruction::Clr =>              { fazic.variables = ::fazic::variables::Variables::new(); fazic.vm.step() } ,
-        Instruction::New =>              { fazic.program = ::fazic::program::Program::new(); stop(fazic) },
-        Instruction::Jmp(pos) =>         fazic.vm.jump(pos),
-        Instruction::JmpIf(pos, var) =>  other::jmpif(pos, var, fazic),
+        Instruction::Run => start(fazic),
+        Instruction::Stop => stop(fazic),
+        Instruction::Clr => {
+            fazic.variables = ::fazic::variables::Variables::new();
+            fazic.vm.step()
+        }
+        Instruction::New => {
+            fazic.program = ::fazic::program::Program::new();
+            stop(fazic)
+        }
+        Instruction::Jmp(pos) => fazic.vm.jump(pos),
+        Instruction::JmpIf(pos, var) => other::jmpif(pos, var, fazic),
 
-        Instruction::Pop =>              { fazic.stack.pop();                   fazic.vm.step() },
-        Instruction::Push(_) =>          { other::push(fazic);                  fazic.vm.step() },
+        Instruction::Pop => {
+            fazic.stack.pop();
+            fazic.vm.step()
+        }
+        Instruction::Push(_) => {
+            other::push(fazic);
+            fazic.vm.step()
+        }
 
-        Instruction::Mov(to, from) =>    { other::mov(to, from, fazic);         fazic.vm.step() },
-        Instruction::Set(name, _) =>     { other::set_var(name, fazic);         fazic.vm.step() },
+        Instruction::Mov(to, from) => {
+            other::mov(to, from, fazic);
+            fazic.vm.step()
+        }
+        Instruction::Set(name, _) => {
+            other::set_var(name, fazic);
+            fazic.vm.step()
+        }
 
-        Instruction::List =>             { commands::list(fazic);               fazic.vm.step() },
-        Instruction::Load(var) =>        { commands::load(var, fazic);              stop(fazic) },
-        Instruction::Save(var) =>        { commands::save(var, fazic);              stop(fazic) },
-        Instruction::Flip =>             { commands::flip(fazic);               fazic.vm.step() },
-        Instruction::Print(var) =>       { commands::print(var, fazic);         fazic.vm.step() },
-        Instruction::Color(var) =>       { commands::color(var, fazic);         fazic.vm.step() },
-        Instruction::Dot(x, y) =>        { commands::dot(x, y, fazic);          fazic.vm.step() },
-        Instruction::Mode(mode) =>       { commands::mode(mode, fazic);         fazic.vm.step() },
+        Instruction::List => {
+            commands::list(fazic);
+            fazic.vm.step()
+        }
+        Instruction::Load(var) => {
+            commands::load(var, fazic);
+            stop(fazic)
+        }
+        Instruction::Save(var) => {
+            commands::save(var, fazic);
+            stop(fazic)
+        }
+        Instruction::Flip => {
+            commands::flip(fazic);
+            fazic.vm.step()
+        }
+        Instruction::Print(var) => {
+            commands::print(var, fazic);
+            fazic.vm.step()
+        }
+        Instruction::Color(var) => {
+            commands::color(var, fazic);
+            fazic.vm.step()
+        }
+        Instruction::Dot(x, y) => {
+            commands::dot(x, y, fazic);
+            fazic.vm.step()
+        }
+        Instruction::Mode(mode) => {
+            commands::mode(mode, fazic);
+            fazic.vm.step()
+        }
 
-        Instruction::Add(a, b, dst) =>   { expressions::add(a, b, dst, fazic);  fazic.vm.step() },
-        Instruction::Gt(a, b, dst) =>    { expressions::gt(a, b, dst, fazic);   fazic.vm.step() },
-        Instruction::Lt(a, b, dst) =>    { expressions::lt(a, b, dst, fazic);   fazic.vm.step() },
-        Instruction::LtEq(a, b, dst) =>  { expressions::lteq(a, b, dst, fazic); fazic.vm.step() },
-        Instruction::Neg(a, dst) =>      { expressions::neg(a, dst, fazic);     fazic.vm.step() },
+        Instruction::Add(a, b, dst) => {
+            expressions::add(a, b, dst, fazic);
+            fazic.vm.step()
+        }
+        Instruction::Gt(a, b, dst) => {
+            expressions::gt(a, b, dst, fazic);
+            fazic.vm.step()
+        }
+        Instruction::Lt(a, b, dst) => {
+            expressions::lt(a, b, dst, fazic);
+            fazic.vm.step()
+        }
+        Instruction::LtEq(a, b, dst) => {
+            expressions::lteq(a, b, dst, fazic);
+            fazic.vm.step()
+        }
+        Instruction::Neg(a, dst) => {
+            expressions::neg(a, dst, fazic);
+            fazic.vm.step()
+        }
 
-        Instruction::Abs(a, dst) =>      { functions::abs(a, dst, fazic);       fazic.vm.step() },
+        Instruction::Abs(a, dst) => {
+            functions::abs(a, dst, fazic);
+            fazic.vm.step()
+        }
 
-        Instruction::Next =>             {
+        Instruction::Next => {
             let &Stack::Next(var, max, step, jmp) = fazic.stack.last().unwrap();
 
             expressions::add(var, step, var, fazic);
             expressions::lteq(var, max, 0, fazic);
             other::jmpif(jmp, 0, fazic);
-        },
+        }
     }
 }

@@ -1,4 +1,4 @@
-use ::fazic::config::*;
+use fazic::config::*;
 
 pub struct TextBuffer {
     pub chars: [char; TEXT_BUFFER_CHARS as usize],
@@ -162,10 +162,14 @@ impl TextBuffer {
 
     pub fn insert_string(&mut self, string: String) {
         for char in string.chars() {
-            if self.insert_mode || self.cursor_char == self.lines[self.cursor_line as usize].len() as u16 {
-                self.lines[self.cursor_line as usize].insert(self.cursor_char as usize, (char, self.current_color));
+            if self.insert_mode
+                || self.cursor_char == self.lines[self.cursor_line as usize].len() as u16
+            {
+                self.lines[self.cursor_line as usize]
+                    .insert(self.cursor_char as usize, (char, self.current_color));
             } else {
-                self.lines[self.cursor_line as usize][self.cursor_char as usize] = (char, self.current_color);
+                self.lines[self.cursor_line as usize][self.cursor_char as usize] =
+                    (char, self.current_color);
             }
             self.cursor_char += 1;
         }
@@ -190,8 +194,7 @@ impl TextBuffer {
     }
 
     pub fn get_current_line_string(&mut self) -> String {
-        self
-            .lines[self.cursor_line as usize]
+        self.lines[self.cursor_line as usize]
             .iter()
             .map(|&(c, _)| c)
             .collect()
@@ -201,7 +204,7 @@ impl TextBuffer {
 
     fn update_cursor(&mut self) {
         let mut pos: u16 = 0;
-        for line in self.line_offset..self.cursor_line  {
+        for line in self.line_offset..self.cursor_line {
             pos += self.lines[line as usize].len() as u16;
             pos += TEXT_BUFFER_CHARS_PER_LINE;
             pos -= pos % TEXT_BUFFER_CHARS_PER_LINE;
@@ -229,16 +232,22 @@ impl TextBuffer {
         for line in self.lines[start..end].iter() {
             self.additional_lines += line.len() as u16 / TEXT_BUFFER_CHARS_PER_LINE;
             for &(char, color) in line {
-                if pos >= TEXT_BUFFER_CHARS { break; }
+                if pos >= TEXT_BUFFER_CHARS {
+                    break;
+                }
                 self.chars[pos as usize] = char;
                 self.colors[pos as usize] = color;
-                if pos >= TEXT_BUFFER_CHARS - 1 && self.cursor / TEXT_BUFFER_CHARS_PER_LINE == TEXT_BUFFER_LINES - 1 {
+                if pos >= TEXT_BUFFER_CHARS - 1
+                    && self.cursor / TEXT_BUFFER_CHARS_PER_LINE == TEXT_BUFFER_LINES - 1
+                {
                     let mut chars = ['\0'; TEXT_BUFFER_CHARS as usize];
                     let mut colors = [self.current_color; TEXT_BUFFER_CHARS as usize];
 
                     for i in TEXT_BUFFER_CHARS_PER_LINE..TEXT_BUFFER_CHARS {
-                        chars[i as usize - TEXT_BUFFER_CHARS_PER_LINE as usize] = self.chars[i as usize];
-                        colors[i as usize - TEXT_BUFFER_CHARS_PER_LINE as usize] = self.colors[i as usize];
+                        chars[i as usize - TEXT_BUFFER_CHARS_PER_LINE as usize] =
+                            self.chars[i as usize];
+                        colors[i as usize - TEXT_BUFFER_CHARS_PER_LINE as usize] =
+                            self.colors[i as usize];
                     }
                     self.chars = chars;
                     self.colors = colors;
@@ -267,7 +276,8 @@ impl TextBuffer {
                 self.lines.remove(0);
                 self.cursor_line -= 1;
             }
-            self.lines.push(Vec::with_capacity(TEXT_BUFFER_MAX_LINE_CHARS as usize));
+            self.lines
+                .push(Vec::with_capacity(TEXT_BUFFER_MAX_LINE_CHARS as usize));
         }
     }
 }

@@ -1,4 +1,4 @@
-use ::fazic::enums::Value;
+use fazic::enums::Value;
 use std::ops::Neg;
 
 pub fn add(a: usize, b: usize, dst: usize, fazic: &mut ::fazic::Fazic) {
@@ -11,11 +11,11 @@ pub fn add(a: usize, b: usize, dst: usize, fazic: &mut ::fazic::Fazic) {
             let mut str = l.clone();
             str.push_str(r);
             Value::String(str)
-        },
+        }
         (_, _) => {
             // error("TYPE MISMATCH".to_string(), fazic);
             Value::Null
-        },
+        }
     };
     fazic.variables.set(dst, ret);
 }
@@ -28,7 +28,7 @@ pub fn gt(a: usize, b: usize, dst: usize, fazic: &mut ::fazic::Fazic) {
         (_, _) => {
             // error("TYPE MISMATCH".to_string(), fazic);
             Value::Null
-        },
+        }
     };
     fazic.variables.set(dst, ret);
 }
@@ -42,7 +42,7 @@ pub fn lt(a: usize, b: usize, dst: usize, fazic: &mut ::fazic::Fazic) {
         (_, _) => {
             // error("TYPE MISMATCH".to_string(), fazic);
             Value::Null
-        },
+        }
     };
     fazic.variables.set(dst, ret);
 }
@@ -57,7 +57,7 @@ pub fn lteq(a: usize, b: usize, dst: usize, fazic: &mut ::fazic::Fazic) {
         (_, _) => {
             // error("TYPE MISMATCH".to_string(), fazic);
             Value::Null
-        },
+        }
     };
     fazic.variables.set(dst, ret);
 }
@@ -65,11 +65,11 @@ pub fn lteq(a: usize, b: usize, dst: usize, fazic: &mut ::fazic::Fazic) {
 pub fn neg(a: usize, dst: usize, fazic: &mut ::fazic::Fazic) {
     let ret = match fazic.variables.get(a) {
         &Value::Integer(l) => Value::Integer(l.neg()),
-        &Value::Float(l)  => Value::Float(l.neg()),
+        &Value::Float(l) => Value::Float(l.neg()),
         _ => {
             // error("TYPE MISMATCH".to_string(), fazic);
             Value::Null
-        },
+        }
     };
     fazic.variables.set(dst, ret);
 }

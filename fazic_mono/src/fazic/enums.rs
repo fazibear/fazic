@@ -1,4 +1,4 @@
-use ::fazic::nodes::Node;
+use fazic::nodes::Node;
 
 #[derive(Debug)]
 pub enum Param {
@@ -25,7 +25,7 @@ pub enum Value {
 
 #[derive(Debug, Clone)]
 pub enum Stack {
-    Next(usize, usize, usize, usize)
+    Next(usize, usize, usize, usize),
 }
 
 #[derive(Debug)]

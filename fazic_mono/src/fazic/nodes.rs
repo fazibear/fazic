@@ -1,5 +1,5 @@
 use std::str::FromStr;
-use ::fazic::enums::*;
+use fazic::enums::*;
 
 #[derive(Debug)]
 pub struct Entry(pub Option<i32>, pub Vec<NodeElement>);

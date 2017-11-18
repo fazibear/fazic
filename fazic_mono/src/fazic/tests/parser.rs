@@ -1,4 +1,4 @@
-use ::fazic::parser::parse_all;
+use fazic::parser::parse_all;
 
 #[test]
 fn expression() {
@@ -46,40 +46,40 @@ fn print_single_quite_with_spaces() {
 }
 
 #[test]
-fn print_expression(){
+fn print_expression() {
     assert!(parse_all("PRINT 10+10-2*67/2").is_ok())
 }
 
 #[test]
-fn print_float(){
+fn print_float() {
     assert!(parse_all("PRINT 2.2*2").is_ok())
 }
 
 #[test]
-fn print_div(){
+fn print_div() {
     assert!(parse_all("PRINT 4/3").is_ok())
 }
 
 #[test]
-fn div_by_zer(){
+fn div_by_zer() {
     assert!(parse_all("PRINT 4/0").is_ok())
 }
 
 #[test]
-fn print_with_line(){
+fn print_with_line() {
     assert!(parse_all("10 PRINT 4/3").is_ok())
 }
 
 #[test]
-fn mutliple_print(){
+fn mutliple_print() {
     assert!(parse_all("PRINT 4/3:PRINT 2/1").is_ok())
 }
 
 #[test]
-fn multiple_print_with_line(){
+fn multiple_print_with_line() {
     assert!(parse_all("10 PRINT 4/3:PRINT 2/2").is_ok())
 }
 #[test]
-fn multiple_print_with_line_downcase(){
+fn multiple_print_with_line_downcase() {
     assert!(parse_all("10 PRINT 4/3:print 2/2").is_ok())
 }

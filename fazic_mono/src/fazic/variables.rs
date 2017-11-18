@@ -1,5 +1,5 @@
 use std::collections::HashMap;
-use ::fazic::enums::Value;
+use fazic::enums::Value;
 
 pub struct Variables {
     variables: Vec<Value>,

@@ -1,4 +1,4 @@
-use ::fazic::vm::Value;
+use fazic::vm::Value;
 
 pub fn print(var: usize, fazic: &mut ::fazic::Fazic) {
     let string = match *fazic.variables.get(var) {
@@ -26,17 +26,17 @@ pub fn dot(x: usize, y: usize, fazic: &mut ::fazic::Fazic) {
     let x = match *fazic.variables.get(x) {
         Value::Integer(x) => x as u16,
         Value::Float(x) => x as u16,
-        _ => 0
+        _ => 0,
     };
 
     let y = match *fazic.variables.get(y) {
         Value::Integer(y) => y as u16,
         Value::Float(y) => y as u16,
-        _ => 0
+        _ => 0,
     };
 
     let color = fazic.screen.current_color;
-//    println!("{}, {}", x, y);
+    //    println!("{}, {}", x, y);
 
     fazic.screen.put_pixel(x, y, color);
 }
@@ -72,12 +72,11 @@ pub fn load(name: usize, fazic: &mut ::fazic::Fazic) {
             }
 
             fazic.text_buffer.insert_line("LOADED");
-        },
+        }
         Err(resp) => {
             let msg = format!("? {}", resp.to_uppercase());
             fazic.text_buffer.insert_line(&msg);
-        },
-
+        }
     }
 }
 
@@ -97,10 +96,10 @@ pub fn save(name: usize, fazic: &mut ::fazic::Fazic) {
     match ::targets::save(&name, &program) {
         Ok(resp) => {
             fazic.text_buffer.insert_line(&resp);
-        },
+        }
         Err(resp) => {
             let msg = format!("? {}", resp.to_uppercase());
             fazic.text_buffer.insert_line(&msg);
-        },
+        }
     }
 }
