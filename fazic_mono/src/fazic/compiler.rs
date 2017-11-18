@@ -18,69 +18,69 @@ fn process_node(instructions: &mut Vec<Instruction>, name: &str, nodes: &[NodeEl
     println!("{}: {:?}", name, params);
 
     match name {
-        "run"     => instructions.push(Instruction::Run),
-        "list"    => instructions.push(Instruction::List),
-        "new"    => instructions.push(Instruction::New),
-        "clr"    => instructions.push(Instruction::Clr),
-        "flip"    => instructions.push(Instruction::Flip),
-        "load"   => {
+        "run" => instructions.push(Instruction::Run),
+        "list" => instructions.push(Instruction::List),
+        "new" => instructions.push(Instruction::New),
+        "clr" => instructions.push(Instruction::Clr),
+        "flip" => instructions.push(Instruction::Flip),
+        "load" => {
             let p0 = process_param(0, &params, instructions);
             instructions.push(Instruction::Load(p0));
         },
-        "save"   => {
+        "save" => {
             let p0 = process_param(0, &params, instructions);
             instructions.push(Instruction::Save(p0));
         },
-        "color"   => {
+        "color" => {
             let p0 = process_param(0, &params, instructions);
             instructions.push(Instruction::Color(p0));
         },
-        "print"   => {
+        "print" => {
             let p0 = process_param(0, &params, instructions);
             instructions.push(Instruction::Print(p0));
         },
-        "dot"     => {
+        "dot" => {
             let p0 = process_param(0, &params, instructions);
             let p1 = process_param(1, &params, instructions);
             instructions.push(Instruction::Dot(p0, p1));
         }
-        "add"     => {
+        "add" => {
             let p0 = process_param(0, &params, instructions);
             let p1 = process_param(1, &params, instructions);
             instructions.push(Instruction::Add(p0, p1, ii));
         }
-        "lt"      => {
+        "lt" => {
             let p0 = process_param(0, &params, instructions);
             let p1 = process_param(1, &params, instructions);
             instructions.push(Instruction::Lt(p0, p1, ii));
         }
-        "gt"      => {
+        "gt" => {
             let p0 = process_param(0, &params, instructions);
             let p1 = process_param(1, &params, instructions);
             instructions.push(Instruction::Gt(p0, p1, ii));
         }
-        "lteq"    => {
+        "lteq" => {
             let p0 = process_param(0, &params, instructions);
             let p1 = process_param(1, &params, instructions);
             instructions.push(Instruction::LtEq(p0, p1, ii));
         }
-        "let"     => {
+        "let" => {
             let p0 = process_param(0, &params, instructions);
             match params[1] {
                 Param::Value(ref val) => instructions.push(Instruction::Set(p0, val.clone())),
                 Param::Node(i) | Param::Variable(i) => instructions.push(Instruction::Mov(p0, i)),
             }
         }
-        "next"    => {
+        "next" => {
             instructions.push(Instruction::Next);
             instructions.push(Instruction::Pop);
         },
-        "mode"     => {
+        "mode" => {
             if let Param::Value(Value::Integer(i)) = params[0] {
                 instructions.push(Instruction::Mode(i as u8))
             };
         },
-        "for"     => {
+        "for" => {
             let p = process_param(0, &params, instructions);
             let max = variables.alloc(&format!("{}-MAX", p));
             let step = variables.alloc(&format!("{}-STEP", p));
