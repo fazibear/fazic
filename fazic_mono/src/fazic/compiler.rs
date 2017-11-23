@@ -1,3 +1,5 @@
+use std::collections::HashMap;
+
 use fazic::enums::*;
 use fazic::nodes::Node;
 use fazic::variables::Variables;
@@ -18,9 +20,10 @@ fn process_node(
     name: &str,
     nodes: &[NodeElement],
     variables: &mut Variables,
+    lines: &mut HashMap<u16, usize>,
     dst: usize,
 ) {
-    let params = process_nodes(instructions, nodes, variables);
+    let params = process_nodes(instructions, nodes, variables, lines);
     println!("{}: {:?}", name, params);
 
     match name {
@@ -127,13 +130,14 @@ fn process_nodes(
     instructions: &mut Vec<Instruction>,
     nodes: &[NodeElement],
     variables: &mut Variables,
+    lines: &mut HashMap<u16, usize>,
 ) -> Vec<Param> {
     let mut params: Vec<Param> = vec![];
     for (i, node) in nodes.iter().enumerate() {
         let tmp = variables.alloc(&format!("{}-TMP", i));
         match *node {
             NodeElement::Node(Node(ref str, ref nodes)) => {
-                process_node(instructions, str, nodes, variables, tmp);
+                process_node(instructions, str, nodes, variables, lines, tmp);
                 params.push(Param::Node(tmp));
             }
             NodeElement::Value(ref val) => {
@@ -141,6 +145,9 @@ fn process_nodes(
             }
             NodeElement::Var(ref name) => {
                 params.push(Param::Variable(variables.alloc(name)));
+            },
+            NodeElement::LineNo(line) => {
+                println!("line: {:?}", line);
             }
         }
     }
@@ -149,10 +156,11 @@ fn process_nodes(
 
 pub fn compile(nodes: &[NodeElement], variables: &mut Variables) -> Vec<Instruction> {
     let mut instructions: Vec<Instruction> = vec![];
+    let mut lines: HashMap<u16, usize> = HashMap::new();
 
     println!("nodes: {:?}", nodes);
 
-    process_nodes(&mut instructions, nodes, variables);
+    process_nodes(&mut instructions, nodes, variables, &mut lines);
 
     instructions.push(Instruction::Stop);
 

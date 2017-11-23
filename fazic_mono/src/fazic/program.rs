@@ -23,8 +23,9 @@ impl Program {
     }
 
     pub fn nodes(&mut self, nodes: &mut Vec<NodeElement>) {
-        for &(_, _, ref node) in &self.lines {
-            nodes.extend(node.clone())
+        for &(line, _, ref node) in &self.lines {
+            nodes.push(NodeElement::LineNo(line));
+            nodes.extend(node.clone());
         }
     }
 }

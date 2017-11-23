@@ -12,6 +12,7 @@ pub enum NodeElement {
     Node(Node),
     Value(Value),
     Var(String),
+    LineNo(u16),
 }
 
 #[derive(Debug, Clone)]
