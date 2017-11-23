@@ -33,7 +33,7 @@ fn process_node(
         "clr" => instructions.push(Instruction::Clr),
         "flip" => instructions.push(Instruction::Flip),
         "goto" => if let Param::Value(Value::Integer(i)) = params[0] {
-            instructions.push(Instruction::Goto(i as u16));
+            instructions.push(Instruction::JmpLine(i as u16));
         },
         "load" => {
             let p0 = process_param(0, &params, instructions);
@@ -159,7 +159,7 @@ fn process_nodes(
 
 pub fn process_gotos(instruction: Instruction, lines: &HashMap<u16, usize>) -> Instruction {
     match instruction {
-        Instruction::Goto(ref line) => match lines.get(line) {
+        Instruction::JmpLine(ref line) => match lines.get(line) {
             Some(pos) => Instruction::Jmp(*pos as usize),
             None => Instruction::Noop,
         },

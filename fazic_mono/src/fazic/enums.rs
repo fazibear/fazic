@@ -35,7 +35,7 @@ pub enum Instruction {
     Stop,
     Push(Stack),
     Pop,
-    Goto(u16),
+    JmpLine(u16),
     Jmp(usize),
     JmpIf(usize, usize),
     Set(usize, Value),

@@ -205,6 +205,6 @@ pub fn step(fazic: &mut ::fazic::Fazic) {
             expressions::lteq(var, max, 0, fazic);
             other::jmpif(jmp, 0, fazic);
         }
-        Instruction::Goto(_) => unreachable!(),
+        Instruction::JmpLine(_) => unreachable!(),
     }
 }
