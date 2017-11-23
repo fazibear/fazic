@@ -19,7 +19,7 @@ mod parser {
 pub fn parse(fazic: &mut ::fazic::Fazic, input: &str) {
     match parser::parse_all(input) {
         Ok(nodes::Entry(None, nodes)) => {
-            println!("{:?}", nodes);
+//            println!("{:?}", nodes);
             fazic.vm.start(
                 true,
                 ::fazic::compiler::compile(&nodes, &mut fazic.variables),
@@ -46,7 +46,6 @@ pub struct Fazic {
     redraw: bool,
     mode: u8,
     vm: vm::VM,
-    //variables: Vec<enums::Value>,
     variables: variables::Variables,
     stack: Vec<enums::Stack>,
 }
@@ -61,7 +60,6 @@ impl Default for Fazic {
             redraw: true,
             mode: 0,
             vm: vm::VM::new(),
-            //variables: vec![enums::Value::Null; 100],
             variables: variables::Variables::new(),
             stack: Vec::with_capacity(100),
         }

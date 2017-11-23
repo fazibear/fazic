@@ -18,7 +18,7 @@ fn process_node(
     name: &str,
     nodes: &[NodeElement],
     variables: &mut Variables,
-    ii: usize,
+    dst: usize,
 ) {
     let params = process_nodes(instructions, nodes, variables);
     println!("{}: {:?}", name, params);
@@ -53,22 +53,22 @@ fn process_node(
         "add" => {
             let p0 = process_param(0, &params, instructions);
             let p1 = process_param(1, &params, instructions);
-            instructions.push(Instruction::Add(p0, p1, ii));
+            instructions.push(Instruction::Add(p0, p1, dst));
         }
         "lt" => {
             let p0 = process_param(0, &params, instructions);
             let p1 = process_param(1, &params, instructions);
-            instructions.push(Instruction::Lt(p0, p1, ii));
+            instructions.push(Instruction::Lt(p0, p1, dst));
         }
         "gt" => {
             let p0 = process_param(0, &params, instructions);
             let p1 = process_param(1, &params, instructions);
-            instructions.push(Instruction::Gt(p0, p1, ii));
+            instructions.push(Instruction::Gt(p0, p1, dst));
         }
         "lteq" => {
             let p0 = process_param(0, &params, instructions);
             let p1 = process_param(1, &params, instructions);
-            instructions.push(Instruction::LtEq(p0, p1, ii));
+            instructions.push(Instruction::LtEq(p0, p1, dst));
         }
         "let" => {
             let p0 = process_param(0, &params, instructions);
@@ -109,12 +109,12 @@ fn process_node(
 
         "abs" => {
             let p0 = process_param(0, &params, instructions);
-            instructions.push(Instruction::Abs(p0, ii));
+            instructions.push(Instruction::Abs(p0, dst));
         }
 
         "neg" => {
             let p0 = process_param(0, &params, instructions);
-            instructions.push(Instruction::Neg(p0, ii));
+            instructions.push(Instruction::Neg(p0, dst));
         }
 
         _ => {
@@ -149,6 +149,8 @@ fn process_nodes(
 
 pub fn compile(nodes: &[NodeElement], variables: &mut Variables) -> Vec<Instruction> {
     let mut instructions: Vec<Instruction> = vec![];
+
+    println!("nodes: {:?}", nodes);
 
     process_nodes(&mut instructions, nodes, variables);
 
