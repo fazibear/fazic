@@ -1,4 +1,3 @@
-
 use fazic::enums::*;
 use fazic::nodes::Node;
 use fazic::variables::Variables;
@@ -167,7 +166,11 @@ pub fn process_gotos(instruction: Instruction, lines: &Lines) -> Instruction {
     }
 }
 
-pub fn compile(nodes: &[NodeElement], variables: &mut Variables, mut lines: &mut Lines) -> Vec<Instruction> {
+pub fn compile(
+    nodes: &[NodeElement],
+    variables: &mut Variables,
+    mut lines: &mut Lines,
+) -> Vec<Instruction> {
     let mut instructions: Vec<Instruction> = vec![];
 
     println!("nodes: {:?}", nodes);

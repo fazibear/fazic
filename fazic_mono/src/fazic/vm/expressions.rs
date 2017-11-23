@@ -13,7 +13,7 @@ pub fn add(a: usize, b: usize, dst: usize, fazic: &mut ::fazic::Fazic) {
         //     Value::String(str)
         // }
         (_, _) => {
-           ::fazic::vm::error(fazic, "TYPE MISMATCH");
+            ::fazic::vm::error(fazic, "TYPE MISMATCH");
             Value::Null
         }
     };
