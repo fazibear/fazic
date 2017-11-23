@@ -105,7 +105,10 @@ pub fn onerror(fazic: &mut ::fazic::Fazic) {
 }
 
 pub fn error(fazic: &mut ::fazic::Fazic, msg: &str) {
-    fazic.text_buffer.insert_line(msg);
+    let line = fazic.vm.position;
+    let message = format!("? {} IN LINE {}", msg, line);
+
+    fazic.text_buffer.insert_line(&message);
     fazic.vm.running = false;
     fazic.mode = 0;
     fazic.text_buffer.prompt();
@@ -211,7 +214,7 @@ pub fn step(fazic: &mut ::fazic::Fazic) {
                 expressions::lteq(var, max, 0, fazic);
                 other::jmpif(jmp, 0, fazic);
             }
-            None => error(fazic, "No next!"),
+            None => error(fazic, "NEXT WITHOUT FOR"),
         },
         Instruction::JmpLine(_) => unreachable!(),
     }
