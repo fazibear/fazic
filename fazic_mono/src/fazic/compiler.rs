@@ -161,7 +161,7 @@ pub fn process_gotos(instruction: Instruction, lines: &HashMap<u16, usize>) -> I
     match instruction {
         Instruction::JmpLine(ref line) => match lines.get(line) {
             Some(pos) => Instruction::Jmp(*pos as usize),
-            None => Instruction::Noop,
+            None => Instruction::Error("UNDEF'D STATEMENT ERROR".to_string()),
         },
         _ => instruction,
     }

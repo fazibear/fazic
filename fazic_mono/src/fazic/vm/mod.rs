@@ -82,14 +82,6 @@ impl VM {
     }
 }
 
-// fn error(msg: String, fazic: &mut ::fazic::Fazic) {
-//     let msg = format!("? {}", msg);
-//     fazic.text_buffer.insert_line(&msg);
-//     fazic.text_buffer.prompt();
-//     fazic.vm.stop();
-// }
-//
-
 pub fn start(fazic: &mut ::fazic::Fazic) {
     let mut nodes = vec![];
     fazic.program.nodes(&mut nodes);
@@ -106,8 +98,23 @@ pub fn stop(fazic: &mut ::fazic::Fazic) {
     println!("{:?}", fazic.vm.instant.elapsed());
 }
 
+pub fn onerror(fazic: &mut ::fazic::Fazic) {
+    if let Instruction::Error(ref msg) = fazic.vm.current().clone() {
+        error(fazic, msg);
+    }
+}
+
+pub fn error(fazic: &mut ::fazic::Fazic, msg: &str) {
+    fazic.text_buffer.insert_line(msg);
+    fazic.vm.running = false;
+    fazic.mode = 0;
+    fazic.text_buffer.prompt();
+    println!("{:?}", fazic.vm.instant.elapsed());
+}
+
 pub fn step(fazic: &mut ::fazic::Fazic) {
     match *fazic.vm.current() {
+        Instruction::Error(_) => onerror(fazic),
         Instruction::Noop => fazic.vm.step(),
         Instruction::Run => start(fazic),
         Instruction::Stop => stop(fazic),
@@ -198,13 +205,14 @@ pub fn step(fazic: &mut ::fazic::Fazic) {
             functions::abs(a, dst, fazic);
             fazic.vm.step()
         }
-        Instruction::Next => {
-            let &Stack::Next(var, max, step, jmp) = fazic.stack.last().unwrap();
-
-            expressions::add(var, step, var, fazic);
-            expressions::lteq(var, max, 0, fazic);
-            other::jmpif(jmp, 0, fazic);
-        }
+        Instruction::Next => match fazic.stack.last() {
+            Some(&Stack::Next(var, max, step, jmp)) => {
+                expressions::add(var, step, var, fazic);
+                expressions::lteq(var, max, 0, fazic);
+                other::jmpif(jmp, 0, fazic);
+            }
+            None => error(fazic, "No next!"),
+        },
         Instruction::JmpLine(_) => unreachable!(),
     }
 }

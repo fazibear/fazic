@@ -29,7 +29,7 @@ pub enum Stack {
     Next(usize, usize, usize, usize),
 }
 
-#[derive(Debug)]
+#[derive(Debug, Clone)]
 pub enum Instruction {
     Noop,
     Stop,
@@ -39,6 +39,8 @@ pub enum Instruction {
     Jmp(usize),
     JmpIf(usize, usize),
     Set(usize, Value),
+
+    Error(String),
 
     Run,
     List,
