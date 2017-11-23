@@ -32,6 +32,9 @@ fn process_node(
         "new" => instructions.push(Instruction::New),
         "clr" => instructions.push(Instruction::Clr),
         "flip" => instructions.push(Instruction::Flip),
+        "goto" => if let Param::Value(Value::Integer(i)) = params[0] {
+            instructions.push(Instruction::Goto(i as u16));
+        },
         "load" => {
             let p0 = process_param(0, &params, instructions);
             instructions.push(Instruction::Load(p0));
@@ -145,13 +148,23 @@ fn process_nodes(
             }
             NodeElement::Var(ref name) => {
                 params.push(Param::Variable(variables.alloc(name)));
-            },
+            }
             NodeElement::LineNo(line) => {
-                println!("line: {:?}", line);
+                lines.insert(line, instructions.len());
             }
         }
     }
     params
+}
+
+pub fn process_gotos(instruction: Instruction, lines: &HashMap<u16, usize>) -> Instruction {
+    match instruction {
+        Instruction::Goto(ref line) => match lines.get(line) {
+            Some(pos) => Instruction::Jmp(*pos as usize),
+            None => Instruction::Noop,
+        },
+        _ => instruction,
+    }
 }
 
 pub fn compile(nodes: &[NodeElement], variables: &mut Variables) -> Vec<Instruction> {
@@ -167,4 +180,7 @@ pub fn compile(nodes: &[NodeElement], variables: &mut Variables) -> Vec<Instruct
     println!("instructions: {:?}", instructions);
 
     instructions
+        .into_iter()
+        .map(|i| process_gotos(i, &lines))
+        .collect()
 }

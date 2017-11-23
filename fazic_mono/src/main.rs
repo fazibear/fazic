@@ -66,8 +66,8 @@ pub fn main() {
                         keycode: Some(key),
                         keymod: LGUIMOD,
                         ..
-                    } |
-                    Event::KeyDown {
+                    }
+                    | Event::KeyDown {
                         keycode: Some(key),
                         keymod: RGUIMOD,
                         ..

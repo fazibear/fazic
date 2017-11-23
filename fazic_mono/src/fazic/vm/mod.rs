@@ -108,6 +108,7 @@ pub fn stop(fazic: &mut ::fazic::Fazic) {
 
 pub fn step(fazic: &mut ::fazic::Fazic) {
     match *fazic.vm.current() {
+        Instruction::Noop => fazic.vm.step(),
         Instruction::Run => start(fazic),
         Instruction::Stop => stop(fazic),
         Instruction::Clr => {
@@ -197,7 +198,6 @@ pub fn step(fazic: &mut ::fazic::Fazic) {
             functions::abs(a, dst, fazic);
             fazic.vm.step()
         }
-
         Instruction::Next => {
             let &Stack::Next(var, max, step, jmp) = fazic.stack.last().unwrap();
 
@@ -205,5 +205,6 @@ pub fn step(fazic: &mut ::fazic::Fazic) {
             expressions::lteq(var, max, 0, fazic);
             other::jmpif(jmp, 0, fazic);
         }
+        Instruction::Goto(_) => unreachable!(),
     }
 }

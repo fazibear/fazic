@@ -31,9 +31,11 @@ pub enum Stack {
 
 #[derive(Debug)]
 pub enum Instruction {
+    Noop,
     Stop,
     Push(Stack),
     Pop,
+    Goto(u16),
     Jmp(usize),
     JmpIf(usize, usize),
     Set(usize, Value),

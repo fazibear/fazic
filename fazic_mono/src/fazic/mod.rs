@@ -19,7 +19,7 @@ mod parser {
 pub fn parse(fazic: &mut ::fazic::Fazic, input: &str) {
     match parser::parse_all(input) {
         Ok(nodes::Entry(None, nodes)) => {
-//            println!("{:?}", nodes);
+            //            println!("{:?}", nodes);
             fazic.vm.start(
                 true,
                 ::fazic::compiler::compile(&nodes, &mut fazic.variables),
