@@ -5,7 +5,7 @@ pub fn abs(a: usize, dst: usize, fazic: &mut ::fazic::Fazic) {
         &Value::Integer(l) => Value::Integer(l.abs()),
         &Value::Float(l) => Value::Float(l.abs()),
         _ => {
-            // error("TYPE MISMATCH".to_string(), fazic);
+            ::fazic::vm::error(fazic, "TYPE MISMATCH");
             Value::Null
         }
     };
