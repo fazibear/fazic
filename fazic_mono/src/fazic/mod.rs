@@ -4,6 +4,7 @@ mod program;
 mod vm;
 mod compiler;
 mod variables;
+mod lines;
 
 pub mod config;
 pub mod enums;
@@ -22,7 +23,7 @@ pub fn parse(fazic: &mut ::fazic::Fazic, input: &str) {
             //            println!("{:?}", nodes);
             fazic.vm.start(
                 true,
-                ::fazic::compiler::compile(&nodes, &mut fazic.variables),
+                ::fazic::compiler::compile(&nodes, &mut fazic.variables, &mut fazic.lines),
             );
         }
         Ok(nodes::Entry(Some(line), nodes)) => {
@@ -48,6 +49,7 @@ pub struct Fazic {
     vm: vm::VM,
     variables: variables::Variables,
     stack: Vec<enums::Stack>,
+    lines: lines::Lines,
 }
 
 
@@ -62,6 +64,7 @@ impl Default for Fazic {
             vm: vm::VM::new(),
             variables: variables::Variables::new(),
             stack: Vec::with_capacity(100),
+            lines: lines::Lines::new(),
         }
     }
 }

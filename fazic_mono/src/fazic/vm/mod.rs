@@ -87,7 +87,7 @@ pub fn start(fazic: &mut ::fazic::Fazic) {
     fazic.program.nodes(&mut nodes);
     fazic.vm.start(
         false,
-        ::fazic::compiler::compile(&nodes, &mut fazic.variables),
+        ::fazic::compiler::compile(&nodes, &mut fazic.variables, &mut fazic.lines),
     );
 }
 
@@ -105,7 +105,7 @@ pub fn onerror(fazic: &mut ::fazic::Fazic) {
 }
 
 pub fn error(fazic: &mut ::fazic::Fazic, msg: &str) {
-    let line = fazic.vm.position;
+    let line = fazic.lines.what_line(fazic.vm.position);
     let message = format!("? {} IN LINE {}", msg, line);
 
     fazic.text_buffer.insert_line(&message);

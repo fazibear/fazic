@@ -1,8 +1,8 @@
-use std::collections::HashMap;
 
 use fazic::enums::*;
 use fazic::nodes::Node;
 use fazic::variables::Variables;
+use fazic::lines::Lines;
 
 fn process_param(idx: usize, params: &[Param], instructions: &mut Vec<Instruction>) -> usize {
     match params[idx] {
@@ -20,7 +20,7 @@ fn process_node(
     name: &str,
     nodes: &[NodeElement],
     variables: &mut Variables,
-    lines: &mut HashMap<u16, usize>,
+    lines: &mut Lines,
     dst: usize,
 ) {
     let params = process_nodes(instructions, nodes, variables, lines);
@@ -133,7 +133,7 @@ fn process_nodes(
     instructions: &mut Vec<Instruction>,
     nodes: &[NodeElement],
     variables: &mut Variables,
-    lines: &mut HashMap<u16, usize>,
+    lines: &mut Lines,
 ) -> Vec<Param> {
     let mut params: Vec<Param> = vec![];
     for (i, node) in nodes.iter().enumerate() {
@@ -150,14 +150,14 @@ fn process_nodes(
                 params.push(Param::Variable(variables.alloc(name)));
             }
             NodeElement::LineNo(line) => {
-                lines.insert(line, instructions.len());
+                lines.add(line, instructions.len());
             }
         }
     }
     params
 }
 
-pub fn process_gotos(instruction: Instruction, lines: &HashMap<u16, usize>) -> Instruction {
+pub fn process_gotos(instruction: Instruction, lines: &Lines) -> Instruction {
     match instruction {
         Instruction::JmpLine(ref line) => match lines.get(line) {
             Some(pos) => Instruction::Jmp(*pos as usize),
@@ -167,11 +167,12 @@ pub fn process_gotos(instruction: Instruction, lines: &HashMap<u16, usize>) -> I
     }
 }
 
-pub fn compile(nodes: &[NodeElement], variables: &mut Variables) -> Vec<Instruction> {
+pub fn compile(nodes: &[NodeElement], variables: &mut Variables, mut lines: &mut Lines) -> Vec<Instruction> {
     let mut instructions: Vec<Instruction> = vec![];
-    let mut lines: HashMap<u16, usize> = HashMap::new();
 
     println!("nodes: {:?}", nodes);
+
+    lines.reset();
 
     process_nodes(&mut instructions, nodes, variables, &mut lines);
 
