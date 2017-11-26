@@ -6,7 +6,7 @@ const TRUE: NodeElement = NodeElement::Value(Value::Bool(true));
 const FALSE: NodeElement = NodeElement::Value(Value::Bool(false));
 const INTEGER_1: NodeElement = NodeElement::Value(Value::Integer(1));
 //const INTEGER_5: NodeElement = NodeElement::Value(Value::Integer(5));
-//const test_string: NodeElement = NodeElement::Value(Value::String("TEST".to_string()));
+//const STRING_TEST: NodeElement = NodeElement::Value(Value::String("TEST".to_string()));
 
 #[test]
 fn print_true() {
