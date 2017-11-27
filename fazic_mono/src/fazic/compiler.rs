@@ -22,7 +22,7 @@ fn process_node(
     lines: &mut Lines,
     dst: usize,
 ) {
-    let params = process_nodes(instructions, nodes, variables, lines);
+    let params = process_nodes(instructions, nodes, variables, lines, true);
     println!("{}: {:?}", name, params);
 
     match name {
@@ -137,10 +137,15 @@ fn process_nodes(
     nodes: &[NodeElement],
     variables: &mut Variables,
     lines: &mut Lines,
+    alloc: bool,
 ) -> Vec<Param> {
     let mut params: Vec<Param> = vec![];
     for (i, node) in nodes.iter().enumerate() {
-        let tmp = variables.alloc(&format!("{}-TMP", i));
+        let tmp = if alloc {
+            variables.alloc(&format!("{}-TMP", i))
+        } else {
+            0
+        };
         match *node {
             NodeElement::Node(Node(ref str, ref nodes)) => {
                 process_node(instructions, str, nodes, variables, lines, tmp);
@@ -181,7 +186,7 @@ pub fn compile(
 
     lines.reset();
 
-    process_nodes(&mut instructions, nodes, variables, &mut lines);
+    process_nodes(&mut instructions, nodes, variables, &mut lines, false);
 
     instructions.push(Instruction::End);
 
