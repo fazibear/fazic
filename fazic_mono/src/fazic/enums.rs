@@ -27,12 +27,13 @@ pub enum Value {
 #[derive(Debug, Clone)]
 pub enum Stack {
     Next(usize, usize, usize, usize),
+    Return(usize),
 }
 
 #[derive(Debug, Clone)]
 pub enum Instruction {
     Noop,
-    Stop,
+    End,
     Push(Stack),
     Pop,
     JmpLine(u16),
@@ -49,6 +50,7 @@ pub enum Instruction {
     Load(usize),
     Save(usize),
     Next,
+    Return,
     Flip,
     Print(usize),
     Dot(usize, usize),

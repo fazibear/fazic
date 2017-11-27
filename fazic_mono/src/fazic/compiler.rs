@@ -111,17 +111,21 @@ fn process_node(
             let jmp = instructions.len() + 1;
             instructions.push(Instruction::Push(Stack::Next(p, max, step, jmp)));
         }
-
         "abs" => {
             let p0 = process_param(0, &params, instructions);
             instructions.push(Instruction::Abs(p0, dst));
         }
-
         "neg" => {
             let p0 = process_param(0, &params, instructions);
             instructions.push(Instruction::Neg(p0, dst));
         }
-
+        "gosub" => if let Param::Value(Value::Integer(i)) = params[0] {
+            let jmp = instructions.len() + 2;
+            instructions.push(Instruction::Push(Stack::Return(jmp)));
+            instructions.push(Instruction::JmpLine(i as u16));
+        }
+        "return" => instructions.push(Instruction::Return),
+        "end" => instructions.push(Instruction::End),
         _ => {
             println!("Can't translate: {}", name);
         }
@@ -179,12 +183,15 @@ pub fn compile(
 
     process_nodes(&mut instructions, nodes, variables, &mut lines);
 
-    instructions.push(Instruction::Stop);
+    instructions.push(Instruction::End);
 
     println!("instructions: {:?}", instructions);
 
-    instructions
+    let x = instructions
         .into_iter()
-        .map(|i| process_gotos(i, &lines))
-        .collect()
+        .map(|i| process_gotos(i, lines))
+        .collect();
+
+    println!("instructions: {:?}", x);
+    x
 }

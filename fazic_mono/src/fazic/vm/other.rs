@@ -35,3 +35,7 @@ pub fn jmpif(pos: usize, var: usize, fazic: &mut ::fazic::Fazic) {
         fazic.vm.step()
     };
 }
+
+pub fn jmp(pos: usize, fazic: &mut ::fazic::Fazic) {
+    fazic.vm.jump(pos)
+}

@@ -120,7 +120,7 @@ pub fn step(fazic: &mut ::fazic::Fazic) {
         Instruction::Error(_) => onerror(fazic),
         Instruction::Noop => fazic.vm.step(),
         Instruction::Run => start(fazic),
-        Instruction::Stop => stop(fazic),
+        Instruction::End => stop(fazic),
         Instruction::Clr => {
             fazic.variables = ::fazic::variables::Variables::new();
             fazic.vm.step()
@@ -214,8 +214,12 @@ pub fn step(fazic: &mut ::fazic::Fazic) {
                 expressions::lteq(var, max, 0, fazic);
                 other::jmpif(jmp, 0, fazic);
             }
-            None => error(fazic, "NEXT WITHOUT FOR"),
-        },
+            _ => error(fazic, "NEXT WITHOUT FOR"),
+        }
+        Instruction::Return => match fazic.stack.pop() {
+            Some(Stack::Return(jmp)) => other::jmp(jmp, fazic),
+            _ => error(fazic, "RETEURN WITHOUT GOSUB"),
+        }
         Instruction::JmpLine(_) => unreachable!(),
     }
 }
