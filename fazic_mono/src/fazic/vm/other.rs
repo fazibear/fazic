@@ -22,9 +22,9 @@ pub fn set_var(name: usize, fazic: &mut ::fazic::Fazic) {
     fazic.variables.set(name, val.clone());
 }
 
-pub fn jmpif(pos: usize, var: usize, fazic: &mut ::fazic::Fazic) {
+pub fn jmpif(var: usize, pos: usize, fazic: &mut ::fazic::Fazic) {
     let cond = match *fazic.variables.get(var) {
-        Value::Integer(_) | Value::Float(_) => true,
+        //Value::Integer(_) | Value::Float(_) => true,
         Value::Bool(b) => b,
         _ => false,
     };
@@ -36,6 +36,16 @@ pub fn jmpif(pos: usize, var: usize, fazic: &mut ::fazic::Fazic) {
     };
 }
 
-pub fn jmp(pos: usize, fazic: &mut ::fazic::Fazic) {
-    fazic.vm.jump(pos)
+pub fn jmpifnot(var: usize, pos: usize, fazic: &mut ::fazic::Fazic) {
+    let cond = match *fazic.variables.get(var) {
+        //Value::Integer(_) | Value::Float(_) => true,
+        Value::Bool(b) => b,
+        _ => false,
+    };
+
+    if cond {
+        fazic.vm.step()
+    } else {
+        fazic.vm.jump(pos)
+    };
 }

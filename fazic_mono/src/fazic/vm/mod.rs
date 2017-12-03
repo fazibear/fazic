@@ -118,7 +118,6 @@ pub fn error(fazic: &mut ::fazic::Fazic, msg: &str) {
 pub fn step(fazic: &mut ::fazic::Fazic) {
     match *fazic.vm.current() {
         Instruction::Error(_) => onerror(fazic),
-        Instruction::Noop => fazic.vm.step(),
         Instruction::Run => start(fazic),
         Instruction::End => stop(fazic),
         Instruction::Clr => {
@@ -129,9 +128,10 @@ pub fn step(fazic: &mut ::fazic::Fazic) {
             fazic.program = ::fazic::program::Program::new();
             stop(fazic)
         }
+        Instruction::JmpLine(_) => unreachable!(),
+        Instruction::JmpIfNotNextLine(_, _) => unreachable!(),
         Instruction::Jmp(pos) => fazic.vm.jump(pos),
-        Instruction::JmpIf(pos, var) => other::jmpif(pos, var, fazic),
-
+        Instruction::JmpIfNot(pos, var) => other::jmpifnot(pos, var, fazic),
         Instruction::Pop => {
             fazic.stack.pop();
             fazic.vm.step()
@@ -187,6 +187,10 @@ pub fn step(fazic: &mut ::fazic::Fazic) {
             expressions::add(a, b, dst, fazic);
             fazic.vm.step()
         }
+        Instruction::Eq(a, b, dst) => {
+            expressions::eq(a, b, dst, fazic);
+            fazic.vm.step()
+        }
         Instruction::Gt(a, b, dst) => {
             expressions::gt(a, b, dst, fazic);
             fazic.vm.step()
@@ -212,14 +216,13 @@ pub fn step(fazic: &mut ::fazic::Fazic) {
             Some(&Stack::Next(var, max, step, jmp)) => {
                 expressions::add(var, step, var, fazic);
                 expressions::lteq(var, max, 0, fazic);
-                other::jmpif(jmp, 0, fazic);
+                other::jmpif(0, jmp, fazic);
             }
             _ => error(fazic, "NEXT WITHOUT FOR"),
-        }
+        },
         Instruction::Return => match fazic.stack.pop() {
-            Some(Stack::Return(jmp)) => other::jmp(jmp, fazic),
+            Some(Stack::Return(pos)) => fazic.vm.jump(pos),
             _ => error(fazic, "RETEURN WITHOUT GOSUB"),
-        }
-        Instruction::JmpLine(_) => unreachable!(),
+        },
     }
 }

@@ -8,6 +8,7 @@ fn process_param(idx: usize, params: &[Param], instructions: &mut Vec<Instructio
         Param::Node(i) => i,
         Param::Variable(var) => var,
         Param::Value(ref val) => {
+            println!("process_p: {:?}", val);
             instructions.push(Instruction::Set(idx, val.clone()));
             idx
         }
@@ -59,6 +60,11 @@ fn process_node(
             let p0 = process_param(0, &params, instructions);
             let p1 = process_param(1, &params, instructions);
             instructions.push(Instruction::Add(p0, p1, dst));
+        }
+        "eq" => {
+            let p0 = process_param(0, &params, instructions);
+            let p1 = process_param(1, &params, instructions);
+            instructions.push(Instruction::Eq(p0, p1, dst));
         }
         "lt" => {
             let p0 = process_param(0, &params, instructions);
@@ -123,9 +129,13 @@ fn process_node(
             let jmp = instructions.len() + 2;
             instructions.push(Instruction::Push(Stack::Return(jmp)));
             instructions.push(Instruction::JmpLine(i as u16));
-        }
+        },
         "return" => instructions.push(Instruction::Return),
         "end" => instructions.push(Instruction::End),
+        "if" => {
+            let p0 = process_param(0, &params, instructions);
+            instructions.push(Instruction::JmpIfNotNextLine(p0, lines.current()));
+        }
         _ => {
             println!("Can't translate: {}", name);
         }
@@ -171,6 +181,10 @@ pub fn process_gotos(instruction: Instruction, lines: &Lines) -> Instruction {
             Some(pos) => Instruction::Jmp(*pos as usize),
             None => Instruction::Error("UNDEF'D STATEMENT ERROR".to_string()),
         },
+        Instruction::JmpIfNotNextLine(var, ref line) => match lines.get_next(line) {
+            Some(pos) => Instruction::JmpIfNot(var, *pos as usize),
+            None => Instruction::Error("UNDEF'D STATEMENT ERROR".to_string()),
+        },
         _ => instruction,
     }
 }
@@ -188,6 +202,8 @@ pub fn compile(
 
     process_nodes(&mut instructions, nodes, variables, &mut lines, false);
 
+    let end_line = lines.current() + 1;
+    lines.add(end_line, instructions.len());
     instructions.push(Instruction::End);
 
     println!("instructions: {:?}", instructions);

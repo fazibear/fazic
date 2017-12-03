@@ -12,7 +12,7 @@ impl Default for Variables {
     fn default() -> Variables {
         Variables {
             variables: vec![],
-            map: HashMap::new(),
+            map: HashMap::with_capacity(10),
             counter: 0,
             empty: Value::Null,
         }

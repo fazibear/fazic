@@ -32,13 +32,14 @@ pub enum Stack {
 
 #[derive(Debug, Clone)]
 pub enum Instruction {
-    Noop,
+    JmpLine(u16),
+    JmpIfNotNextLine(usize, u16),
+
     End,
     Push(Stack),
     Pop,
-    JmpLine(u16),
     Jmp(usize),
-    JmpIf(usize, usize),
+    JmpIfNot(usize, usize),
     Set(usize, Value),
 
     Error(String),
@@ -60,6 +61,9 @@ pub enum Instruction {
     Mov(usize, usize),
 
     Add(usize, usize, usize),
+
+    Eq(usize, usize, usize),
+
     Gt(usize, usize, usize),
     Lt(usize, usize, usize),
     LtEq(usize, usize, usize),
