@@ -207,9 +207,24 @@ pub fn step(fazic: &mut ::fazic::Fazic) {
             expressions::neg(a, dst, fazic);
             fazic.vm.step()
         }
-
+        Instruction::Rng(a, dst) => {
+            functions::rng(a, dst, fazic);
+            fazic.vm.step()
+        }
         Instruction::Abs(a, dst) => {
             functions::abs(a, dst, fazic);
+            fazic.vm.step()
+        }
+        Instruction::Sin(a, dst) => {
+            functions::sin(a, dst, fazic);
+            fazic.vm.step()
+        }
+        Instruction::Cos(a, dst) => {
+            functions::cos(a, dst, fazic);
+            fazic.vm.step()
+        }
+        Instruction::Tan(a, dst) => {
+            functions::tan(a, dst, fazic);
             fazic.vm.step()
         }
         Instruction::Next => match fazic.stack.last() {

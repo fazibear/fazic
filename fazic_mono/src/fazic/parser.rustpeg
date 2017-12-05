@@ -67,6 +67,9 @@ command -> Vec<NodeElement>
 function -> NodeElement
     = ("ABS(" / "abs(") _ e:expression _ ")" { node("abs", vec![e]) }
     / ("RND(" / "rnd(") _ e:expression _ ")" { node("rnd", vec![e]) }
+    / ("SIN(" / "sin(") _ e:expression _ ")" { node("sin", vec![e]) }
+    / ("COS(" / "cos(") _ e:expression _ ")" { node("cos", vec![e]) }
+    / ("TAN(" / "tan(") _ e:expression _ ")" { node("tan", vec![e]) }
 
 expression -> NodeElement
     = #infix<term> {

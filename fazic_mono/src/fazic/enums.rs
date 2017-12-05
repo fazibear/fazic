@@ -69,5 +69,9 @@ pub enum Instruction {
     LtEq(usize, usize, usize),
     Neg(usize, usize),
 
+    Rng(usize, usize),
     Abs(usize, usize),
+    Sin(usize, usize),
+    Cos(usize, usize),
+    Tan(usize, usize),
 }

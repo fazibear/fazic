@@ -117,9 +117,25 @@ fn process_node(
             let jmp = instructions.len() + 1;
             instructions.push(Instruction::Push(Stack::Next(p, max, step, jmp)));
         }
+        "rng" => {
+            let p0 = process_param(0, &params, instructions);
+            instructions.push(Instruction::Rng(p0, dst));
+        }
         "abs" => {
             let p0 = process_param(0, &params, instructions);
             instructions.push(Instruction::Abs(p0, dst));
+        }
+        "sin" => {
+            let p0 = process_param(0, &params, instructions);
+            instructions.push(Instruction::Sin(p0, dst));
+        }
+        "cos" => {
+            let p0 = process_param(0, &params, instructions);
+            instructions.push(Instruction::Cos(p0, dst));
+        }
+        "tan" => {
+            let p0 = process_param(0, &params, instructions);
+            instructions.push(Instruction::Tan(p0, dst));
         }
         "neg" => {
             let p0 = process_param(0, &params, instructions);
