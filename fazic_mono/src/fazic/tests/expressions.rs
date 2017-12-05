@@ -41,3 +41,101 @@ fn eq_false() {
         "false".to_string()
     )
 }
+
+#[test]
+fn gt_true() {
+    let mut fazic = Fazic::new();
+    fazic.text_buffer.insert_string("? 2>1".to_string());
+    fazic.enter_key();
+    for _ in 0..100 { fazic.tick(); }
+    fazic.text_buffer.cursor_line = fazic.text_buffer.cursor_line - 2;
+
+    assert_eq!(
+        fazic.text_buffer.get_current_line_string(),
+        "true".to_string()
+    )
+}
+
+#[test]
+fn gt_false() {
+    let mut fazic = Fazic::new();
+    fazic.text_buffer.insert_string("? 1>2".to_string());
+    fazic.enter_key();
+    for _ in 0..100 { fazic.tick(); }
+    fazic.text_buffer.cursor_line = fazic.text_buffer.cursor_line - 2;
+
+    assert_eq!(
+        fazic.text_buffer.get_current_line_string(),
+        "false".to_string()
+    )
+}
+
+#[test]
+fn lt_true() {
+    let mut fazic = Fazic::new();
+    fazic.text_buffer.insert_string("? 1<2".to_string());
+    fazic.enter_key();
+    for _ in 0..100 { fazic.tick(); }
+    fazic.text_buffer.cursor_line = fazic.text_buffer.cursor_line - 2;
+
+    assert_eq!(
+        fazic.text_buffer.get_current_line_string(),
+        "true".to_string()
+    )
+}
+
+#[test]
+fn lt_false() {
+    let mut fazic = Fazic::new();
+    fazic.text_buffer.insert_string("? 2<1".to_string());
+    fazic.enter_key();
+    for _ in 0..100 { fazic.tick(); }
+    fazic.text_buffer.cursor_line = fazic.text_buffer.cursor_line - 2;
+
+    assert_eq!(
+        fazic.text_buffer.get_current_line_string(),
+        "false".to_string()
+    )
+}
+
+#[test]
+fn lteq_true() {
+    let mut fazic = Fazic::new();
+    fazic.text_buffer.insert_string("? 1<=2".to_string());
+    fazic.enter_key();
+    for _ in 0..100 { fazic.tick(); }
+    fazic.text_buffer.cursor_line = fazic.text_buffer.cursor_line - 2;
+
+    assert_eq!(
+        fazic.text_buffer.get_current_line_string(),
+        "true".to_string()
+    )
+}
+
+#[test]
+fn lteq_false() {
+    let mut fazic = Fazic::new();
+    fazic.text_buffer.insert_string("? 2<=1".to_string());
+    fazic.enter_key();
+    for _ in 0..100 { fazic.tick(); }
+    fazic.text_buffer.cursor_line = fazic.text_buffer.cursor_line - 2;
+
+    assert_eq!(
+        fazic.text_buffer.get_current_line_string(),
+        "false".to_string()
+    )
+}
+
+#[test]
+fn neg() {
+    let mut fazic = Fazic::new();
+    fazic.text_buffer.insert_string("? -1".to_string());
+    fazic.enter_key();
+    for _ in 0..100 { fazic.tick(); }
+    fazic.text_buffer.cursor_line = fazic.text_buffer.cursor_line - 2;
+
+    assert_eq!(
+        fazic.text_buffer.get_current_line_string(),
+        "-1".to_string()
+    )
+}
