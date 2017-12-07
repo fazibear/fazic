@@ -24,7 +24,7 @@ fn sin() {
 
     assert_eq!(
         fazic.text_buffer.get_current_line_string(),
-        "0.8414709848078965".to_string()
+        "0.8415".to_string()
     )
 }
 
@@ -38,7 +38,7 @@ fn cos() {
 
     assert_eq!(
         fazic.text_buffer.get_current_line_string(),
-        "0.5403023058681398".to_string()
+        "0.5403".to_string()
     )
 }
 
@@ -52,6 +52,6 @@ fn tan() {
 
     assert_eq!(
         fazic.text_buffer.get_current_line_string(),
-        "1.557407724654902".to_string()
+        "1.5574".to_string()
     )
 }
