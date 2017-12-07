@@ -8,7 +8,6 @@ fn process_param(idx: usize, params: &[Param], instructions: &mut Vec<Instructio
         Param::Node(i) => i,
         Param::Variable(var) => var,
         Param::Value(ref val) => {
-            println!("process_p: {:?}", val);
             instructions.push(Instruction::Set(idx, val.clone()));
             idx
         }
@@ -22,8 +21,9 @@ fn process_node(
     variables: &mut Variables,
     lines: &mut Lines,
     dst: usize,
+    nest: usize,
 ) {
-    let params = process_nodes(instructions, nodes, variables, lines, true);
+    let params = process_nodes(instructions, nodes, variables, lines, nest);
     println!("{}: {:?}", name, params);
 
     match name {
@@ -55,6 +55,16 @@ fn process_node(
             let p0 = process_param(0, &params, instructions);
             let p1 = process_param(1, &params, instructions);
             instructions.push(Instruction::Dot(p0, p1));
+        }
+        "and" => {
+            let p0 = process_param(0, &params, instructions);
+            let p1 = process_param(1, &params, instructions);
+            instructions.push(Instruction::And(p0, p1, dst));
+        }
+        "or" => {
+            let p0 = process_param(0, &params, instructions);
+            let p1 = process_param(1, &params, instructions);
+            instructions.push(Instruction::Or(p0, p1, dst));
         }
         "add" => {
             let p0 = process_param(0, &params, instructions);
@@ -163,18 +173,14 @@ fn process_nodes(
     nodes: &[NodeElement],
     variables: &mut Variables,
     lines: &mut Lines,
-    alloc: bool,
+    nest: usize,
 ) -> Vec<Param> {
     let mut params: Vec<Param> = vec![];
     for (i, node) in nodes.iter().enumerate() {
-        let tmp = if alloc {
-            variables.alloc(&format!("{}-TMP", i))
-        } else {
-            0
-        };
+        let tmp = variables.alloc(&format!("{}-TMP", nest+i));
         match *node {
             NodeElement::Node(Node(ref str, ref nodes)) => {
-                process_node(instructions, str, nodes, variables, lines, tmp);
+                process_node(instructions, str, nodes, variables, lines, tmp, nest+1000);
                 params.push(Param::Node(tmp));
             }
             NodeElement::Value(ref val) => {
@@ -216,7 +222,7 @@ pub fn compile(
 
     lines.reset();
 
-    process_nodes(&mut instructions, nodes, variables, &mut lines, false);
+    process_nodes(&mut instructions, nodes, variables, &mut lines, 0);
 
     let end_line = lines.current() + 1;
     lines.add(end_line, instructions.len());

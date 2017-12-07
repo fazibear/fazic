@@ -182,7 +182,14 @@ pub fn step(fazic: &mut ::fazic::Fazic) {
             commands::mode(mode, fazic);
             fazic.vm.step()
         }
-
+        Instruction::And(a, b, dst) => {
+            expressions::and(a, b, dst, fazic);
+            fazic.vm.step()
+        }
+        Instruction::Or(a, b, dst) => {
+            expressions::or(a, b, dst, fazic);
+            fazic.vm.step()
+        }
         Instruction::Add(a, b, dst) => {
             expressions::add(a, b, dst, fazic);
             fazic.vm.step()

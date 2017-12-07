@@ -60,6 +60,8 @@ pub enum Instruction {
 
     Mov(usize, usize),
 
+    And(usize, usize, usize),
+    Or(usize, usize, usize),
     Add(usize, usize, usize),
 
     Eq(usize, usize, usize),
