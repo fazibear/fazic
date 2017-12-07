@@ -151,6 +151,10 @@ fn process_node(
             let p0 = process_param(0, &params, instructions);
             instructions.push(Instruction::Neg(p0, dst));
         }
+        "not" => {
+            let p0 = process_param(0, &params, instructions);
+            instructions.push(Instruction::Not(p0, dst));
+        }
         "gosub" => if let Param::Value(Value::Integer(i)) = params[0] {
             let jmp = instructions.len() + 2;
             instructions.push(Instruction::Push(Stack::Return(jmp)));

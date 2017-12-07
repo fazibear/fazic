@@ -70,6 +70,7 @@ pub enum Instruction {
     Lt(usize, usize, usize),
     LtEq(usize, usize, usize),
     Neg(usize, usize),
+    Not(usize, usize),
 
     Rng(usize, usize),
     Abs(usize, usize),

@@ -118,6 +118,18 @@ pub fn lteq(a: usize, b: usize, dst: usize, fazic: &mut ::fazic::Fazic) {
     fazic.variables.set(dst, ret);
 }
 
+pub fn not(a: usize, dst: usize, fazic: &mut ::fazic::Fazic) {
+    let ret = match fazic.variables.get(a) {
+        &Value::Integer(l) => Value::Integer(!l),
+        &Value::Bool(l) => Value::Bool(!l),
+        _ => {
+            ::fazic::vm::error(fazic, "TYPE MISMATCH");
+            Value::Null
+        }
+    };
+    fazic.variables.set(dst, ret);
+}
+
 pub fn neg(a: usize, dst: usize, fazic: &mut ::fazic::Fazic) {
     let ret = match fazic.variables.get(a) {
         &Value::Integer(l) => Value::Integer(l.neg()),

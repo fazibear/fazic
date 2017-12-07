@@ -214,6 +214,10 @@ pub fn step(fazic: &mut ::fazic::Fazic) {
             expressions::neg(a, dst, fazic);
             fazic.vm.step()
         }
+        Instruction::Not(a, dst) => {
+            expressions::not(a, dst, fazic);
+            fazic.vm.step()
+        }
         Instruction::Rng(a, dst) => {
             functions::rng(a, dst, fazic);
             fazic.vm.step()
