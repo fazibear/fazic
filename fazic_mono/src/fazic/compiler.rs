@@ -177,10 +177,10 @@ fn process_nodes(
 ) -> Vec<Param> {
     let mut params: Vec<Param> = vec![];
     for (i, node) in nodes.iter().enumerate() {
-        let tmp = variables.alloc(&format!("{}-TMP", nest+i));
+        let tmp = variables.alloc(&format!("{}-{}-TMP", nest, i));
         match *node {
             NodeElement::Node(Node(ref str, ref nodes)) => {
-                process_node(instructions, str, nodes, variables, lines, tmp, nest+1000);
+                process_node(instructions, str, nodes, variables, lines, tmp, nest+1);
                 params.push(Param::Node(tmp));
             }
             NodeElement::Value(ref val) => {
