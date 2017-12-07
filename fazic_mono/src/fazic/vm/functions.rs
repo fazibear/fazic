@@ -59,3 +59,39 @@ pub fn tan(a: usize, dst: usize, fazic: &mut ::fazic::Fazic) {
     };
     fazic.variables.set(dst, ret);
 }
+
+pub fn atn(a: usize, dst: usize, fazic: &mut ::fazic::Fazic) {
+    let ret = match fazic.variables.get(a) {
+        &Value::Integer(l) => Value::Float((l as f64).atan()),
+        &Value::Float(l) => Value::Float(l.atan()),
+        _ => {
+            ::fazic::vm::error(fazic, "TYPE MISMATCH");
+            Value::Null
+        }
+    };
+    fazic.variables.set(dst, ret);
+}
+
+pub fn exp(a: usize, dst: usize, fazic: &mut ::fazic::Fazic) {
+    let ret = match fazic.variables.get(a) {
+        &Value::Integer(l) => Value::Float((l as f64).exp()),
+        &Value::Float(l) => Value::Float(l.exp()),
+        _ => {
+            ::fazic::vm::error(fazic, "TYPE MISMATCH");
+            Value::Null
+        }
+    };
+    fazic.variables.set(dst, ret);
+}
+
+pub fn log(a: usize, dst: usize, fazic: &mut ::fazic::Fazic) {
+    let ret = match fazic.variables.get(a) {
+        &Value::Integer(l) => Value::Float((l as f64).ln()),
+        &Value::Float(l) => Value::Float(l.ln()),
+        _ => {
+            ::fazic::vm::error(fazic, "TYPE MISMATCH");
+            Value::Null
+        }
+    };
+    fazic.variables.set(dst, ret);
+}

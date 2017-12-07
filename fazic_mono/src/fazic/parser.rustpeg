@@ -70,6 +70,9 @@ function -> NodeElement
     / ("SIN(" / "sin(") _ e:expression _ ")" { node("sin", vec![e]) }
     / ("COS(" / "cos(") _ e:expression _ ")" { node("cos", vec![e]) }
     / ("TAN(" / "tan(") _ e:expression _ ")" { node("tan", vec![e]) }
+    / ("ATN(" / "atn(") _ e:expression _ ")" { node("atn", vec![e]) }
+    / ("EXP(" / "exp(") _ e:expression _ ")" { node("exp", vec![e]) }
+    / ("LOG(" / "log(") _ e:expression _ ")" { node("log", vec![e]) }
 
 expression -> NodeElement
     = #infix<term> {

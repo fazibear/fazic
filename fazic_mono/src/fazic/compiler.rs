@@ -147,6 +147,18 @@ fn process_node(
             let p0 = process_param(0, &params, instructions);
             instructions.push(Instruction::Tan(p0, dst));
         }
+        "atn" => {
+            let p0 = process_param(0, &params, instructions);
+            instructions.push(Instruction::Atn(p0, dst));
+        }
+        "exp" => {
+            let p0 = process_param(0, &params, instructions);
+            instructions.push(Instruction::Exp(p0, dst));
+        }
+        "log" => {
+            let p0 = process_param(0, &params, instructions);
+            instructions.push(Instruction::Log(p0, dst));
+        }
         "neg" => {
             let p0 = process_param(0, &params, instructions);
             instructions.push(Instruction::Neg(p0, dst));

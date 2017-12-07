@@ -77,4 +77,7 @@ pub enum Instruction {
     Sin(usize, usize),
     Cos(usize, usize),
     Tan(usize, usize),
+    Atn(usize, usize),
+    Exp(usize, usize),
+    Log(usize, usize),
 }
