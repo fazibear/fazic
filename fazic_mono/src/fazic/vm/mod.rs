@@ -93,15 +93,17 @@ pub fn start(fazic: &mut ::fazic::Fazic) {
 }
 
 pub fn stop(fazic: &mut ::fazic::Fazic) {
-    fazic.vm.running = false;
-    fazic.mode = 0;
+    if fazic.vm.running {
+        fazic.vm.running = false;
+        fazic.mode = 0;
 
-    let line = fazic.lines.what_line(fazic.vm.position);
-    let message = format!("? BREAK IN {}", line);
+        let line = fazic.lines.what_line(fazic.vm.position);
+        let message = format!("? BREAK IN {}", line);
 
-    fazic.text_buffer.insert_line(&message);
-    fazic.text_buffer.prompt();
-    println!("{:?}", fazic.vm.instant.elapsed());
+        fazic.text_buffer.insert_line(&message);
+        fazic.text_buffer.prompt();
+        println!("{:?}", fazic.vm.instant.elapsed());
+    }
 }
 
 pub fn end(fazic: &mut ::fazic::Fazic) {
