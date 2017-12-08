@@ -71,6 +71,26 @@ fn process_node(
             let p1 = process_param(1, &params, instructions);
             instructions.push(Instruction::Add(p0, p1, dst));
         }
+        "sub" => {
+            let p0 = process_param(0, &params, instructions);
+            let p1 = process_param(1, &params, instructions);
+            instructions.push(Instruction::Sub(p0, p1, dst));
+        }
+        "mul" => {
+            let p0 = process_param(0, &params, instructions);
+            let p1 = process_param(1, &params, instructions);
+            instructions.push(Instruction::Mul(p0, p1, dst));
+        }
+        "div" => {
+            let p0 = process_param(0, &params, instructions);
+            let p1 = process_param(1, &params, instructions);
+            instructions.push(Instruction::Div(p0, p1, dst));
+        }
+        "pow" => {
+            let p0 = process_param(0, &params, instructions);
+            let p1 = process_param(1, &params, instructions);
+            instructions.push(Instruction::Pow(p0, p1, dst));
+        }
         "eq" => {
             let p0 = process_param(0, &params, instructions);
             let p1 = process_param(1, &params, instructions);
@@ -90,6 +110,11 @@ fn process_node(
             let p0 = process_param(0, &params, instructions);
             let p1 = process_param(1, &params, instructions);
             instructions.push(Instruction::LtEq(p0, p1, dst));
+        }
+        "gteq" => {
+            let p0 = process_param(0, &params, instructions);
+            let p1 = process_param(1, &params, instructions);
+            instructions.push(Instruction::GtEq(p0, p1, dst));
         }
         "let" => {
             let p0 = process_param(0, &params, instructions);

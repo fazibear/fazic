@@ -65,13 +65,17 @@ pub enum Instruction {
     And(usize, usize, usize),
     Or(usize, usize, usize),
     Add(usize, usize, usize),
+    Sub(usize, usize, usize),
+    Mul(usize, usize, usize),
+    Div(usize, usize, usize),
+    Pow(usize, usize, usize),
 
     Eq(usize, usize, usize),
-
-    Gt(usize, usize, usize),
-    Lt(usize, usize, usize),
-    LtEq(usize, usize, usize),
     Neg(usize, usize),
+    Lt(usize, usize, usize),
+    Gt(usize, usize, usize),
+    LtEq(usize, usize, usize),
+    GtEq(usize, usize, usize),
     Not(usize, usize),
 
     Rng(usize, usize),

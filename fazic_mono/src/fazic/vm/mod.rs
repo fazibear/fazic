@@ -211,6 +211,22 @@ pub fn step(fazic: &mut ::fazic::Fazic) {
             expressions::add(a, b, dst, fazic);
             fazic.vm.step()
         }
+        Instruction::Sub(a, b, dst) => {
+            expressions::sub(a, b, dst, fazic);
+            fazic.vm.step()
+        }
+        Instruction::Mul(a, b, dst) => {
+            expressions::mul(a, b, dst, fazic);
+            fazic.vm.step()
+        }
+        Instruction::Div(a, b, dst) => {
+            expressions::div(a, b, dst, fazic);
+            fazic.vm.step()
+        }
+        Instruction::Pow(a, b, dst) => {
+            expressions::pow(a, b, dst, fazic);
+            fazic.vm.step()
+        }
         Instruction::Eq(a, b, dst) => {
             expressions::eq(a, b, dst, fazic);
             fazic.vm.step()
@@ -225,6 +241,10 @@ pub fn step(fazic: &mut ::fazic::Fazic) {
         }
         Instruction::LtEq(a, b, dst) => {
             expressions::lteq(a, b, dst, fazic);
+            fazic.vm.step()
+        }
+        Instruction::GtEq(a, b, dst) => {
+            expressions::gteq(a, b, dst, fazic);
             fazic.vm.step()
         }
         Instruction::Neg(a, dst) => {
