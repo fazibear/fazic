@@ -8,10 +8,42 @@
     <title>fazic</title>
     <link href="//fonts.googleapis.com/css?family=Lato:300,400" rel="stylesheet" type="text/css" />
     <link rel="stylesheet" type="text/css" href="/stylesheet.css">
-    <script>
-    </script>
   </head>
   <body>
-    <h1>test</h1>
+    <nav>
+      <ul>
+        <li>
+          <a href="/">Back to homepage</a>
+        </li>
+      </ul>
+    </nav>
+    <div class="fazic">
+      <div class="overlay">
+        <div id="status">
+        </div>
+      </div>
+      <div class="canvas">
+        <canvas id="canvas" oncontextmenu="event.preventDefault()">
+        </canvas>
+      </div>
+      <script>
+        var Module = {
+          print: function(text) { console.log(text) },
+          printErr: function(text) { console.error(text) },
+          canvas: document.getElementById('canvas'),
+          setStatus: function(status) {
+            document.getElementById('status').innerHTML = status;
+          }
+        };
+
+        var fazic = document.createElement("script");
+        fazic.type = "text/javascript";
+        fazic.src = "/static/fazic.js";
+
+        Module.setStatus('Downloading...');
+        document.body.appendChild(fazic);
+      </script>
+    </div>
+    <footer>Copyright Michal Kalbarczyk 2017</footer>
   </body>
 </html>
