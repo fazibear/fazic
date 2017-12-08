@@ -306,15 +306,13 @@ pub fn compile(
         let end_line = lines.current() + 1;
         lines.add(end_line, instructions.len());
         instructions.push(Instruction::End);
+
+        instructions = instructions
+            .into_iter()
+            .map(|i| process_gotos(i, lines))
+            .collect();
     }
 
     println!("instructions: {:?}", instructions);
-
-    let x = instructions
-        .into_iter()
-        .map(|i| process_gotos(i, lines))
-        .collect();
-
-    println!("instructions: {:?}", x);
-    x
+    instructions
 }

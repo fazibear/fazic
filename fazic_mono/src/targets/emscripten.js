@@ -1,21 +1,26 @@
 mergeInto(LibraryManager.library, {
-  js_fetch: function(url_p, method_p, data_p, code_p, resp_p, size_p) {
-    var url = Pointer_stringify(url_p);
+  js_fetch: function(name_p, method_p, data_p, code_p, resp_p, size_p) {
+    var name = Pointer_stringify(name_p);
     var method = Pointer_stringify(method_p);
     var data = Pointer_stringify(data_p) || null;
 
-    var code, response;
+    var code = 200;
+    var response;
 
-    try {
-      var request = new XMLHttpRequest();
-      request.open(method, url, false);
-      request.send(data);
-      code = request.status;
-      response = request.responseText;
-    } catch(err) {
-      code = 0;
-      response = "CAN'T CONNECT"
-    }
+//    try {
+      switch(method) {
+        case "load":
+          response = localStorage.getItem(name + ".bas");
+          break;
+        case "save":
+          localStorage.setItem(name + ".bas", data);
+          response = "SAVED";
+          break;
+      }
+  //  }
+    //catch(err) {
+    //  response = "ERROR"
+    //}
 
     stringToUTF8(response, resp_p, 102400);
 

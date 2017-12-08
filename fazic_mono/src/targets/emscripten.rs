@@ -12,7 +12,7 @@ type em_callback_func = unsafe extern "C" fn();
 extern "C" {
     fn emscripten_set_main_loop(func: em_callback_func, fps: c_int, simulate_infinite_loop: c_int);
     fn js_fetch(
-        url: *const c_char,
+        name: *const c_char,
         method: *const c_char,
         data: *const c_char,
         code: *const c_int,
@@ -47,7 +47,7 @@ where
 }
 
 pub fn load(name: &String) -> Result<String, String> {
-    let (code, resp) = fetch(name, "get", &"".to_string());
+    let (code, resp) = fetch(name, "load", &"".to_string());
     match code {
         200 => Ok(resp),
         _ => Err(resp),
@@ -56,7 +56,7 @@ pub fn load(name: &String) -> Result<String, String> {
 
 
 pub fn save(name: &String, body: &String) -> Result<String, String> {
-    let (code, resp) = fetch(name, "post", body);
+    let (code, resp) = fetch(name, "save", body);
     match code {
         200 => Ok(resp),
         _ => Err(resp),
@@ -68,8 +68,7 @@ fn fetch(name: &String, method: &str, data: &String) -> (i32, String) {
     let code: c_int = 0;
 
     let data = CString::new(format!("{}", data)).unwrap();
-
-    let url = CString::new(format!("{}/file/{}", "/", name)).unwrap();
+    let name = CString::new(format!("{}", name)).unwrap();
 
     let method = CString::new(method).unwrap();
 
@@ -78,7 +77,7 @@ fn fetch(name: &String, method: &str, data: &String) -> (i32, String) {
         let size_p: c_int = 0;
 
         js_fetch(
-            url.as_ptr(),
+            name.as_ptr(),
             method.as_ptr(),
             data.as_ptr(),
             &code,

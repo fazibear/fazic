@@ -1,2 +1,1 @@
-10 print "aga"
-20 goto 10
+10 print "1234"
