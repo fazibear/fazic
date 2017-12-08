@@ -78,6 +78,8 @@ function -> NodeElement
     / ("LEN(" / "len(") _ e:expression _ ")" { node("len", vec![e]) }
     / ("CHR(" / "chr(") _ e:expression _ ")" { node("chr", vec![e]) }
     / ("ASC(" / "asc(") _ e:expression _ ")" { node("asc", vec![e]) }
+    / ("INT(" / "int(") _ e:expression _ ")" { node("int", vec![e]) }
+    / ("VAL(" / "val(") _ e:expression _ ")" { node("val", vec![e]) }
 
 expression -> NodeElement
     = #infix<term> {

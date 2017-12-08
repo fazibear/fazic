@@ -179,6 +179,14 @@ fn process_node(
             let p0 = process_param(0, &params, instructions);
             instructions.push(Instruction::Asc(p0, dst));
         }
+        "val" => {
+            let p0 = process_param(0, &params, instructions);
+            instructions.push(Instruction::Val(p0, dst));
+        }
+        "int" => {
+            let p0 = process_param(0, &params, instructions);
+            instructions.push(Instruction::Int(p0, dst));
+        }
         "neg" => {
             let p0 = process_param(0, &params, instructions);
             instructions.push(Instruction::Neg(p0, dst));

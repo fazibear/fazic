@@ -161,3 +161,31 @@ pub fn chr(a: usize, dst: usize, fazic: &mut ::fazic::Fazic) {
     };
     fazic.variables.set(dst, ret);
 }
+
+pub fn val(a: usize, dst: usize, fazic: &mut ::fazic::Fazic) {
+    let ret = match fazic.variables.get(a).clone() {
+        Value::String(l) => match l.parse::<f64>() {
+            Ok(f) => Value::Float(f),
+            _ => {
+                ::fazic::vm::error(fazic, "TYPE MISMATCH");
+                Value::Null
+            }
+        },
+        _ => {
+            ::fazic::vm::error(fazic, "TYPE MISMATCH");
+            Value::Null
+        }
+    };
+    fazic.variables.set(dst, ret);
+}
+
+pub fn int(a: usize, dst: usize, fazic: &mut ::fazic::Fazic) {
+    let ret = match fazic.variables.get(a) {
+        &Value::Float(l) => Value::Integer(l as i32),
+        _ => {
+            ::fazic::vm::error(fazic, "TYPE MISMATCH");
+            Value::Null
+        }
+    };
+    fazic.variables.set(dst, ret);
+}

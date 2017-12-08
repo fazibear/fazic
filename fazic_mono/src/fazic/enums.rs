@@ -85,4 +85,6 @@ pub enum Instruction {
     Len(usize, usize),
     Chr(usize, usize),
     Asc(usize, usize),
+    Val(usize, usize),
+    Int(usize, usize),
 }
