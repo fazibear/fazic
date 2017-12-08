@@ -4,8 +4,9 @@ DST = 'static/'
 desc 'build'
 task :build do
   sh 'bundle exec inesita build -f > /dev/null'
-  sh 'cp fazic.html dist/fazic.html'
-  sh 'cp _redirects dist/_redirects'
+  sh 'cp fazic.html dist/'
+  sh 'cp _redirects dist/'
+  sh 'cp _headers dist/'
 end
 
 task 'update' do
