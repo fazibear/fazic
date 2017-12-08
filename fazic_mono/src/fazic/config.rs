@@ -15,5 +15,3 @@ pub const TEXT_BUFFER_MAX_LINE_CHARS: u16 = TEXT_BUFFER_CHARS_PER_LINE * 5;
 //pub const TEXT_MODE: u8 = 0;
 //pub const FLIP_MODE: u8 = 1;
 //pub const INST_MODE: u8 = 2;
-
-pub const HOST: &str = "http://localhost:8080";

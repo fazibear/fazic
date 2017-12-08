@@ -112,7 +112,7 @@ pub fn sqr(a: usize, dst: usize, fazic: &mut ::fazic::Fazic) {
 pub fn sgn(a: usize, dst: usize, fazic: &mut ::fazic::Fazic) {
     let ret = match fazic.variables.get(a) {
         &Value::Integer(0) => Value::Integer(0),
-        &Value::Float(0.0) => Value::Integer(0),
+        &Value::Float(l) if l == 0.0 => Value::Integer(0),
         &Value::Integer(l) => Value::Integer(if l < 0 { -1 } else { 1 }),
         &Value::Float(l) => Value::Integer(if l < 0.0 { -1 } else { 1 }),
         _ => {

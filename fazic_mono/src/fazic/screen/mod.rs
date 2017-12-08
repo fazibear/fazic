@@ -24,14 +24,14 @@ impl Screen {
         Screen::default()
     }
 
-    pub fn put_string(&mut self, string: String, mut x: u16, y: u16, color: u8) {
-        println!("print({}, {}, {}, {})", string, x, y, color);
-
-        for char in string.chars() {
-            self.put_char(char, x, y, color, true);
-            x += 8;
-        }
-    }
+    // pub fn put_string(&mut self, string: String, mut x: u16, y: u16, color: u8) {
+    //     println!("print({}, {}, {}, {})", string, x, y, color);
+    //
+    //     for char in string.chars() {
+    //         self.put_char(char, x, y, color, true);
+    //         x += 8;
+    //     }
+    // }
 
     pub fn put_char(&mut self, char: char, x: u16, y: u16, color: u8, reverse: bool) {
         let data = chars::get_char(char);
@@ -47,9 +47,9 @@ impl Screen {
         }
     }
 
-    pub fn set_current_color(&mut self, color: u8) {
-        self.current_color = color;
-    }
+    // pub fn set_current_color(&mut self, color: u8) {
+    //     self.current_color = color;
+    // }
 
     pub fn clear(&mut self, color: u8) {
         let (r, g, b) = palette::rgb_for(color);
