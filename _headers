@@ -1,2 +1,2 @@
 /static/*
-  Cache-Control: public, max-age=36000
+  Cache-Control: public, max-age=360000
