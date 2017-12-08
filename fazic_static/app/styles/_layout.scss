@@ -28,7 +28,7 @@ nav {
         color: $text;
       }
 
-      a:hover {
+      a:hover, a.active {
         text-decoration: none;
         color: $yellow;
       }
