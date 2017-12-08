@@ -1,0 +1,42 @@
+.programs_list {
+  list-style-type: none;
+  margin: 0;
+  padding: 0;
+  text-align: center;
+  margin-bottom: 20px;
+
+  li {
+    display: inline;
+    margin-right: 10px;
+    font-family: 'C64Pro';
+
+    a {
+      color: $light-blue;
+      text-decoration: none;
+    }
+  }
+}
+
+.programs {
+  list-style-type: none;
+  margin: 0;
+  padding: 0;
+
+  li {
+    font-family: 'C64Pro';
+
+    .name {
+      font-size: 14px;
+      color: $light-blue;
+    }
+
+    pre {
+      padding: 20px;
+      font-family: 'C64Pro';
+      font-size: 14px;
+      background-color: $blue;
+      color: $light-blue;
+    }
+
+  }
+}
