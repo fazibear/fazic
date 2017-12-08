@@ -54,6 +54,7 @@ impl VM {
     }
 
     pub fn cont(&mut self) {
+        self.tmp_mode = false;
         self.running = true;
     }
 
@@ -94,6 +95,18 @@ pub fn start(fazic: &mut ::fazic::Fazic) {
 pub fn stop(fazic: &mut ::fazic::Fazic) {
     fazic.vm.running = false;
     fazic.mode = 0;
+
+    let line = fazic.lines.what_line(fazic.vm.position);
+    let message = format!("? BREAK IN {}", line);
+
+    fazic.text_buffer.insert_line(&message);
+    fazic.text_buffer.prompt();
+    println!("{:?}", fazic.vm.instant.elapsed());
+}
+
+pub fn end(fazic: &mut ::fazic::Fazic) {
+    fazic.vm.running = false;
+    fazic.mode = 0;
     fazic.text_buffer.prompt();
     println!("{:?}", fazic.vm.instant.elapsed());
 }
@@ -119,14 +132,16 @@ pub fn step(fazic: &mut ::fazic::Fazic) {
     match *fazic.vm.current() {
         Instruction::Error(_) => onerror(fazic),
         Instruction::Run => start(fazic),
-        Instruction::End => stop(fazic),
+        Instruction::End => end(fazic),
+        Instruction::Stop => stop(fazic),
+        Instruction::Cont => fazic.vm.cont(),
         Instruction::Clr => {
             fazic.variables = ::fazic::variables::Variables::new();
             fazic.vm.step()
         }
         Instruction::New => {
             fazic.program = ::fazic::program::Program::new();
-            stop(fazic)
+            end(fazic)
         }
         Instruction::JmpLine(_) => unreachable!(),
         Instruction::JmpIfNotNextLine(_, _) => unreachable!(),
@@ -156,11 +171,11 @@ pub fn step(fazic: &mut ::fazic::Fazic) {
         }
         Instruction::Load(var) => {
             commands::load(var, fazic);
-            stop(fazic)
+            end(fazic)
         }
         Instruction::Save(var) => {
             commands::save(var, fazic);
-            stop(fazic)
+            end(fazic)
         }
         Instruction::Flip => {
             commands::flip(fazic);

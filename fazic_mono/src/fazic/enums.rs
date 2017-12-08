@@ -36,6 +36,8 @@ pub enum Instruction {
     JmpIfNotNextLine(usize, u16),
 
     End,
+    Stop,
+    Cont,
     Push(Stack),
     Pop,
     Jmp(usize),

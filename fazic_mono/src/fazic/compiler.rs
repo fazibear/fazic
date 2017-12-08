@@ -206,6 +206,8 @@ fn process_node(
         },
         "return" => instructions.push(Instruction::Return),
         "end" => instructions.push(Instruction::End),
+        "stop" => instructions.push(Instruction::Stop),
+        "cont" => instructions.push(Instruction::Cont),
         "if" => {
             let p0 = process_param(0, &params, instructions);
             instructions.push(Instruction::JmpIfNotNextLine(p0, lines.current()));
