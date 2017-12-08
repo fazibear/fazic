@@ -5,7 +5,6 @@ use std::cell::RefCell;
 use std::ptr::null_mut;
 use std::os::raw::{c_char, c_int, c_void};
 use std::ffi::CString;
-use fazic::config::HOST;
 
 #[allow(non_camel_case_types)]
 type em_callback_func = unsafe extern "C" fn();
@@ -70,7 +69,7 @@ fn fetch(name: &String, method: &str, data: &String) -> (i32, String) {
 
     let data = CString::new(format!("{}", data)).unwrap();
 
-    let url = CString::new(format!("{}/file/{}", HOST, name)).unwrap();
+    let url = CString::new(format!("{}/file/{}", "/", name)).unwrap();
 
     let method = CString::new(method).unwrap();
 
