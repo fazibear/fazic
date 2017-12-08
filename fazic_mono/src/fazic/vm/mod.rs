@@ -250,6 +250,14 @@ pub fn step(fazic: &mut ::fazic::Fazic) {
             functions::log(a, dst, fazic);
             fazic.vm.step()
         }
+        Instruction::Sqr(a, dst) => {
+            functions::sqr(a, dst, fazic);
+            fazic.vm.step()
+        }
+        Instruction::Sgn(a, dst) => {
+            functions::sgn(a, dst, fazic);
+            fazic.vm.step()
+        }
         Instruction::Next => match fazic.stack.last() {
             Some(&Stack::Next(var, max, step, jmp)) => {
                 expressions::add(var, step, var, fazic);

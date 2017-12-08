@@ -80,4 +80,6 @@ pub enum Instruction {
     Atn(usize, usize),
     Exp(usize, usize),
     Log(usize, usize),
+    Sqr(usize, usize),
+    Sgn(usize, usize),
 }

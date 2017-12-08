@@ -97,3 +97,31 @@ fn exp() {
         "7.3891".to_string()
     )
 }
+
+#[test]
+fn sqr() {
+    let mut fazic = Fazic::new();
+    fazic.text_buffer.insert_string("? SQR(2)".to_string());
+    fazic.enter_key();
+    for _ in 0..100 { fazic.tick(); }
+    fazic.text_buffer.cursor_line = fazic.text_buffer.cursor_line - 2;
+
+    assert_eq!(
+        fazic.text_buffer.get_current_line_string(),
+        "1.4142".to_string()
+    )
+}
+
+#[test]
+fn sgn() {
+    let mut fazic = Fazic::new();
+    fazic.text_buffer.insert_string("? SGN(2)".to_string());
+    fazic.enter_key();
+    for _ in 0..100 { fazic.tick(); }
+    fazic.text_buffer.cursor_line = fazic.text_buffer.cursor_line - 2;
+
+    assert_eq!(
+        fazic.text_buffer.get_current_line_string(),
+        "1".to_string()
+    )
+}

@@ -73,6 +73,8 @@ function -> NodeElement
     / ("ATN(" / "atn(") _ e:expression _ ")" { node("atn", vec![e]) }
     / ("EXP(" / "exp(") _ e:expression _ ")" { node("exp", vec![e]) }
     / ("LOG(" / "log(") _ e:expression _ ")" { node("log", vec![e]) }
+    / ("SQR(" / "sqr(") _ e:expression _ ")" { node("sqr", vec![e]) }
+    / ("SGN(" / "sgn(") _ e:expression _ ")" { node("sgn", vec![e]) }
 
 expression -> NodeElement
     = #infix<term> {
