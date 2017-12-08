@@ -75,6 +75,9 @@ function -> NodeElement
     / ("LOG(" / "log(") _ e:expression _ ")" { node("log", vec![e]) }
     / ("SQR(" / "sqr(") _ e:expression _ ")" { node("sqr", vec![e]) }
     / ("SGN(" / "sgn(") _ e:expression _ ")" { node("sgn", vec![e]) }
+    / ("LEN(" / "len(") _ e:expression _ ")" { node("len", vec![e]) }
+    / ("CHR(" / "chr(") _ e:expression _ ")" { node("chr", vec![e]) }
+    / ("ASC(" / "asc(") _ e:expression _ ")" { node("asc", vec![e]) }
 
 expression -> NodeElement
     = #infix<term> {

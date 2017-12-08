@@ -1,4 +1,5 @@
 use fazic::enums::Value;
+use std::char;
 
 pub fn rng(_: usize, dst: usize, fazic: &mut ::fazic::Fazic) {
     // let ret = match fazic.variables.get(a) {
@@ -114,6 +115,45 @@ pub fn sgn(a: usize, dst: usize, fazic: &mut ::fazic::Fazic) {
         &Value::Float(0.0) => Value::Integer(0),
         &Value::Integer(l) => Value::Integer(if l < 0 { -1 } else { 1 }),
         &Value::Float(l) => Value::Integer(if l < 0.0 { -1 } else { 1 }),
+        _ => {
+            ::fazic::vm::error(fazic, "TYPE MISMATCH");
+            Value::Null
+        }
+    };
+    fazic.variables.set(dst, ret);
+}
+
+pub fn len(a: usize, dst: usize, fazic: &mut ::fazic::Fazic) {
+    let ret = match fazic.variables.get(a).clone() {
+        Value::String(l) => Value::Integer(l.len() as i32),
+        _ => {
+            ::fazic::vm::error(fazic, "TYPE MISMATCH");
+            Value::Null
+        }
+    };
+    fazic.variables.set(dst, ret);
+}
+
+pub fn asc(a: usize, dst: usize, fazic: &mut ::fazic::Fazic) {
+    let ret = match fazic.variables.get(a).clone() {
+        Value::String(ref l) => Value::Integer(l.chars().nth(0).unwrap() as i32),
+        _ => {
+            ::fazic::vm::error(fazic, "TYPE MISMATCH");
+            Value::Null
+        }
+    };
+    fazic.variables.set(dst, ret);
+}
+
+pub fn chr(a: usize, dst: usize, fazic: &mut ::fazic::Fazic) {
+    let ret = match fazic.variables.get(a) {
+        &Value::Integer(l) => match char::from_u32(l as u32) {
+            Some(char) => Value::String(char.to_string()),
+            _ => {
+                ::fazic::vm::error(fazic, "TYPE MISMATCH");
+                Value::Null
+            }
+        },
         _ => {
             ::fazic::vm::error(fazic, "TYPE MISMATCH");
             Value::Null

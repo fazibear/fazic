@@ -167,6 +167,18 @@ fn process_node(
             let p0 = process_param(0, &params, instructions);
             instructions.push(Instruction::Sgn(p0, dst));
         }
+        "len" => {
+            let p0 = process_param(0, &params, instructions);
+            instructions.push(Instruction::Len(p0, dst));
+        }
+        "chr" => {
+            let p0 = process_param(0, &params, instructions);
+            instructions.push(Instruction::Chr(p0, dst));
+        }
+        "asc" => {
+            let p0 = process_param(0, &params, instructions);
+            instructions.push(Instruction::Asc(p0, dst));
+        }
         "neg" => {
             let p0 = process_param(0, &params, instructions);
             instructions.push(Instruction::Neg(p0, dst));

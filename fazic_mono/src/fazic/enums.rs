@@ -82,4 +82,7 @@ pub enum Instruction {
     Log(usize, usize),
     Sqr(usize, usize),
     Sgn(usize, usize),
+    Len(usize, usize),
+    Chr(usize, usize),
+    Asc(usize, usize),
 }

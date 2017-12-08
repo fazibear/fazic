@@ -125,3 +125,45 @@ fn sgn() {
         "1".to_string()
     )
 }
+
+#[test]
+fn len() {
+    let mut fazic = Fazic::new();
+    fazic.text_buffer.insert_string("? LEN(\"TEST 123\")".to_string());
+    fazic.enter_key();
+    for _ in 0..100 { fazic.tick(); }
+    fazic.text_buffer.cursor_line = fazic.text_buffer.cursor_line - 2;
+
+    assert_eq!(
+        fazic.text_buffer.get_current_line_string(),
+        "8".to_string()
+    )
+}
+
+#[test]
+fn chr() {
+    let mut fazic = Fazic::new();
+    fazic.text_buffer.insert_string("? CHR(44)".to_string());
+    fazic.enter_key();
+    for _ in 0..100 { fazic.tick(); }
+    fazic.text_buffer.cursor_line = fazic.text_buffer.cursor_line - 2;
+
+    assert_eq!(
+        fazic.text_buffer.get_current_line_string(),
+        ",".to_string()
+    )
+}
+
+#[test]
+fn asc() {
+    let mut fazic = Fazic::new();
+    fazic.text_buffer.insert_string("? ASC(\",\")".to_string());
+    fazic.enter_key();
+    for _ in 0..100 { fazic.tick(); }
+    fazic.text_buffer.cursor_line = fazic.text_buffer.cursor_line - 2;
+
+    assert_eq!(
+        fazic.text_buffer.get_current_line_string(),
+        "44".to_string()
+    )
+}

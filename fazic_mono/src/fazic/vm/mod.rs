@@ -258,6 +258,18 @@ pub fn step(fazic: &mut ::fazic::Fazic) {
             functions::sgn(a, dst, fazic);
             fazic.vm.step()
         }
+        Instruction::Len(a, dst) => {
+            functions::len(a, dst, fazic);
+            fazic.vm.step()
+        }
+        Instruction::Chr(a, dst) => {
+            functions::chr(a, dst, fazic);
+            fazic.vm.step()
+        }
+        Instruction::Asc(a, dst) => {
+            functions::asc(a, dst, fazic);
+            fazic.vm.step()
+        }
         Instruction::Next => match fazic.stack.last() {
             Some(&Stack::Next(var, max, step, jmp)) => {
                 expressions::add(var, step, var, fazic);
