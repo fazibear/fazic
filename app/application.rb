@@ -22,7 +22,7 @@ class Application
     div.container do
       component Stripes
       h1 "FAZIC"
-      h2 "fantazy retro computer"
+      h2 "fantasy retro computer"
       div.content do
         component router
       end
