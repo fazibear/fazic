@@ -11,7 +11,7 @@ gem 'inesita-router', '~> 0.1.0'
 # gem 'htmlcompressor'
 
 # bootsrap assets
-gem 'bootstrap-sass'
+# gem 'bootstrap-sass'
 
 # rails-assets are also supported
 # source 'https://rails-assets.org' do

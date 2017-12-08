@@ -1,0 +1,12 @@
+[
+  {
+    "name": "abs",
+    "description": "terefere",
+    "example": "abs(10)"
+  },
+  {
+    "name": "pow",
+    "description": "terefere",
+    "example": "pow(10)"
+  }
+]

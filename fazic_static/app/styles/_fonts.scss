@@ -19,3 +19,14 @@
   font-weight: normal;
   font-style: normal;
 }
+
+@font-face {
+  font-family: 'C64Pro';
+  src: url('/static/fonts/C64ProMono.eot');
+  src: url('/static/fonts/C64ProMono.eot?#iefix') format('embedded-opentype'),
+    url('/static/fonts/C64ProMono.woff2') format('woff2'),
+    url('/static/fonts/C64ProMono.woff') format('woff'),
+    url('/static/fonts/C64ProMono.ttf') format('truetype');
+  font-weight: normal;
+  font-style: normal;
+}
