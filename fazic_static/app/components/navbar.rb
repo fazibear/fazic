@@ -4,8 +4,8 @@ class NavBar
   def render
     nav do
       ul do
-        li class: "#{"active" if router.current_url?(:home)}" do
-          a href: router.url_for(:home) do
+        li do
+          a href: "/fazic" do
             'Fazic'
           end
         end
