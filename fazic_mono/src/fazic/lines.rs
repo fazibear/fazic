@@ -50,8 +50,8 @@ impl Lines {
         for (key, val) in self.map.iter() {
             if *val >= pos {
                 line = *key;
+                break;
             }
-            println!("key: {} val: {}", key, val);
         }
 
         line
