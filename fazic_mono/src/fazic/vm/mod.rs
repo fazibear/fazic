@@ -88,7 +88,7 @@ pub fn start(fazic: &mut ::fazic::Fazic) {
     fazic.program.nodes(&mut nodes);
     fazic.vm.start(
         false,
-        ::fazic::compiler::compile(&nodes, &mut fazic.variables, &mut fazic.lines),
+        ::fazic::compiler::compile(&nodes, &mut fazic.variables, &mut fazic.lines, false),
     );
 }
 

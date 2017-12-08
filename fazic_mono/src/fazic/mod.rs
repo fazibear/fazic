@@ -23,7 +23,7 @@ pub fn parse(fazic: &mut ::fazic::Fazic, input: &str) {
             //            println!("{:?}", nodes);
             fazic.vm.start(
                 true,
-                ::fazic::compiler::compile(&nodes, &mut fazic.variables, &mut fazic.lines),
+                ::fazic::compiler::compile(&nodes, &mut fazic.variables, &mut fazic.lines, true),
             );
         }
         Ok(nodes::Entry(Some(line), nodes)) => {

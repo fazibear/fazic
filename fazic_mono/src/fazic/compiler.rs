@@ -265,18 +265,23 @@ pub fn compile(
     nodes: &[NodeElement],
     variables: &mut Variables,
     mut lines: &mut Lines,
+    tmp: bool,
 ) -> Vec<Instruction> {
     let mut instructions: Vec<Instruction> = vec![];
 
     println!("nodes: {:?}", nodes);
 
-    lines.reset();
+    if !tmp {
+        lines.reset();
+    }
 
     process_nodes(&mut instructions, nodes, variables, &mut lines, 0);
 
-    let end_line = lines.current() + 1;
-    lines.add(end_line, instructions.len());
-    instructions.push(Instruction::End);
+    if !tmp {
+        let end_line = lines.current() + 1;
+        lines.add(end_line, instructions.len());
+        instructions.push(Instruction::End);
+    }
 
     println!("instructions: {:?}", instructions);
 
