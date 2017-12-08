@@ -45,6 +45,15 @@ where
         });
     }
 }
+pub fn dir() -> Vec<String> {
+    let (_, resp) = fetch(&"".to_string(), "dir", &"".to_string());
+    let mut result = vec![];
+
+    for line in resp.lines() {
+        result.push(line.to_string());
+    }
+    result
+}
 
 pub fn load(name: &String) -> Result<String, String> {
     let (code, resp) = fetch(name, "load", &"".to_string());

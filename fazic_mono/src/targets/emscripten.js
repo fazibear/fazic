@@ -9,6 +9,15 @@ mergeInto(LibraryManager.library, {
 
 //    try {
       switch(method) {
+        case "dir":
+          response = ""
+          for (var i = 0, len = localStorage.length; i < len; ++i) {
+            var file = localStorage.key(i);
+            if(file.endsWith(".bas")) {
+              response = response + " * " + file.substr(0, file.length - 4) + "\n";
+            }
+          }
+          break;
         case "load":
           response = localStorage.getItem(name + ".bas");
           break;

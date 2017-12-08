@@ -55,6 +55,12 @@ pub fn list(fazic: &mut ::fazic::Fazic) {
     }
 }
 
+pub fn dir(fazic: &mut ::fazic::Fazic) {
+    for line in ::targets::dir() {
+        fazic.text_buffer.insert_line(&line);
+    }
+}
+
 pub fn load(name: usize, fazic: &mut ::fazic::Fazic) {
     let name = match *fazic.variables.get(name) {
         Value::String(ref s) => s.to_string(), //format!("{}", s),

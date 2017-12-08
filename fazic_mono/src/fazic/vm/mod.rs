@@ -166,9 +166,12 @@ pub fn step(fazic: &mut ::fazic::Fazic) {
             other::set_var(name, fazic);
             fazic.vm.step()
         }
-
         Instruction::List => {
             commands::list(fazic);
+            fazic.vm.step()
+        }
+        Instruction::Dir => {
+            commands::dir(fazic);
             fazic.vm.step()
         }
         Instruction::Load(var) => {

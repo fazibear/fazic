@@ -1,3 +1,4 @@
+use std::fs;
 use std::fs::File;
 use std::io::prelude::*;
 use std::path::Path;
@@ -9,6 +10,24 @@ where
     loop {
         f();
     }
+}
+pub fn dir() -> Vec<String> {
+    let mut result = vec![];
+
+    let paths = fs::read_dir("files/").unwrap();
+
+    for path in paths {
+        let file = path.unwrap().file_name();
+        let mut name = file.to_string_lossy().to_string();
+        let len = name.len() - 4;
+
+        if name.ends_with(".bas") {
+            name.truncate(len);
+            result.push(format!(" * {}", name))
+        };
+    }
+
+    result
 }
 
 pub fn load(name: &String) -> Result<String, String> {

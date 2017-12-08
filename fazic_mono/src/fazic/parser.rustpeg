@@ -47,6 +47,7 @@ command -> Vec<NodeElement>
 
     / ("LOAD" / "load") _ s:string { nodes("load", vec![s]) }
     / ("SAVE" / "save") _ s:string { nodes("save", vec![s]) }
+    / ("DIR" / "dir") { nodes("dir", vec![]) }
 
     / ("NEXT" / "next" ) { nodes("next", vec![]) }
 

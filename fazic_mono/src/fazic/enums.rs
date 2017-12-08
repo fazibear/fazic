@@ -52,6 +52,7 @@ pub enum Instruction {
     New,
     Load(usize),
     Save(usize),
+    Dir,
     Next,
     Return,
     Flip,

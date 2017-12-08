@@ -30,6 +30,7 @@ fn process_node(
         "run" => instructions.push(Instruction::Run),
         "list" => instructions.push(Instruction::List),
         "new" => instructions.push(Instruction::New),
+        "dir" => instructions.push(Instruction::Dir),
         "clr" => instructions.push(Instruction::Clr),
         "flip" => instructions.push(Instruction::Flip),
         "goto" => if let Param::Value(Value::Integer(i)) = params[0] {
