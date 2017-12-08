@@ -9,13 +9,13 @@ class NavBar
             'Fazic'
           end
         end
-        li class: "#{"active" if router.current_url?(:home)}" do
-          a href: router.url_for(:home) do
+        li do
+          a href: router.url_for(:home), class: "#{"active" if router.current_url?(:home)}" do
             'Home'
           end
         end
-        li class: "#{"active" if router.current_url?(:home)}" do
-          a href: router.url_for(:home) do
+        li do
+          a href: router.url_for(:home), class: "#{"active" if router.current_url?(:home)}" do
             'Basic'
           end
         end
