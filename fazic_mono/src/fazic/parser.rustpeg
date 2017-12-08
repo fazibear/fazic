@@ -80,6 +80,7 @@ function -> NodeElement
     / ("ASC(" / "asc(") _ e:expression _ ")" { node("asc", vec![e]) }
     / ("INT(" / "int(") _ e:expression _ ")" { node("int", vec![e]) }
     / ("VAL(" / "val(") _ e:expression _ ")" { node("val", vec![e]) }
+    / ("STR(" / "str(") _ e:expression _ ")" { node("str", vec![e]) }
 
 expression -> NodeElement
     = #infix<term> {

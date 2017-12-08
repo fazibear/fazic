@@ -189,3 +189,15 @@ pub fn int(a: usize, dst: usize, fazic: &mut ::fazic::Fazic) {
     };
     fazic.variables.set(dst, ret);
 }
+
+pub fn str(a: usize, dst: usize, fazic: &mut ::fazic::Fazic) {
+    let ret = match fazic.variables.get(a) {
+        &Value::Integer(l) => Value::String(l.to_string()),
+        &Value::Float(l) => Value::String(l.to_string()),
+        _ => {
+            ::fazic::vm::error(fazic, "TYPE MISMATCH");
+            Value::Null
+        }
+    };
+    fazic.variables.set(dst, ret);
+}

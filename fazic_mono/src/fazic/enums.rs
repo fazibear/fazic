@@ -87,4 +87,5 @@ pub enum Instruction {
     Asc(usize, usize),
     Val(usize, usize),
     Int(usize, usize),
+    Str(usize, usize),
 }
