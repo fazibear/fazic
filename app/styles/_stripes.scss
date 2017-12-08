@@ -1,0 +1,53 @@
+@media screen and (min-width: 800px) {
+  .stripes {
+    position: relative;
+  }
+
+  .stripes .s1l {
+    background-color: $cyan;
+    width: 25px;
+    height: 250px;
+    position: absolute;
+    left: 35px;
+  }
+
+  .stripes .s2l {
+    background-color: $yellow;
+    width: 25px;
+    height: 350px;
+    position: absolute;
+    left: 60px;
+  }
+
+  .stripes .s3l {
+    background-color: $pink;
+    width: 25px;
+    height: 450px;
+    position: absolute;
+    left: 85px;
+  }
+
+  .stripes .s3r {
+    background-color: $cyan;
+    width: 25px;
+    height: 250px;
+    position: absolute;
+    left: calc(100% - 60px);
+  }
+
+  .stripes .s2r {
+    background-color: $yellow;
+    width: 25px;
+    height: 350px;
+    position: absolute;
+    left: calc(100% - 85px);
+  }
+
+  .stripes .s1r {
+    background-color: $pink;
+    width: 25px;
+    height: 450px;
+    position: absolute;
+    left: calc(100% - 110px);
+  }
+}

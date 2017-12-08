@@ -1,0 +1,32 @@
+@media screen and (max-width: 800px) {
+  .content {
+    margin: 0 25px;
+  }
+}
+
+@media screen and (max-width: 500px) {
+  .container {
+    border-width: 10px;
+    margin: 0 5px;
+  }
+  .content {
+    margin: 0 10px;
+  }
+  h1 {
+    font-size: 50px;
+    margin-top: 15px;
+  }
+  h2 {
+    font-size: 20px;
+  }
+  h3 {
+    font-size: 14px;
+  }
+  nav {
+    font-size: 10px;
+    padding-left: 15px;
+  }
+  footer {
+    font-size: 7px;
+  }
+}
