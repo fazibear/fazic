@@ -1,0 +1,13 @@
+@charset "utf-8";
+
+@import "styles/fonts";
+@import "styles/colors";
+@import "styles/layout";
+@import "styles/stripes";
+
+body {
+  background-color: #000;
+  color: $text;
+}
+
+@import "styles/media";

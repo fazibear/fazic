@@ -1,0 +1,98 @@
+body {
+  background-color: #000;
+  color: $text;
+}
+
+nav {
+  font-family: 'Strasua';
+  font-weight: normal;
+  font-style: normal;
+  font-size: 20px;
+  max-width: 1005px;
+  margin-left: auto;
+  margin-right: auto;
+  margin-bottom: 5px;
+  padding-left: 25px;
+
+  ul {
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+
+    li {
+      display: inline;
+      margin-right: 15px;
+
+      a {
+        text-decoration: none;
+        color: $text;
+      }
+
+      a:hover {
+        text-decoration: none;
+        color: $yellow;
+      }
+
+    }
+  }
+}
+
+body {
+  background-color: #000;
+  color: $text;
+}
+
+.container {
+  background-color: $background;
+  max-width: 980px;
+  margin-left: auto;
+  margin-right: auto;
+  height: 100%;
+  border: 25px solid #d4dace;
+}
+
+.content {
+  margin: 0 140px;
+  min-height: 300px;
+}
+
+h1 {
+ font-family: 'Lakmus';
+ font-weight: normal;
+ font-style: normal;
+ font-size: 100px;
+ margin-bottom: 0;
+ margin-top: 30px;
+ color: $cyan;
+ text-align: center;
+}
+
+h2 {
+ font-family: 'Strasua';
+ font-weight: normal;
+ font-style: normal;
+ font-size: 30px;
+ margin-top: 0px;
+ color: $yellow;
+ text-align: center;
+}
+
+h3 {
+ font-family: 'Strasua';
+ font-weight: normal;
+ font-style: normal;
+ font-size: 18px;
+ margin-top: 0px;
+ color: $pink;
+ text-align: center;
+}
+
+
+footer {
+  font-family: 'Strasua';
+  font-weight: normal;
+  font-style: normal;
+  font-size: 14px;
+  text-align: center;
+  margin-top: 5px;
+}
