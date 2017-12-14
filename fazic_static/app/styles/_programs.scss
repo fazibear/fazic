@@ -1,14 +1,11 @@
-.programs_list {
+.programs {
   list-style-type: none;
   margin: 0;
   padding: 0;
-  text-align: center;
-  margin-bottom: 40px;
 
   li {
-    display: inline;
-    margin-right: 10px;
     font-family: 'C64Pro';
+    margin-bottom: 5px;
 
     a {
       color: $light-blue;
@@ -18,17 +15,6 @@
     a:hover {
       color: $yellow;
     }
-  }
-}
-
-.programs {
-  list-style-type: none;
-  margin: 0;
-  padding: 0;
-
-  li {
-    font-family: 'C64Pro';
-    margin-bottom: 40px;
 
     .name {
       font-size: 14px;
