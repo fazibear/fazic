@@ -20,8 +20,10 @@ class Store
       if name.end_with?(".bas")
         code = Native(`localStorage.getItem(localStorage.key(i))`)
         @programs << {
+          id: i,
           name: name[0..-5],
           code: code,
+          show: false,
         }
       end
     end
