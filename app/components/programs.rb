@@ -15,7 +15,7 @@ class Programs
   def render
     h3 "Your programs"
     ul.programs do
-      if !store.programs.any?
+      if store.programs.any?
         store.programs.each do |program|
           li.program id: "program_#{program[:id]}" do
             a href: "#", onclick: -> { toggle(program) } do
