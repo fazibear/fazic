@@ -5,5 +5,7 @@ class Router
     route '/', to: Home
     route '/commands', to: Commands
     route '/programs', to: Programs
+    route '/roadmap', to: Roadmap
+    route '/patreons', to: Patreons
   end
 end

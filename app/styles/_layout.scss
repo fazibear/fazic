@@ -1,6 +1,8 @@
 body {
   background-color: #000;
   color: $text;
+  font-family: "Tahoma";
+  font-weight: 0px;
 }
 
 nav {
@@ -21,7 +23,7 @@ nav {
 
     li {
       display: inline;
-      margin-right: 15px;
+      margin-right: 25px;
 
       a {
         text-decoration: none;

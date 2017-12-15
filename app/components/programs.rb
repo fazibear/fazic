@@ -15,13 +15,17 @@ class Programs
   def render
     h3 "Your programs"
     ul.programs do
-      store.programs.each do |program|
-        li.program id: "program_#{program[:id]}" do
-          a href: "#", onclick: -> { toggle(program) } do
-            program[:name]
+      if !store.programs.any?
+        store.programs.each do |program|
+          li.program id: "program_#{program[:id]}" do
+            a href: "#", onclick: -> { toggle(program) } do
+              program[:name]
+            end
+            pre program[:code] if program[:show]
           end
-          pre program[:code] if program[:show]
         end
+      else
+        p "You don't have any programs. Use save command and return here."
       end
     end
   end
