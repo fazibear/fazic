@@ -1,5 +1,5 @@
 body {
-  background-color: #000;
+  background-color: $background;
   color: $text;
   font-family: "Tahoma";
   font-weight: 0px;
@@ -15,6 +15,7 @@ nav {
   margin-right: auto;
   margin-bottom: 5px;
   padding-left: 25px;
+  text-align: center;
 
   ul {
     list-style-type: none;
@@ -39,23 +40,17 @@ nav {
   }
 }
 
-body {
-  background-color: #000;
-  color: $text;
-}
-
 .container {
   background-color: $background;
   max-width: 980px;
   margin-left: auto;
   margin-right: auto;
   height: 100%;
-  border: 25px solid #d4dace;
+  border-top: 1px solid #d4dace;
 }
 
 .content {
   margin: 0 140px;
-  min-height: 300px;
 }
 
 h1 {
@@ -96,5 +91,10 @@ footer {
   font-style: normal;
   font-size: 14px;
   text-align: center;
-  margin-top: 5px;
+  margin-top: 25px;
+  padding-top: 25px;
+  border-top: 1px solid #d4dace;
+  max-width: 500px;
+  margin-left: auto;
+  margin-right: auto;
 }
