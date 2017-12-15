@@ -3,6 +3,7 @@ class Commands
 
   def render
     h3 "Available Commands"
+    p "List of all commands with example that are supported."
     ul.commands_toc do
       store.commands.each do |command|
         li.command do

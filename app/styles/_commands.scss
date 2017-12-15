@@ -1,0 +1,52 @@
+.commands_toc {
+  list-style-type: none;
+  margin: 0;
+  padding: 0;
+
+  li {
+    font-family: 'C64Pro';
+    float: left;
+    margin: 0 5px 5px 0;
+
+    a {
+      color: $light-blue;
+      text-decoration: none;
+    }
+
+    a:hover {
+      color: $yellow;
+    }
+  }
+}
+
+.commands_toc::after {
+  content: " ";
+  clear: both;
+  display: block;
+}
+.commands {
+  list-style-type: none;
+  margin: 0;
+  padding: 0;
+
+  li {
+    margin-top: 50px;
+
+    a {
+      color: $light-blue;
+      text-decoration: none;
+    }
+
+    a:hover {
+      color: $yellow;
+    }
+
+    .name {
+      font-family: 'C64Pro';
+      font-size: 14px;
+      color: $light-blue;
+      margin-top: 15px;
+    }
+
+  }
+}
