@@ -11,7 +11,7 @@ class Store
       {name: "END", description: "Ends a BASIC-program and the BASIC-Interpreter writes READY. ", code: "END"},
       {name: "EXP", description: "Is a mathemathical function that evaluates the inverse natural LOG of the argument.", code: "PRINT EXP(1)"},
       {name: "FOR", description: "dzxxcv", code: "assdfsf"},
-      {name: "GOSUB", description: "Jumps to a subroutine at the indicated line number. The subroutine finalizes using a RETURN command.", code: "10 GOSUB 40\n20 PRINT \"HELLO\"\n30 END\n40 PRINT \"HELLO GOSUB\"\n50 RETURN"},
+      {name: "GOSUB", description: "Jumps to a subroutine at the indicated line number. The subroutine finalizes using a RETURN command.", code: %Q{10 GOSUB 40\n20 PRINT "HELLO"\n30 END\n40 PRINT "HELLO GOSUB"\n50 RETURN}},
       {name: "GOTO", description: "makes the BASIC interpreter jump to the indicated line and the execution of the BASIC program is continued at that line.", code: "10 PRINT\"HELLO\"\n20 GOTO 10"},
       {name: "IF", description: "dzxxcv", code: "assdfsf"},
       {name: "INT", description: "dzxxcv", code: "assdfsf"},

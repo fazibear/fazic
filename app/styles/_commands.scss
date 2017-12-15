@@ -24,6 +24,7 @@
   clear: both;
   display: block;
 }
+
 .commands {
   list-style-type: none;
   margin: 0;
@@ -46,7 +47,7 @@
       font-size: 14px;
       color: $light-blue;
       margin-top: 15px;
+      margin-bottom: 5px;
     }
-
   }
 }
