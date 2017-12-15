@@ -24,6 +24,16 @@ class NavBar
             'Programs'
           end
         end
+        li do
+          a href: router.url_for(:roadmap), class: "#{"active" if router.current_url?(:roadmap)}" do
+            'Roadmap'
+          end
+        end
+        li do
+          a href: router.url_for(:patreons), class: "#{"active" if router.current_url?(:patreons)}" do
+            'Patreons'
+          end
+        end
       end
     end
   end
