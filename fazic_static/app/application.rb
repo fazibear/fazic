@@ -8,6 +8,7 @@ require 'store'
 
 # require all components
 require_tree './components'
+require_tree './store'
 
 # when document is ready render application to <body>
 

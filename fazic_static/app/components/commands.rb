@@ -3,12 +3,21 @@ class Commands
 
   def render
     h3 "Available Commands"
-    ul.basic do
+    ul.commands_toc do
       store.commands.each do |command|
         li.command do
-          div.name command.name
-          div.description command.description
-          div.example command.example
+          a href: "#", onclick: -> {`window.location.hash = #{"command_#{command[:name].to_n}"}`; false} do
+            command[:name]
+          end
+        end
+      end
+    end
+    ul.commands do
+      store.commands.each do |command|
+        li.command id: "command_#{command[:name]}" do
+          div.name command[:name]
+          div.description command[:description]
+          pre command[:code]
         end
       end
     end

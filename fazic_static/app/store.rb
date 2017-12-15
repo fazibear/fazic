@@ -3,6 +3,10 @@ class Store
 
   attr_accessor :commands, :programs
 
+  def commands
+    Commands::COMMANDS
+  end
+
   def init
     fetch_commnads
     fetch_programs
