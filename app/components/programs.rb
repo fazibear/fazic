@@ -14,8 +14,9 @@ class Programs
 
   def render
     h3 "Your programs"
-    ul.programs do
-      if store.programs.any?
+    if store.programs.any?
+      p "List of all your saved programs. Click to show the code."
+      ul.programs do
         store.programs.each do |program|
           li.program id: "program_#{program[:id]}" do
             a href: "#", onclick: -> { toggle(program) } do
@@ -24,9 +25,9 @@ class Programs
             pre program[:code] if program[:show]
           end
         end
-      else
-        p "You don't have any programs. Use save command and return here."
       end
+    else
+      p "You don't have any programs. Use save command and return here."
     end
   end
 end
