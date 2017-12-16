@@ -22,9 +22,9 @@ class Application
     component NavBar
     div.container do
       component Stripes
+      div.content do
       h1 "FAZIC"
       h2 "fantasy retro computer"
-      div.content do
         component router
       end
     end
