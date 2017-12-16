@@ -25,19 +25,18 @@ nav {
     li {
       display: inline;
       margin-right: 25px;
-
-      a {
-        text-decoration: none;
-        color: $text;
-      }
-
-      a:hover, a.active {
-        text-decoration: none;
-        color: $yellow;
-      }
-
     }
   }
+}
+
+a {
+  text-decoration: none;
+  color: $text;
+}
+
+a:hover, a.active {
+  text-decoration: none;
+  color: $yellow;
 }
 
 .container {
