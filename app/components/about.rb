@@ -10,7 +10,7 @@ class About
       a href: "/fazic" do
         'FAZIC '
       end
-      span "is a fantasy retro computer. You can create, share, and play tiny games or programs. You have build in BASIC interpreter, so you can start now like it's the 80s."
+      span "is a fantasy retro computer. You can create, share, and play tiny games or programs. You have the built-in BASIC interpreter, so you can start now like it's the 80s."
     end
       a href: "/fazic" do
         'CLICK HERE TO START'
