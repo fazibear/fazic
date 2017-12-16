@@ -4,6 +4,9 @@ class About
   def render
     h3 "What is this?"
     p do
+      p class: "image" do
+        img src: "/static/images/fazic.jpg"
+      end
       a href: "/fazic" do
         'FAZIC '
       end
