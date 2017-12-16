@@ -10,13 +10,13 @@ class NavBar
           end
         end
         li do
-          a href: router.url_for(:home), class: "#{"active" if router.current_url?(:home)}" do
-            'Home'
+          a href: router.url_for(:about), class: "#{"active" if router.current_url?(:about)}" do
+            'About'
           end
         end
         li do
-          a href: router.url_for(:commands), class: "#{"active" if router.current_url?(:commands)}" do
-            'Commands'
+          a href: router.url_for(:help), class: "#{"active" if router.current_url?(:help)}" do
+            'Help'
           end
         end
         li do
