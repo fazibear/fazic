@@ -39,6 +39,9 @@ a:hover, a.active {
   color: $yellow;
 }
 
+p.image {
+  text-align: center;
+}
 .container {
   background-color: $background;
   max-width: 980px;
