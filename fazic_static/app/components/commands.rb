@@ -1,4 +1,4 @@
-class Commands
+class Help
   include Inesita::Component
 
   def render

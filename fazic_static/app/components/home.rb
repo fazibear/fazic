@@ -1,4 +1,4 @@
-class Home
+class About
   include Inesita::Component
 
   def render
