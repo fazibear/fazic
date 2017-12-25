@@ -10,6 +10,11 @@ class NavBar
           end
         end
         li do
+          a href: router.url_for(:disc), class: "#{"active" if router.current_url?(:disc)}" do
+            'Disc'
+          end
+        end
+        li do
           a href: router.url_for(:about), class: "#{"active" if router.current_url?(:about)}" do
             'About'
           end
@@ -17,11 +22,6 @@ class NavBar
         li do
           a href: router.url_for(:help), class: "#{"active" if router.current_url?(:help)}" do
             'Help'
-          end
-        end
-        li do
-          a href: router.url_for(:programs), class: "#{"active" if router.current_url?(:programs)}" do
-            'Programs'
           end
         end
         li do

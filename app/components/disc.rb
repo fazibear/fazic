@@ -1,4 +1,4 @@
-class Programs
+class Disc
   include Inesita::Component
 
   def toggle(program)
@@ -7,13 +7,12 @@ class Programs
   end
 
   def go_to_program(name)
-    $console.log(name)
     name = "program_#{name}".to_n
     `window.location.hash = #{name}`
   end
 
   def render
-    h3 "Your programs"
+    h3 "Your private floppy disc"
     if store.programs.any?
       p "List of all your saved programs. Click to show the code."
       ul.programs do

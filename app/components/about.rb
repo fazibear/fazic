@@ -29,13 +29,13 @@ class About
     h3 "Can I save or load my programs?"
     p do
       span "Yes. Any time you want. Just type SAVE \"NAME\" and thats it. You can go to"
-      a href: router.url_for(:programs) do
-        ' PROGRAMS '
+      a href: router.url_for(:disc) do
+        ' DISC '
       end
       span "section to see you programs or copy them. Of course you can load them by typing LOAD \"NAME\"."
     end
-    a href: router.url_for(:programs) do
-      'SHOW MY SAVED PROGRAMS'
+    a href: router.url_for(:disc) do
+      'SHOW MY FLOPPY DISC'
     end
     h3 "Is it everything?"
     p do
