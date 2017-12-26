@@ -5,6 +5,7 @@ class Router
     route '/', to: About
     route '/help', to: Help
     route '/disc', to: Disc
+    route '/examples', to: Examples
     route '/roadmap', to: Roadmap
     route '/patreons', to: Patreons
   end

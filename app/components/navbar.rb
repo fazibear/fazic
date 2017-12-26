@@ -15,6 +15,11 @@ class NavBar
           end
         end
         li do
+          a href: router.url_for(:examples), class: "#{"active" if router.current_url?(:examples)}" do
+            'Examples'
+          end
+        end
+        li do
           a href: router.url_for(:about), class: "#{"active" if router.current_url?(:about)}" do
             'About'
           end
