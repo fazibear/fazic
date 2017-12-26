@@ -5,6 +5,7 @@ class Roadmap
     h3 "Things to do!"
     h4 "BASIC"
     ul do
+      li "PET ASCII Support"
       li "User Input Commands"
       li "Graphic Commands"
       li "Sprites Support"
