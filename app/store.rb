@@ -7,6 +7,10 @@ class Store
     Commands::COMMANDS
   end
 
+  def examples
+    Examples::EXAMPLES
+  end
+
   def init
     fetch_commnads
     fetch_programs
@@ -19,10 +23,10 @@ class Store
   def fetch_programs
     @programs = []
 
-    (0...`localStorage.length`).each do |i|
-      name = Native(`localStorage.key(i)`)
+    (0...storage_length).each do |i|
+      name = storage_key(i)
       if name.end_with?(".bas")
-        code = Native(`localStorage.getItem(localStorage.key(i))`)
+        code = storage_value(i)
         @programs << {
           id: i,
           name: name[0..-5],
@@ -31,5 +35,17 @@ class Store
         }
       end
     end
+  end
+
+  def storage_length
+    `localStorage.length`
+  end
+
+  def storage_key(i)
+    Native(`localStorage.key(i)`)
+  end
+
+  def storage_value(i)
+    Native(`localStorage.getItem(localStorage.key(i))`)
   end
 end
