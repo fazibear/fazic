@@ -23,7 +23,7 @@ pub fn dir() -> Vec<String> {
 
         if name.ends_with(".bas") {
             name.truncate(len);
-            result.push(format!(" * {}", name))
+            result.push(format!("LOAD \"{}\"", name))
         };
     }
 

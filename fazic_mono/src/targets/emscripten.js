@@ -14,7 +14,7 @@ mergeInto(LibraryManager.library, {
           for (var i = 0, len = localStorage.length; i < len; ++i) {
             var file = localStorage.key(i);
             if(file.endsWith(".bas")) {
-              response = response + " * " + file.substr(0, file.length - 4) + "\n";
+              response = response + 'LOAD "' + file.substr(0, file.length - 4) + '"' + "\n";
             }
           }
           break;
