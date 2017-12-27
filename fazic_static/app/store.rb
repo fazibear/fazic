@@ -48,4 +48,9 @@ class Store
   def storage_value(i)
     Native(`localStorage.getItem(localStorage.key(i))`)
   end
+
+  def copy_program(name, code)
+    `localStorage.setItem(name + ".bas", code)`
+    fetch_programs
+  end
 end
