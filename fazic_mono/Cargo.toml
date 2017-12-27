@@ -9,6 +9,8 @@ peg = { version = "*" }
 
 [dependencies]
 rand = "*"
+env_logger = "*"
+log = "*"
 
 [dependencies.sdl2]
 version = "0.31"

@@ -25,7 +25,6 @@ impl Screen {
     }
 
     // pub fn put_string(&mut self, string: String, mut x: u16, y: u16, color: u8) {
-    //     println!("print({}, {}, {}, {})", string, x, y, color);
     //
     //     for char in string.chars() {
     //         self.put_char(char, x, y, color, true);
@@ -65,7 +64,6 @@ impl Screen {
     }
 
     pub fn put_pixel(&mut self, x: u16, y: u16, color: u8) {
-        //println!("putpixel({}, {}, {})", x, y, color);
         if x < SCREEN_WIDTH && y < SCREEN_HEIGHT {
             let i = x as usize + y as usize * SCREEN_WIDTH as usize;
             let i3 = i * 3;

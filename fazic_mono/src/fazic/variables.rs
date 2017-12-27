@@ -45,7 +45,7 @@ impl Variables {
 
         let i = self.counter;
 
-        println!("alocating {}, {}", name, i);
+        debug!("alocating {}, {}", name, i);
         self.map.insert(name.to_string(), i);
         self.variables.push(Value::Null);
         self.counter += 1;

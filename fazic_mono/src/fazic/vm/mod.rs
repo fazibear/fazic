@@ -102,7 +102,7 @@ pub fn stop(fazic: &mut ::fazic::Fazic) {
 
         fazic.text_buffer.insert_line(&message);
         fazic.text_buffer.prompt();
-        println!("{:?}", fazic.vm.instant.elapsed());
+        debug!("{:?}", fazic.vm.instant.elapsed());
     }
 }
 
@@ -110,7 +110,7 @@ pub fn end(fazic: &mut ::fazic::Fazic) {
     fazic.vm.running = false;
     fazic.mode = 0;
     fazic.text_buffer.prompt();
-    println!("{:?}", fazic.vm.instant.elapsed());
+    debug!("{:?}", fazic.vm.instant.elapsed());
 }
 
 pub fn onerror(fazic: &mut ::fazic::Fazic) {
@@ -127,7 +127,7 @@ pub fn error(fazic: &mut ::fazic::Fazic, msg: &str) {
     fazic.vm.running = false;
     fazic.mode = 0;
     fazic.text_buffer.prompt();
-    println!("{:?}", fazic.vm.instant.elapsed());
+    debug!("{:?}", fazic.vm.instant.elapsed());
 }
 
 pub fn step(fazic: &mut ::fazic::Fazic) {

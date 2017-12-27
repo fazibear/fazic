@@ -19,7 +19,6 @@ impl Program {
         self.lines.retain(|&(l, _, _)| l != line);
         self.lines.push((line, string.to_string(), nodes));
         self.lines.sort_by(|&(a, _, _), &(b, _, _)| a.cmp(&b));
-        //        println!("{:?}", self.lines)
     }
 
     pub fn nodes(&mut self, nodes: &mut Vec<NodeElement>) {

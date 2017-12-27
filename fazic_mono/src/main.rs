@@ -1,5 +1,8 @@
 #![feature(link_args)]
 
+#[macro_use] extern crate log;
+extern crate env_logger;
+
 extern crate rand;
 extern crate sdl2;
 
@@ -18,6 +21,7 @@ const HEIGHT: u32 = (SCREEN_HEIGHT * SCALE) as u32;
 const RGB_WIDTH: usize = SCREEN_WIDTH as usize * 3;
 
 pub fn main() {
+    let _ = env_logger::init();
     let ctx = sdl2::init().unwrap();
     let video_ctx = ctx.video().unwrap();
 
@@ -113,11 +117,11 @@ pub fn main() {
         }
 
         if timer.ticks() - fps_last_time > 1000 {
-            println!("FPS: {}", fps);
+            debug!("FPS: {}", fps);
             fps_last_time = timer.ticks();
             fps = 0;
 
-            println!("TPS: {}", tps);
+            debug!("TPS: {}", tps);
             tps = 0;
         }
         fps += 1;

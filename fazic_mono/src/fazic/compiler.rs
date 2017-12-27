@@ -24,7 +24,7 @@ fn process_node(
     nest: usize,
 ) {
     let params = process_nodes(instructions, nodes, variables, lines, nest);
-    println!("{}: {:?}", name, params);
+    debug!("{}: {:?}", name, params);
 
     match name {
         "run" => instructions.push(Instruction::Run),
@@ -239,7 +239,7 @@ fn process_node(
             instructions.push(Instruction::JmpIfNotNextLine(p0, lines.current()));
         }
         _ => {
-            println!("Can't translate: {}", name);
+            debug!("Can't translate: {}", name);
         }
     }
 }
@@ -295,7 +295,7 @@ pub fn compile(
 ) -> Vec<Instruction> {
     let mut instructions: Vec<Instruction> = vec![];
 
-    println!("nodes: {:?}", nodes);
+    debug!("nodes: {:?}", nodes);
 
     if !tmp {
         lines.reset();

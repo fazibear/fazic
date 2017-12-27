@@ -115,7 +115,7 @@ term -> NodeElement
     / _ v:variable _ { v }
 
 float -> NodeElement
-    = f:$([0-9]* "." [0-9]+) { println!("{}", f); float_node(f) }
+    = f:$([0-9]* "." [0-9]+) { float_node(f) }
 
 integer -> NodeElement
     = i:$([0-9]+) { integer_node(i) }

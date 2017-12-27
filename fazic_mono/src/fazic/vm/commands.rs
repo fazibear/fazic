@@ -36,7 +36,6 @@ pub fn dot(x: usize, y: usize, fazic: &mut ::fazic::Fazic) {
     };
 
     let color = fazic.screen.current_color;
-    //    println!("{}, {}", x, y);
 
     fazic.screen.put_pixel(x, y, color);
 }
