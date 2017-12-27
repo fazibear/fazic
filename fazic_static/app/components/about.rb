@@ -59,5 +59,13 @@ class About
     a href: router.url_for(:roadmap) do
       'SHOW ME THE ROADMAP'
     end
+    h3 "Found a bug?"
+    p do
+      span "That great, please report it into "
+      a href: "https://github.com/fazibear/fazic/issues" do
+        'github issue tracker'
+      end
+      span ". Thanks!"
+    end
   end
 end
