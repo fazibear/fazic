@@ -1,7 +1,8 @@
 #![feature(link_args)]
 
-#[macro_use] extern crate log;
-extern crate env_logger;
+#[macro_use]
+extern crate log;
+extern crate simple_logger;
 
 extern crate rand;
 extern crate sdl2;
@@ -21,7 +22,9 @@ const HEIGHT: u32 = (SCREEN_HEIGHT * SCALE) as u32;
 const RGB_WIDTH: usize = SCREEN_WIDTH as usize * 3;
 
 pub fn main() {
-    let _ = env_logger::init();
+    #[cfg(debug_assertions)]
+    simple_logger::init().unwrap();
+
     let ctx = sdl2::init().unwrap();
     let video_ctx = ctx.video().unwrap();
 

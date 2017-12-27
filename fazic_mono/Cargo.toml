@@ -9,7 +9,7 @@ peg = { version = "*" }
 
 [dependencies]
 rand = "*"
-env_logger = "*"
+simple_logger = "*"
 log = "*"
 
 [dependencies.sdl2]
