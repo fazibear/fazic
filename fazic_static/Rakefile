@@ -13,15 +13,15 @@ task :build do
 end
 
 task 'update' do
-  md5 = Digest::MD5.file(SRC)
+  hash = Digest::MD5.file(SRC)
   size = File.size(SRC).to_f / 2**20
 
   File.open(HTML, "r+") do |file|
-    content = file.read.gsub(/fazic.js\?md5=\w+/, "fazic.js?md5=#{md5}")
+    content = file.read.gsub(/fazic.js\?hash=\w+/, "fazic.js?hash=#{hash}")
     file.rewind
     file.puts content
   end
 
-  puts 'Size: %.2f, checksum: %s' % [size, md5]
+  puts 'Size: %.2f, checksum: %s' % [size, hash]
   cp SRC, DST
 end
