@@ -7,22 +7,27 @@ mergeInto(LibraryManager.library, {
     var code = 200;
     var response;
 
+    var bas_ext = ".BAS"
+    var filename = function(name) {
+      return name.toUpperCase() + bas_ext;
+    }
+
 //    try {
       switch(method) {
         case "dir":
           response = ""
           for (var i = 0, len = localStorage.length; i < len; ++i) {
             var file = localStorage.key(i);
-            if(file.endsWith(".bas")) {
+            if(file.endsWith(bas_ext)) {
               response = response + 'LOAD "' + file.substr(0, file.length - 4) + '"' + "\n";
             }
           }
           break;
         case "load":
-          response = localStorage.getItem(name + ".bas");
+          response = localStorage.getItem(filename(name));
           break;
         case "save":
-          localStorage.setItem(name + ".bas", data);
+          localStorage.setItem(filename(name), data);
           response = "SAVED";
           break;
       }
