@@ -2,7 +2,7 @@ class Store
   module Commands
     COMMANDS = [
       {name: "ABS", description: "Evaluates to the absolute value (value without the sign) of the given numeric term.", code: %Q{PRINT ABS(-10)\n10}},
-      {name: "AND", description: "...", code: %Q{}},
+      {name: "AND", description: "Boolean AND or bitwise AND operation depending on arguments", code: %Q{PRINT 3>2 AND 5<6\ntrue\nPRINT 199 AND 64\n64}},
       {name: "ASC", description: "Evaluates the first char of a string as a numeric index.", code: %Q{PRINT ASC("A")\n65}},
       {name: "ATN", description: "A mathematical function that returns the arc tangent of a numeric value (the inverse function of TAN). The resulting value is the angle in radians of the given tangent.", code: %{PRINT ATN(1)\n0.7854}},
       {name: "CHR", description: "Can be used to convert a number between 0 and 255 into an ASCII-char and is the inverse of the function ASC.", code: %Q{PRINT CHR(49)\n1}},
@@ -12,7 +12,7 @@ class Store
       {name: "END", description: "Ends a BASIC-program and the BASIC-Interpreter writes READY. ", code: %Q{10 PRINT "START"\n20 END\n30 PRINT "NEVER HAPPENED"}},
       {name: "EXP", description: "Is a mathemathical function that evaluates the inverse natural LOG of the argument.", code: %Q{PRINT EXP(1)\n2.7183}},
       {name: "FLIP", description: "When MODE 1 is used, draw current screen buffer", code: %Q{FLIP}},
-      {name: "FOR", description: "...", code: %Q{}},
+      {name: "FOR", description: "is the start command of a FOR…TO…STEP…NEXT loop. This FOR...NEXT loop is executed until counter variable equals the value in the TO clause. With the step-size-number, the counter variable value is either increased (positive) or decreased (negative). When the STEP command isn't used then the step-size-number defaults to 1.", code: %Q{FOR X=1 TO 5:PRINT X:NEXT\n1\n2\n3\n4\n5}},
       {name: "GOSUB", description: "Jumps to a subroutine at the indicated line number. The subroutine finalizes using a RETURN command.", code: %Q{10 GOSUB 40\n20 PRINT "HELLO"\n30 END\n40 PRINT "HELLO GOSUB"\n50 RETURN}},
       {name: "GOTO", description: "Makes the BASIC interpreter jump to the indicated line and the execution of the BASIC program is continued at that line.", code: %Q{10 PRINT "HELLO"\n20 GOTO 10}},
       {name: "IF", description: "Is used together with the BASIC command THEN or with the BASIC command GOTO by condition.", code: %{IF A>0 THEN PRINT "A is positive"}},
@@ -25,7 +25,7 @@ class Store
       {name: "MODE", description: "Sets display mode: 0 - text mode, 1 - Graphic mode with frame buffer, use FLIP to show, 2 - Graphic direct mode", code: %Q{MODE 1}},
       {name: "NEXT", description: "Is used with the BASIC-Command FOR.", code: %Q{}},
       {name: "NOT", description: "Reverse the boolean true into false.", code: %Q{}},
-      {name: "OR", description: "...", code: %Q{}},
+      {name: "OR", description: "Boolean OR or bitwise OR operation depending on arguments", code: %Q{PRINT 3<2 OR 5<6\ntrue\nPRINT 0 OR 0\n0}},
       {name: "PRINT", description: "Is used to print data onto the screen.", code: %Q{PRINT 12+2\n14}},
       {name: "REM", description: "Is used to place remarks into BASIC-programs.", code: %Q{10 REM NICE COMMENT}},
       {name: "RETURN", description: "Finishes a subroutine, which is called with the BASIC-command GOSUB.", code: %Q{}},
