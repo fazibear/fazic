@@ -3,7 +3,7 @@ class Store
 
   attr_accessor :commands, :programs
 
-  BAS_EXT = '.bas'
+  BAS_EXT = '.BAS'
 
   def commands
     Commands::COMMANDS
@@ -62,6 +62,6 @@ class Store
   end
 
   def filename(name)
-    "#{name}#{BAS_EXT}"
+    "#{name}#{BAS_EXT}".upcase
   end
 end
