@@ -1,7 +1,10 @@
 class Examples
   include Inesita::Component
 
-  def save(program)
+  def copy(program)
+    store.copy_program(program[:name], program[:code])
+    store.fetch_programs
+    render!
     false
   end
 
@@ -11,8 +14,8 @@ class Examples
     ul.examples do
       store.examples.each do |program|
         li.command id: "program_#{program[:name]}" do
-          a class: "copy", href: "#", onclick: -> { store.copy_program(program[:name], program[:code]); false } do
-            "💾"
+          a class: "copy", href: "#", onclick: -> { copy(program) } do
+            store.exist?(program[:name]) ? "✅" : "💾"
           end
           span.name program[:name]
           div.description program[:description]

@@ -3,6 +3,8 @@ class Store
 
   attr_accessor :commands, :programs
 
+  BAS_EXT = '.bas'
+
   def commands
     Commands::COMMANDS
   end
@@ -25,7 +27,7 @@ class Store
 
     (0...storage_length).each do |i|
       name = storage_key(i)
-      if name.end_with?(".bas")
+      if name.end_with?(BAS_EXT)
         code = storage_value(i)
         @programs << {
           id: i,
@@ -49,8 +51,17 @@ class Store
     Native(`localStorage.getItem(localStorage.key(i))`)
   end
 
+  def exist?(name)
+    name = filename(name)
+    !Native(`localStorage.getItem(#{name})`).nil?
+  end
+
   def copy_program(name, code)
-    `localStorage.setItem(name + ".bas", code)`
-    fetch_programs
+    name = filename(name)
+    `localStorage.setItem(name, code)`
+  end
+
+  def filename(name)
+    "#{name}#{BAS_EXT}"
   end
 end
