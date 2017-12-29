@@ -7,8 +7,8 @@ gem 'inesita-router', '~> 0.1.0'
 
 # add this gems to minify files on build
 #
-# gem 'uglifier'
-# gem 'htmlcompressor'
+gem 'uglifier'
+gem 'htmlcompressor'
 
 # bootsrap assets
 # gem 'bootstrap-sass'
