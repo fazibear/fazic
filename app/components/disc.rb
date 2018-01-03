@@ -26,7 +26,13 @@ class Disc
         end
       end
     else
-      p "You don't have any programs. Use save command and return here."
+      p do
+        span "You don't have any programs. You can copy from "
+        a href: router.url_for(:examples), class: "#{"active" if router.current_url?(:examples)}" do
+          'EXAMPLES'
+        end
+        span " section, or save you own using save command!"
+      end
     end
   end
 end

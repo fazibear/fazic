@@ -5,7 +5,9 @@ class About
     h3 "What is this?"
     p do
       p class: "image" do
-        img src: "/static/images/fazic.jpg"
+        a href: "/fazic" do
+          img src: "/static/images/fazic.jpg"
+        end
       end
       a href: "/fazic" do
         'FAZIC '
