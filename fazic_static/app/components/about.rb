@@ -54,10 +54,17 @@ class About
       a href: router.url_for(:roadmap) do
         ' PATREONS '
       end
-      span "section now."
+      span "section now. Or follow us on twitter!"
     end
-    a href: router.url_for(:roadmap) do
-      'SHOW ME THE ROADMAP'
+    div.social do
+      a class: "fa fa-twitter", href: "https://twitter.com/fazic1"
+      a class: "bold", href: "https://www.patreon.com/fazic" do
+        "P"
+      end
+      a class: "bold", href: "https://fazibear.itch.io/fazic" do
+        "i"
+      end
+      a class: "fa fa-github", href: "https://github.com/fazibear/fazic"
     end
     h3 "Found a bug?"
     p do
