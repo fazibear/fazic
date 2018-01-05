@@ -55,6 +55,21 @@
   background: rgba(18, 16, 16, 0.1);
   opacity: 0;
   pointer-events: none;
+}
+
+#flick {
+  position: relative;
+  top: 695px;
+}
+
+#flick-label {
+  font-family: 'Strasua';
+  position: relative;
+  top: 695px;
+  font-size: 10px;
+}
+
+#flick:checked~.canvas::after {
   animation:flicker 0.15s infinite;
 }
 
