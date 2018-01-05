@@ -100,6 +100,14 @@ pub fn mul(a: usize, b: usize, dst: usize, fazic: &mut ::fazic::Fazic) {
 }
 pub fn div(a: usize, b: usize, dst: usize, fazic: &mut ::fazic::Fazic) {
     let ret = match (fazic.variables.get(a), fazic.variables.get(b)) {
+        (_, &Value::Integer(0)) => {
+            ::fazic::vm::error(fazic, "DIVISION BY ZERO");
+            Value::Null
+        }
+        (_, &Value::Float(r)) if r == 0.0 => {
+            ::fazic::vm::error(fazic, "DIVISION BY ZERO");
+            Value::Null
+        }
         (&Value::Integer(l), &Value::Integer(r)) => Value::Integer(l / r),
         (&Value::Float(l), &Value::Float(r)) => Value::Float(l / r),
         (&Value::Float(l), &Value::Integer(r)) => Value::Float(l / r as f64),

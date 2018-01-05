@@ -22,3 +22,6 @@ default-features = true
 
 # [target.'cfg(target_os = "emscripten")'.dependencies]
 # emscripten-sys = "*"
+
+[profile.release]
+lto = true
