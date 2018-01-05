@@ -3,11 +3,8 @@ use std::ops::Neg;
 
 pub fn and(a: usize, b: usize, dst: usize, fazic: &mut ::fazic::Fazic) {
     let ret = match (fazic.variables.get(a), fazic.variables.get(b)) {
-        (&Value::Integer(l), &Value::Integer(r)) => Value::Integer(l & r),
+        (&Value::Number(l), &Value::Number(r)) => Value::Number((l as i64 & r as i64) as f64),
         (&Value::Bool(l), &Value::Bool(r)) => Value::Bool(l && r),
-        // (&Value::Float(l), &Value::Float(r)) => Value::Float(l & r),
-        // (&Value::Float(l), &Value::Integer(r)) => Value::Float(l & r as f32),
-        // (&Value::Integer(l), &Value::Float(r)) => Value::Float(l as f32 & r),
         // (&Value::String(ref l), &Value::String(ref r)) => {
         //     let mut str = l.clone();
         //     str.push_str(r);
@@ -23,11 +20,8 @@ pub fn and(a: usize, b: usize, dst: usize, fazic: &mut ::fazic::Fazic) {
 
 pub fn or(a: usize, b: usize, dst: usize, fazic: &mut ::fazic::Fazic) {
     let ret = match (fazic.variables.get(a), fazic.variables.get(b)) {
-        (&Value::Integer(l), &Value::Integer(r)) => Value::Integer(l | r),
+        (&Value::Number(l), &Value::Number(r)) => Value::Number((l as i64 | r as i64) as f64),
         (&Value::Bool(l), &Value::Bool(r)) => Value::Bool(l || r),
-        // (&Value::Float(l), &Value::Float(r)) => Value::Float(l + r),
-        // (&Value::Float(l), &Value::Integer(r)) => Value::Float(l + r as f32),
-        // (&Value::Integer(l), &Value::Float(r)) => Value::Float(l as f32 + r),
         // (&Value::String(ref l), &Value::String(ref r)) => {
         //     let mut str = l.clone();
         //     str.push_str(r);
@@ -44,10 +38,7 @@ pub fn or(a: usize, b: usize, dst: usize, fazic: &mut ::fazic::Fazic) {
 
 pub fn add(a: usize, b: usize, dst: usize, fazic: &mut ::fazic::Fazic) {
     let ret = match (fazic.variables.get(a), fazic.variables.get(b)) {
-        (&Value::Integer(l), &Value::Integer(r)) => Value::Integer(l + r),
-        (&Value::Float(l), &Value::Float(r)) => Value::Float(l + r),
-        (&Value::Float(l), &Value::Integer(r)) => Value::Float(l + r as f32),
-        (&Value::Integer(l), &Value::Float(r)) => Value::Float(l as f32 + r),
+        (&Value::Number(l), &Value::Number(r)) => Value::Number(l + r),
         // (&Value::String(ref l), &Value::String(ref r)) => {
         //     let mut str = l.clone();
         //     str.push_str(r);
@@ -63,10 +54,7 @@ pub fn add(a: usize, b: usize, dst: usize, fazic: &mut ::fazic::Fazic) {
 
 pub fn sub(a: usize, b: usize, dst: usize, fazic: &mut ::fazic::Fazic) {
     let ret = match (fazic.variables.get(a), fazic.variables.get(b)) {
-        (&Value::Integer(l), &Value::Integer(r)) => Value::Integer(l - r),
-        (&Value::Float(l), &Value::Float(r)) => Value::Float(l - r),
-        (&Value::Float(l), &Value::Integer(r)) => Value::Float(l - r as f32),
-        (&Value::Integer(l), &Value::Float(r)) => Value::Float(l as f32 - r),
+        (&Value::Number(l), &Value::Number(r)) => Value::Number(l - r),
         // (&Value::String(ref l), &Value::String(ref r)) => {
         //     let mut str = l.clone();
         //     str.push_str(r);
@@ -82,10 +70,7 @@ pub fn sub(a: usize, b: usize, dst: usize, fazic: &mut ::fazic::Fazic) {
 
 pub fn mul(a: usize, b: usize, dst: usize, fazic: &mut ::fazic::Fazic) {
     let ret = match (fazic.variables.get(a), fazic.variables.get(b)) {
-        (&Value::Integer(l), &Value::Integer(r)) => Value::Integer(l * r),
-        (&Value::Float(l), &Value::Float(r)) => Value::Float(l * r),
-        (&Value::Float(l), &Value::Integer(r)) => Value::Float(l * r as f32),
-        (&Value::Integer(l), &Value::Float(r)) => Value::Float(l as f32 * r),
+        (&Value::Number(l), &Value::Number(r)) => Value::Number(l * r),
         // (&Value::String(ref l), &Value::String(ref r)) => {
         //     let mut str = l.clone();
         //     str.push_str(r);
@@ -100,18 +85,11 @@ pub fn mul(a: usize, b: usize, dst: usize, fazic: &mut ::fazic::Fazic) {
 }
 pub fn div(a: usize, b: usize, dst: usize, fazic: &mut ::fazic::Fazic) {
     let ret = match (fazic.variables.get(a), fazic.variables.get(b)) {
-        (_, &Value::Integer(0)) => {
+        (_, &Value::Number(r)) if r == 0.0 => {
             ::fazic::vm::error(fazic, "DIVISION BY ZERO");
             Value::Null
         }
-        (_, &Value::Float(r)) if r == 0.0 => {
-            ::fazic::vm::error(fazic, "DIVISION BY ZERO");
-            Value::Null
-        }
-        (&Value::Integer(l), &Value::Integer(r)) => Value::Integer(l / r),
-        (&Value::Float(l), &Value::Float(r)) => Value::Float(l / r),
-        (&Value::Float(l), &Value::Integer(r)) => Value::Float(l / r as f32),
-        (&Value::Integer(l), &Value::Float(r)) => Value::Float(l as f32 / r),
+        (&Value::Number(l), &Value::Number(r)) => Value::Number(l / r),
         // (&Value::String(ref l), &Value::String(ref r)) => {
         //     let mut str = l.clone();
         //     str.push_str(r);
@@ -127,10 +105,7 @@ pub fn div(a: usize, b: usize, dst: usize, fazic: &mut ::fazic::Fazic) {
 
 pub fn pow(a: usize, b: usize, dst: usize, fazic: &mut ::fazic::Fazic) {
     let ret = match (fazic.variables.get(a), fazic.variables.get(b)) {
-        (&Value::Integer(l), &Value::Integer(r)) => Value::Integer(l.pow(r as u32)),
-        (&Value::Float(l), &Value::Float(r)) => Value::Float(l.powf(r)),
-        (&Value::Float(l), &Value::Integer(r)) => Value::Float(l.powi(r)),
-        (&Value::Integer(l), &Value::Float(r)) => Value::Float((l as f32).powf(r)),
+        (&Value::Number(l), &Value::Number(r)) => Value::Number(l.powf(r)),
         // (&Value::String(ref l), &Value::String(ref r)) => {
         //     let mut str = l.clone();
         //     str.push_str(r);
@@ -146,10 +121,7 @@ pub fn pow(a: usize, b: usize, dst: usize, fazic: &mut ::fazic::Fazic) {
 
 pub fn eq(a: usize, b: usize, dst: usize, fazic: &mut ::fazic::Fazic) {
     let ret = match (fazic.variables.get(a), fazic.variables.get(b)) {
-        (&Value::Integer(l), &Value::Integer(r)) => Value::Bool(l == r),
-        (&Value::Float(l), &Value::Float(r)) => Value::Bool(l == r),
-        (&Value::Float(l), &Value::Integer(r)) => Value::Bool(l == (r as f32)),
-        (&Value::Integer(l), &Value::Float(r)) => Value::Bool((l as f32) == r),
+        (&Value::Number(l), &Value::Number(r)) => Value::Bool(l == r),
         (_, _) => {
             ::fazic::vm::error(fazic, "TYPE MISMATCH");
             Value::Null
@@ -160,10 +132,7 @@ pub fn eq(a: usize, b: usize, dst: usize, fazic: &mut ::fazic::Fazic) {
 
 pub fn gt(a: usize, b: usize, dst: usize, fazic: &mut ::fazic::Fazic) {
     let ret = match (fazic.variables.get(a), fazic.variables.get(b)) {
-        (&Value::Integer(l), &Value::Integer(r)) => Value::Bool(l > r),
-        (&Value::Float(l), &Value::Float(r)) => Value::Bool(l > r),
-        (&Value::Float(l), &Value::Integer(r)) => Value::Bool(l > (r as f32)),
-        (&Value::Integer(l), &Value::Float(r)) => Value::Bool((l as f32) > r),
+        (&Value::Number(l), &Value::Number(r)) => Value::Bool(l > r),
         (_, _) => {
             ::fazic::vm::error(fazic, "TYPE MISMATCH");
             Value::Null
@@ -174,10 +143,7 @@ pub fn gt(a: usize, b: usize, dst: usize, fazic: &mut ::fazic::Fazic) {
 
 pub fn lt(a: usize, b: usize, dst: usize, fazic: &mut ::fazic::Fazic) {
     let ret = match (fazic.variables.get(a), fazic.variables.get(b)) {
-        (&Value::Integer(l), &Value::Integer(r)) => Value::Bool(l < r),
-        (&Value::Float(l), &Value::Float(r)) => Value::Bool(l < r),
-        (&Value::Float(l), &Value::Integer(r)) => Value::Bool(l < (r as f32)),
-        (&Value::Integer(l), &Value::Float(r)) => Value::Bool((l as f32) < r),
+        (&Value::Number(l), &Value::Number(r)) => Value::Bool(l < r),
         (_, _) => {
             ::fazic::vm::error(fazic, "TYPE MISMATCH");
             Value::Null
@@ -189,10 +155,7 @@ pub fn lt(a: usize, b: usize, dst: usize, fazic: &mut ::fazic::Fazic) {
 
 pub fn lteq(a: usize, b: usize, dst: usize, fazic: &mut ::fazic::Fazic) {
     let ret = match (fazic.variables.get(a), fazic.variables.get(b)) {
-        (&Value::Integer(l), &Value::Integer(r)) => Value::Bool(l <= r),
-        (&Value::Float(l), &Value::Float(r)) => Value::Bool(l <= r),
-        (&Value::Float(l), &Value::Integer(r)) => Value::Bool(l <= (r as f32)),
-        (&Value::Integer(l), &Value::Float(r)) => Value::Bool((l as f32) <= r),
+        (&Value::Number(l), &Value::Number(r)) => Value::Bool(l <= r),
         (_, _) => {
             ::fazic::vm::error(fazic, "TYPE MISMATCH");
             Value::Null
@@ -203,10 +166,7 @@ pub fn lteq(a: usize, b: usize, dst: usize, fazic: &mut ::fazic::Fazic) {
 
 pub fn gteq(a: usize, b: usize, dst: usize, fazic: &mut ::fazic::Fazic) {
     let ret = match (fazic.variables.get(a), fazic.variables.get(b)) {
-        (&Value::Integer(l), &Value::Integer(r)) => Value::Bool(l >= r),
-        (&Value::Float(l), &Value::Float(r)) => Value::Bool(l >= r),
-        (&Value::Float(l), &Value::Integer(r)) => Value::Bool(l >= (r as f32)),
-        (&Value::Integer(l), &Value::Float(r)) => Value::Bool((l as f32) >= r),
+        (&Value::Number(l), &Value::Number(r)) => Value::Bool(l >= r),
         (_, _) => {
             ::fazic::vm::error(fazic, "TYPE MISMATCH");
             Value::Null
@@ -217,7 +177,7 @@ pub fn gteq(a: usize, b: usize, dst: usize, fazic: &mut ::fazic::Fazic) {
 
 pub fn not(a: usize, dst: usize, fazic: &mut ::fazic::Fazic) {
     let ret = match fazic.variables.get(a) {
-        &Value::Integer(l) => Value::Integer(!l),
+        &Value::Number(l) => Value::Number(!(l as i64) as f64),
         &Value::Bool(l) => Value::Bool(!l),
         _ => {
             ::fazic::vm::error(fazic, "TYPE MISMATCH");
@@ -229,8 +189,7 @@ pub fn not(a: usize, dst: usize, fazic: &mut ::fazic::Fazic) {
 
 pub fn neg(a: usize, dst: usize, fazic: &mut ::fazic::Fazic) {
     let ret = match fazic.variables.get(a) {
-        &Value::Integer(l) => Value::Integer(l.neg()),
-        &Value::Float(l) => Value::Float(l.neg()),
+        &Value::Number(l) => Value::Number(l.neg()),
         _ => {
             ::fazic::vm::error(fazic, "TYPE MISMATCH");
             Value::Null

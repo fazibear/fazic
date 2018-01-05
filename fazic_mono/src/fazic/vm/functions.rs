@@ -10,13 +10,12 @@ pub fn rng(_: usize, dst: usize, fazic: &mut ::fazic::Fazic) {
     //         Value::Null
     //     }
     // };
-    fazic.variables.set(dst, Value::Integer(0));
+    fazic.variables.set(dst, Value::Number(0.0));
 }
 
 pub fn abs(a: usize, dst: usize, fazic: &mut ::fazic::Fazic) {
     let ret = match fazic.variables.get(a) {
-        &Value::Integer(l) => Value::Integer(l.abs()),
-        &Value::Float(l) => Value::Float(l.abs()),
+        &Value::Number(l) => Value::Number(l.abs()),
         _ => {
             ::fazic::vm::error(fazic, "TYPE MISMATCH");
             Value::Null
@@ -27,8 +26,7 @@ pub fn abs(a: usize, dst: usize, fazic: &mut ::fazic::Fazic) {
 
 pub fn sin(a: usize, dst: usize, fazic: &mut ::fazic::Fazic) {
     let ret = match fazic.variables.get(a) {
-        &Value::Integer(l) => Value::Float((l as f32).sin()),
-        &Value::Float(l) => Value::Float(l.sin()),
+        &Value::Number(l) => Value::Number(l.sin()),
         _ => {
             ::fazic::vm::error(fazic, "TYPE MISMATCH");
             Value::Null
@@ -39,8 +37,7 @@ pub fn sin(a: usize, dst: usize, fazic: &mut ::fazic::Fazic) {
 
 pub fn cos(a: usize, dst: usize, fazic: &mut ::fazic::Fazic) {
     let ret = match fazic.variables.get(a) {
-        &Value::Integer(l) => Value::Float((l as f32).cos()),
-        &Value::Float(l) => Value::Float(l.cos()),
+        &Value::Number(l) => Value::Number(l.cos()),
         _ => {
             ::fazic::vm::error(fazic, "TYPE MISMATCH");
             Value::Null
@@ -51,8 +48,7 @@ pub fn cos(a: usize, dst: usize, fazic: &mut ::fazic::Fazic) {
 
 pub fn tan(a: usize, dst: usize, fazic: &mut ::fazic::Fazic) {
     let ret = match fazic.variables.get(a) {
-        &Value::Integer(l) => Value::Float((l as f32).tan()),
-        &Value::Float(l) => Value::Float(l.tan()),
+        &Value::Number(l) => Value::Number(l.tan()),
         _ => {
             ::fazic::vm::error(fazic, "TYPE MISMATCH");
             Value::Null
@@ -63,8 +59,7 @@ pub fn tan(a: usize, dst: usize, fazic: &mut ::fazic::Fazic) {
 
 pub fn atn(a: usize, dst: usize, fazic: &mut ::fazic::Fazic) {
     let ret = match fazic.variables.get(a) {
-        &Value::Integer(l) => Value::Float((l as f32).atan()),
-        &Value::Float(l) => Value::Float(l.atan()),
+        &Value::Number(l) => Value::Number(l.atan()),
         _ => {
             ::fazic::vm::error(fazic, "TYPE MISMATCH");
             Value::Null
@@ -75,8 +70,7 @@ pub fn atn(a: usize, dst: usize, fazic: &mut ::fazic::Fazic) {
 
 pub fn exp(a: usize, dst: usize, fazic: &mut ::fazic::Fazic) {
     let ret = match fazic.variables.get(a) {
-        &Value::Integer(l) => Value::Float((l as f32).exp()),
-        &Value::Float(l) => Value::Float(l.exp()),
+        &Value::Number(l) => Value::Number(l.exp()),
         _ => {
             ::fazic::vm::error(fazic, "TYPE MISMATCH");
             Value::Null
@@ -87,8 +81,7 @@ pub fn exp(a: usize, dst: usize, fazic: &mut ::fazic::Fazic) {
 
 pub fn log(a: usize, dst: usize, fazic: &mut ::fazic::Fazic) {
     let ret = match fazic.variables.get(a) {
-        &Value::Integer(l) => Value::Float((l as f32).ln()),
-        &Value::Float(l) => Value::Float(l.ln()),
+        &Value::Number(l) => Value::Number(l.ln()),
         _ => {
             ::fazic::vm::error(fazic, "TYPE MISMATCH");
             Value::Null
@@ -99,8 +92,7 @@ pub fn log(a: usize, dst: usize, fazic: &mut ::fazic::Fazic) {
 
 pub fn sqr(a: usize, dst: usize, fazic: &mut ::fazic::Fazic) {
     let ret = match fazic.variables.get(a) {
-        &Value::Integer(l) => Value::Float((l as f32).sqrt()),
-        &Value::Float(l) => Value::Float(l.sqrt()),
+        &Value::Number(l) => Value::Number(l.sqrt()),
         _ => {
             ::fazic::vm::error(fazic, "TYPE MISMATCH");
             Value::Null
@@ -111,10 +103,8 @@ pub fn sqr(a: usize, dst: usize, fazic: &mut ::fazic::Fazic) {
 
 pub fn sgn(a: usize, dst: usize, fazic: &mut ::fazic::Fazic) {
     let ret = match fazic.variables.get(a) {
-        &Value::Integer(0) => Value::Integer(0),
-        &Value::Float(l) if l == 0.0 => Value::Integer(0),
-        &Value::Integer(l) => Value::Integer(if l < 0 { -1 } else { 1 }),
-        &Value::Float(l) => Value::Integer(if l < 0.0 { -1 } else { 1 }),
+        &Value::Number(l) if l == 0.0 => Value::Number(0.0),
+        &Value::Number(l) => Value::Number(if l < 0.0 { -1.0 } else { 1.0 }),
         _ => {
             ::fazic::vm::error(fazic, "TYPE MISMATCH");
             Value::Null
@@ -125,7 +115,7 @@ pub fn sgn(a: usize, dst: usize, fazic: &mut ::fazic::Fazic) {
 
 pub fn len(a: usize, dst: usize, fazic: &mut ::fazic::Fazic) {
     let ret = match fazic.variables.get(a).clone() {
-        Value::String(l) => Value::Integer(l.len() as i32),
+        Value::String(l) => Value::Number(l.len() as f64),
         _ => {
             ::fazic::vm::error(fazic, "TYPE MISMATCH");
             Value::Null
@@ -136,7 +126,7 @@ pub fn len(a: usize, dst: usize, fazic: &mut ::fazic::Fazic) {
 
 pub fn asc(a: usize, dst: usize, fazic: &mut ::fazic::Fazic) {
     let ret = match fazic.variables.get(a).clone() {
-        Value::String(ref l) => Value::Integer(l.chars().nth(0).unwrap() as i32),
+        Value::String(ref l) => Value::Number(l.chars().nth(0).unwrap() as u32 as f64),
         _ => {
             ::fazic::vm::error(fazic, "TYPE MISMATCH");
             Value::Null
@@ -147,7 +137,7 @@ pub fn asc(a: usize, dst: usize, fazic: &mut ::fazic::Fazic) {
 
 pub fn chr(a: usize, dst: usize, fazic: &mut ::fazic::Fazic) {
     let ret = match fazic.variables.get(a) {
-        &Value::Integer(l) => match char::from_u32(l as u32) {
+        &Value::Number(l) => match char::from_u32(l as u32) {
             Some(char) => Value::String(char.to_string()),
             _ => {
                 ::fazic::vm::error(fazic, "TYPE MISMATCH");
@@ -164,8 +154,8 @@ pub fn chr(a: usize, dst: usize, fazic: &mut ::fazic::Fazic) {
 
 pub fn val(a: usize, dst: usize, fazic: &mut ::fazic::Fazic) {
     let ret = match fazic.variables.get(a).clone() {
-        Value::String(l) => match l.parse::<f32>() {
-            Ok(f) => Value::Float(f),
+        Value::String(l) => match l.parse::<f64>() {
+            Ok(f) => Value::Number(f),
             _ => {
                 ::fazic::vm::error(fazic, "TYPE MISMATCH");
                 Value::Null
@@ -181,7 +171,7 @@ pub fn val(a: usize, dst: usize, fazic: &mut ::fazic::Fazic) {
 
 pub fn int(a: usize, dst: usize, fazic: &mut ::fazic::Fazic) {
     let ret = match fazic.variables.get(a) {
-        &Value::Float(l) => Value::Integer(l as i32),
+        &Value::Number(l) => Value::Number(l.round() as f64),
         _ => {
             ::fazic::vm::error(fazic, "TYPE MISMATCH");
             Value::Null
@@ -192,8 +182,7 @@ pub fn int(a: usize, dst: usize, fazic: &mut ::fazic::Fazic) {
 
 pub fn str(a: usize, dst: usize, fazic: &mut ::fazic::Fazic) {
     let ret = match fazic.variables.get(a) {
-        &Value::Integer(l) => Value::String(l.to_string()),
-        &Value::Float(l) => Value::String(l.to_string()),
+        &Value::Number(l) => Value::String(l.to_string()),
         _ => {
             ::fazic::vm::error(fazic, "TYPE MISMATCH");
             Value::Null

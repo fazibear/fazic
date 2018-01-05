@@ -19,7 +19,7 @@ command -> Vec<NodeElement>
     / ("GOSUB" / "gosub") _ i:integer { nodes("gosub", vec![i]) }
 
     / ("FOR" / "for") _ v:variable _ "=" _ e:expression _ ("TO" / "to") _ t:expression _ ("STEP" / "step") _ s:expression { nodes("for", vec![v, e, t, s]) }
-    / ("FOR" / "for") _ v:variable _ "=" _ e:expression _ ("TO" / "to") _ t:expression { nodes("for", vec![v, e, t, integer_node("1")]) }
+    / ("FOR" / "for") _ v:variable _ "=" _ e:expression _ ("TO" / "to") _ t:expression { nodes("for", vec![v, e, t, number_node("1")]) }
 
     / ("IF" / "if") _ e:expression _ ("GOTO" / "goto") _ i:integer {
         vec![node("if", vec![e]), node("goto", vec![i])]
@@ -115,10 +115,10 @@ term -> NodeElement
     / _ v:variable _ { v }
 
 float -> NodeElement
-    = f:$([0-9]* "." [0-9]+) { float_node(f) }
+    = f:$([0-9]* "." [0-9]+) { number_node(f) }
 
 integer -> NodeElement
-    = i:$([0-9]+) { integer_node(i) }
+    = i:$([0-9]+) { number_node(i) }
 
 string -> NodeElement
     = "\"" s:$([^"]*) "\"" { string_node(s) }

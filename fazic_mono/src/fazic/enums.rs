@@ -17,9 +17,8 @@ pub enum NodeElement {
 
 #[derive(Debug, Clone)]
 pub enum Value {
-    Integer(i32),
+    Number(f64),
     String(String),
-    Float(f32),
     Bool(bool),
     Null,
 }

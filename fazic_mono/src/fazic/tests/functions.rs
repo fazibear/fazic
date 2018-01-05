@@ -24,7 +24,7 @@ fn sin() {
 
     assert_eq!(
         fazic.text_buffer.get_current_line_string(),
-        "0.8415".to_string()
+        "0.8414709848078965".to_string()
     )
 }
 
@@ -38,7 +38,7 @@ fn cos() {
 
     assert_eq!(
         fazic.text_buffer.get_current_line_string(),
-        "0.5403".to_string()
+        "0.5403023058681398".to_string()
     )
 }
 
@@ -52,7 +52,7 @@ fn tan() {
 
     assert_eq!(
         fazic.text_buffer.get_current_line_string(),
-        "1.5574".to_string()
+        "1.557407724654902".to_string()
     )
 }
 
@@ -66,7 +66,7 @@ fn atn() {
 
     assert_eq!(
         fazic.text_buffer.get_current_line_string(),
-        "0.7854".to_string()
+        "0.7853981633974483".to_string()
     )
 }
 
@@ -80,7 +80,7 @@ fn log() {
 
     assert_eq!(
         fazic.text_buffer.get_current_line_string(),
-        "0.6931".to_string()
+        "0.6931471805599453".to_string()
     )
 }
 
@@ -94,7 +94,7 @@ fn exp() {
 
     assert_eq!(
         fazic.text_buffer.get_current_line_string(),
-        "7.3891".to_string()
+        "7.38905609893065".to_string()
     )
 }
 
@@ -108,7 +108,7 @@ fn sqr() {
 
     assert_eq!(
         fazic.text_buffer.get_current_line_string(),
-        "1.4142".to_string()
+        "1.4142135623730951".to_string()
     )
 }
 
@@ -178,7 +178,7 @@ fn val() {
 
     assert_eq!(
         fazic.text_buffer.get_current_line_string(),
-        "123.1200".to_string()
+        "123.12".to_string()
     )
 }
 

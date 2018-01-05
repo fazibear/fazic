@@ -2,7 +2,7 @@ use std::str::FromStr;
 use fazic::enums::*;
 
 #[derive(Debug)]
-pub struct Entry(pub Option<i32>, pub Vec<NodeElement>);
+pub struct Entry(pub Option<u32>, pub Vec<NodeElement>);
 
 #[derive(Debug, Clone)]
 pub struct Node(pub String, pub Vec<NodeElement>);
@@ -15,7 +15,7 @@ pub fn entry_node(line: &Option<NodeElement>, ast: Vec<Vec<NodeElement>>) -> Ent
 
     match *line {
         None => Entry(None, flat_ast),
-        Some(NodeElement::Value(Value::Integer(line))) => Entry(Some(line), flat_ast),
+        Some(NodeElement::Value(Value::Number(line))) => Entry(Some(line as u32), flat_ast),
         _ => unreachable!(),
     }
 }
@@ -24,12 +24,8 @@ pub fn string_node(string: &str) -> NodeElement {
     NodeElement::Value(Value::String(string.to_string()))
 }
 
-pub fn integer_node(string: &str) -> NodeElement {
-    NodeElement::Value(Value::Integer(i32::from_str(string).unwrap()))
-}
-
-pub fn float_node(string: &str) -> NodeElement {
-    NodeElement::Value(Value::Float(f32::from_str(string).unwrap()))
+pub fn number_node(string: &str) -> NodeElement {
+    NodeElement::Value(Value::Number(f64::from_str(string).unwrap()))
 }
 
 pub fn variable_node(string: &str) -> NodeElement {
