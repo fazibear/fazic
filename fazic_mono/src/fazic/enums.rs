@@ -19,7 +19,7 @@ pub enum NodeElement {
 pub enum Value {
     Integer(i32),
     String(String),
-    Float(f64),
+    Float(f32),
     Bool(bool),
     Null,
 }

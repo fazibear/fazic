@@ -29,7 +29,7 @@ pub fn integer_node(string: &str) -> NodeElement {
 }
 
 pub fn float_node(string: &str) -> NodeElement {
-    NodeElement::Value(Value::Float(f64::from_str(string).unwrap()))
+    NodeElement::Value(Value::Float(f32::from_str(string).unwrap()))
 }
 
 pub fn variable_node(string: &str) -> NodeElement {
