@@ -12,7 +12,7 @@ mergeInto(LibraryManager.library, {
       return name.toUpperCase() + bas_ext;
     }
 
-//    try {
+    try {
       switch(method) {
         case "dir":
           response = ""
@@ -31,10 +31,10 @@ mergeInto(LibraryManager.library, {
           response = "SAVED";
           break;
       }
-  //  }
-    //catch(err) {
-    //  response = "ERROR"
-    //}
+    }
+    catch(err) {
+      response = "ERROR"
+    }
 
     stringToUTF8(response, resp_p, 102400);
 
