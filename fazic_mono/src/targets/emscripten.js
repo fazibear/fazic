@@ -12,28 +12,27 @@ mergeInto(LibraryManager.library, {
       return name.toUpperCase() + bas_ext;
     }
 
-    try {
-      switch(method) {
-        case "dir":
-          response = ""
-          for (var i = 0, len = localStorage.length; i < len; ++i) {
-            var file = localStorage.key(i);
-            if(file.endsWith(bas_ext)) {
-              response = response + 'LOAD "' + file.substr(0, file.length - 4) + '"' + "\n";
-            }
+    switch(method) {
+      case "dir":
+        response = ""
+        for (var i = 0, len = localStorage.length; i < len; ++i) {
+          var file = localStorage.key(i);
+          if(file.endsWith(bas_ext)) {
+            response = response + 'LOAD "' + file.substr(0, file.length - 4) + '"' + "\n";
           }
-          break;
-        case "load":
-          response = localStorage.getItem(filename(name));
-          break;
-        case "save":
-          localStorage.setItem(filename(name), data);
-          response = "SAVED";
-          break;
-      }
-    }
-    catch(err) {
-      response = "ERROR"
+        }
+        break;
+      case "load":
+        response = localStorage.getItem(filename(name));
+        if(!response){
+          response = "NOT FOUND";
+          code = 404;
+        }
+        break;
+      case "save":
+        localStorage.setItem(filename(name), data);
+        response = "SAVED";
+        break;
     }
 
     stringToUTF8(response, resp_p, 102400);
