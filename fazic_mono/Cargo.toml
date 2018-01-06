@@ -24,4 +24,5 @@ default-features = true
 # emscripten-sys = "*"
 
 [profile.release]
-lto = true
+#lto = true
+panic = 'abort'
