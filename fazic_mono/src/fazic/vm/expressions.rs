@@ -35,7 +35,6 @@ pub fn or(a: usize, b: usize, dst: usize, fazic: &mut ::fazic::Fazic) {
     fazic.variables.set(dst, ret);
 }
 
-
 pub fn add(a: usize, b: usize, dst: usize, fazic: &mut ::fazic::Fazic) {
     let ret = match (fazic.variables.get(a), fazic.variables.get(b)) {
         (&Value::Number(l), &Value::Number(r)) => Value::Number(l + r),
@@ -151,7 +150,6 @@ pub fn lt(a: usize, b: usize, dst: usize, fazic: &mut ::fazic::Fazic) {
     };
     fazic.variables.set(dst, ret);
 }
-
 
 pub fn lteq(a: usize, b: usize, dst: usize, fazic: &mut ::fazic::Fazic) {
     let ret = match (fazic.variables.get(a), fazic.variables.get(b)) {

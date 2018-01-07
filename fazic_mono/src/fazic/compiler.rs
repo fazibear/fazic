@@ -256,7 +256,7 @@ fn process_nodes(
         let tmp = variables.alloc(&format!("{}-{}-TMP", nest, i));
         match *node {
             NodeElement::Node(Node(ref str, ref nodes)) => {
-                process_node(instructions, str, nodes, variables, lines, tmp, nest+1);
+                process_node(instructions, str, nodes, variables, lines, tmp, nest + 1);
                 params.push(Param::Node(tmp));
             }
             NodeElement::Value(ref val) => {
@@ -308,8 +308,7 @@ pub fn compile(
         lines.add(end_line, instructions.len());
     }
 
-    instructions
-        .push(Instruction::End);
+    instructions.push(Instruction::End);
 
     instructions
         .into_iter()

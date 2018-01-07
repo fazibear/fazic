@@ -63,7 +63,6 @@ pub fn load(name: &String) -> Result<String, String> {
     }
 }
 
-
 pub fn save(name: &String, body: &String) -> Result<String, String> {
     let (code, resp) = fetch(name, "save", body);
     match code {

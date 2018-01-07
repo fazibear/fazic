@@ -101,7 +101,6 @@ impl TextBuffer {
         self.changed = false;
     }
 
-
     pub fn blink_cursor(&mut self) {
         self.show_cursor = !self.show_cursor;
         self.changed = true;

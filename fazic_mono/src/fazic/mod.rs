@@ -55,7 +55,6 @@ pub struct Fazic {
     lines: lines::Lines,
 }
 
-
 impl Default for Fazic {
     fn default() -> Fazic {
         Fazic {
