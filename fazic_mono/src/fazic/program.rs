@@ -21,6 +21,10 @@ impl Program {
         self.lines.sort_by(|&(a, _, _), &(b, _, _)| a.cmp(&b));
     }
 
+    pub fn remove_line(&mut self, line: u16) {
+        self.lines.retain(|&(l, _, _)| l != line);
+    }
+
     pub fn nodes(&mut self, nodes: &mut Vec<NodeElement>) {
         for &(line, _, ref node) in &self.lines {
             nodes.push(NodeElement::LineNo(line));

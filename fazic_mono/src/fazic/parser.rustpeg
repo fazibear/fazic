@@ -4,6 +4,7 @@ use fazic::nodes::*;
 pub parse_all -> Entry
     = i:integer _ a:(all ++ ":") { entry_node(&Some(i), a) }
     / a:(all ++ ":") { entry_node(&None, a) }
+    / i:integer _ { entry_node(&Some(i), vec![]) }
 
 all -> Vec<NodeElement>
     = _ c:command _ { c }
