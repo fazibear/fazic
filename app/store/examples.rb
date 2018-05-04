@@ -3,7 +3,7 @@ class Store
     EXAMPLES = [
       {
         name: "HELLO",
-        description: "Simple hello wrold basic program",
+        description: "Simple 'hello world' basic program",
         code: <<~EOP
           10 PRINT "Hello"
           20 GOTO 10
