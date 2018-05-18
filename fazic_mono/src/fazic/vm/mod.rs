@@ -198,6 +198,10 @@ pub fn step(fazic: &mut ::fazic::Fazic) {
             commands::dot(x, y, fazic);
             fazic.vm.step()
         }
+        Instruction::Line(x, y, x2, y2) => {
+            commands::line(x, y, x2, y2, fazic);
+            fazic.vm.step()
+        }
         Instruction::Mode(mode) => {
             commands::mode(mode, fazic);
             fazic.vm.step()

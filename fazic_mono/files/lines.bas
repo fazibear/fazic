@@ -1,6 +1,6 @@
-10 mode 2
-20 for y=0 to 200
-30 for x=0 to 320
-40 dot x,y
-50 next
-60 next
+5 mode 1
+10 for x=0 to 1000
+20 line 0,0,320,240
+25 line 0, 240, 320,0
+30 flip
+40 next

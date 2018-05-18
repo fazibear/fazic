@@ -57,6 +57,7 @@ pub enum Instruction {
     Flip,
     Print(usize),
     Dot(usize, usize),
+    Line(usize, usize, usize, usize),
     Mode(u8),
     Color(usize),
 

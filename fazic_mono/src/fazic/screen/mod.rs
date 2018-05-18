@@ -90,8 +90,8 @@ impl Screen {
 
             self.put_char(
                 text.chars[i as usize],
-                (i % TEXT_BUFFER_CHARS_PER_LINE * 8),
-                (i / TEXT_BUFFER_CHARS_PER_LINE * 8),
+                i % TEXT_BUFFER_CHARS_PER_LINE * 8,
+                i / TEXT_BUFFER_CHARS_PER_LINE * 8,
                 color,
                 is_cursor,
             );

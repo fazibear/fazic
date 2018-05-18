@@ -37,6 +37,7 @@ command -> Vec<NodeElement>
         vec
     }
     / ("DOT" / "dot") _ x:expression _ "," _ y:expression { nodes("dot", vec![x, y]) }
+    / ("LINE" / "line") _ x:expression _ "," _ y:expression _ "," _ x2:expression _ "," _ y2:expression { nodes("line", vec![x, y, x2, y2]) }
 
     / ("NEXT" / "next" ) _ v:(variable ++ (_ "," _) ) {
         let mut vec = vec![];

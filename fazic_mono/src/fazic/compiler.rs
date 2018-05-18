@@ -57,6 +57,13 @@ fn process_node(
             let p1 = process_param(1, &params, instructions);
             instructions.push(Instruction::Dot(p0, p1));
         }
+        "line" => {
+            let p0 = process_param(0, &params, instructions);
+            let p1 = process_param(1, &params, instructions);
+            let p2 = process_param(2, &params, instructions);
+            let p3 = process_param(3, &params, instructions);
+            instructions.push(Instruction::Line(p0, p1, p2, p3));
+        }
         "and" => {
             let p0 = process_param(0, &params, instructions);
             let p1 = process_param(1, &params, instructions);
