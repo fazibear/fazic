@@ -71,23 +71,22 @@ pub fn line(x: usize, y: usize, x2: usize, y2: usize, fazic: &mut ::fazic::Fazic
         (short_len << 16) / long_len
     };
 
-
     if y_longer {
         let mut j = 0x8000 + (x << 16);
         if long_len > 0 {
             long_len += y;
-            while y<=long_len {
-              fazic.screen.put_pixel((j >> 16) as u16, y as u16, color);
-              j += dec_inc;
-              y += 1;
+            while y <= long_len {
+                fazic.screen.put_pixel((j >> 16) as u16, y as u16, color);
+                j += dec_inc;
+                y += 1;
             }
             return;
         }
         long_len += y;
-        while y >=long_len {
-          fazic.screen.put_pixel((j >> 16) as u16, y as u16, color);
-          j -= dec_inc;
-          y -= 1;
+        while y >= long_len {
+            fazic.screen.put_pixel((j >> 16) as u16, y as u16, color);
+            j -= dec_inc;
+            y -= 1;
         }
         return;
     }

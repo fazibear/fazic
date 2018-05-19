@@ -1,10 +1,10 @@
+mod compiler;
+mod lines;
+mod program;
 mod screen;
 mod text_buffer;
-mod program;
-mod vm;
-mod compiler;
 mod variables;
-mod lines;
+mod vm;
 
 pub mod config;
 pub mod enums;

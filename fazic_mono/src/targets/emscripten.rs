@@ -2,9 +2,9 @@
 extern "C" {}
 
 use std::cell::RefCell;
-use std::ptr::null_mut;
-use std::os::raw::{c_char, c_int, c_void};
 use std::ffi::CString;
+use std::os::raw::{c_char, c_int, c_void};
+use std::ptr::null_mut;
 
 #[allow(non_camel_case_types)]
 type em_callback_func = unsafe extern "C" fn();

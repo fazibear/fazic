@@ -10,14 +10,14 @@ extern crate simple_logger;
 extern crate rand;
 extern crate sdl2;
 
-mod targets;
 mod fazic;
+mod targets;
 
-use std::process;
+use fazic::config::*;
 use sdl2::event::Event;
 use sdl2::keyboard::*;
 use sdl2::pixels::PixelFormatEnum;
-use fazic::config::*;
+use std::process;
 
 const SCALE: u16 = 2;
 const WIDTH: u32 = (SCREEN_WIDTH * SCALE) as u32;

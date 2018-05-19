@@ -1,7 +1,7 @@
 use fazic::enums::*;
+use fazic::lines::Lines;
 use fazic::nodes::Node;
 use fazic::variables::Variables;
-use fazic::lines::Lines;
 
 fn process_param(idx: usize, params: &[Param], instructions: &mut Vec<Instruction>) -> usize {
     match params[idx] {

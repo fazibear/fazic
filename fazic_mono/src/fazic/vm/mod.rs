@@ -1,10 +1,10 @@
-use std::time::Instant;
 use fazic::enums::*;
+use std::time::Instant;
 
 mod commands;
 mod expressions;
-mod other;
 mod functions;
+mod other;
 
 pub struct VM {
     pub instructions: Vec<Instruction>,
