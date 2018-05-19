@@ -10,6 +10,11 @@ pub mod config;
 pub mod enums;
 pub mod nodes;
 
+use std::time::Instant;
+
+use rand::XorShiftRng;
+use rand::SeedableRng;
+
 #[cfg(test)]
 mod tests;
 
@@ -53,6 +58,8 @@ pub struct Fazic {
     variables: variables::Variables,
     stack: Vec<enums::Stack>,
     lines: lines::Lines,
+    instant: Instant,
+    rng: XorShiftRng,
 }
 
 impl Default for Fazic {
@@ -67,6 +74,8 @@ impl Default for Fazic {
             variables: variables::Variables::new(),
             stack: Vec::with_capacity(100),
             lines: lines::Lines::new(),
+            instant: Instant::now(),
+            rng: SeedableRng::from_seed([0,1,2,3]),
         }
     }
 }

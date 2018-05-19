@@ -48,6 +48,14 @@ fn process_node(
             let p0 = process_param(0, &params, instructions);
             instructions.push(Instruction::Color(p0));
         }
+        "clear" => {
+            let p0 = process_param(0, &params, instructions);
+            instructions.push(Instruction::Clear(p0));
+        }
+        "srand" => {
+            let p0 = process_param(0, &params, instructions);
+            instructions.push(Instruction::Srand(p0));
+        }
         "print" => {
             let p0 = process_param(0, &params, instructions);
             instructions.push(Instruction::Print(p0));
@@ -93,6 +101,11 @@ fn process_node(
             let p0 = process_param(0, &params, instructions);
             let p1 = process_param(1, &params, instructions);
             instructions.push(Instruction::Div(p0, p1, dst));
+        }
+        "mod" => {
+            let p0 = process_param(0, &params, instructions);
+            let p1 = process_param(1, &params, instructions);
+            instructions.push(Instruction::Mod(p0, p1, dst));
         }
         "pow" => {
             let p0 = process_param(0, &params, instructions);
@@ -160,9 +173,9 @@ fn process_node(
             let jmp = instructions.len() + 1;
             instructions.push(Instruction::Push(Stack::Next(p, max, step, jmp)));
         }
-        "rng" => {
+        "rnd" => {
             let p0 = process_param(0, &params, instructions);
-            instructions.push(Instruction::Rng(p0, dst));
+            instructions.push(Instruction::Rnd(p0, dst));
         }
         "abs" => {
             let p0 = process_param(0, &params, instructions);
@@ -223,6 +236,9 @@ fn process_node(
         "str" => {
             let p0 = process_param(0, &params, instructions);
             instructions.push(Instruction::Str(p0, dst));
+        }
+        "time" => {
+            instructions.push(Instruction::Time(dst));
         }
         "neg" => {
             let p0 = process_param(0, &params, instructions);

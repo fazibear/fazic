@@ -60,6 +60,8 @@ pub enum Instruction {
     Line(usize, usize, usize, usize),
     Mode(u8),
     Color(usize),
+    Clear(usize),
+    Srand(usize),
 
     Mov(usize, usize),
 
@@ -69,6 +71,7 @@ pub enum Instruction {
     Sub(usize, usize, usize),
     Mul(usize, usize, usize),
     Div(usize, usize, usize),
+    Mod(usize, usize, usize),
     Pow(usize, usize, usize),
 
     Eq(usize, usize, usize),
@@ -79,7 +82,7 @@ pub enum Instruction {
     GtEq(usize, usize, usize),
     Not(usize, usize),
 
-    Rng(usize, usize),
+    Rnd(usize, usize),
     Abs(usize, usize),
     Sin(usize, usize),
     Cos(usize, usize),
@@ -95,4 +98,5 @@ pub enum Instruction {
     Val(usize, usize),
     Int(usize, usize),
     Str(usize, usize),
+    Time(usize),
 }

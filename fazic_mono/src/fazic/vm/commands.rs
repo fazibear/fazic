@@ -1,4 +1,5 @@
 use fazic::vm::Value;
+use rand::SeedableRng;
 
 pub fn print(var: usize, fazic: &mut ::fazic::Fazic) {
     let string = match *fazic.variables.get(var) {
@@ -20,6 +21,23 @@ pub fn color(var: usize, fazic: &mut ::fazic::Fazic) {
     fazic.screen.current_color = color;
     fazic.text_buffer.current_color = color;
 }
+
+pub fn clear(var: usize, fazic: &mut ::fazic::Fazic) {
+    let color = match *fazic.variables.get(var) {
+        Value::Number(i) => i as u8,
+        _ => 0,
+    };
+    fazic.screen.clear(color);
+}
+
+pub fn srand(var: usize, fazic: &mut ::fazic::Fazic) {
+    let val = match *fazic.variables.get(var) {
+        Value::Number(i) => i as u32,
+        _ => 0,
+    };
+    fazic.rng = SeedableRng::from_seed([val, val+1, val+2, val+3])
+}
+
 
 pub fn dot(x: usize, y: usize, fazic: &mut ::fazic::Fazic) {
     let x = match *fazic.variables.get(x) {

@@ -38,6 +38,8 @@ command -> Vec<NodeElement>
     }
     / ("DOT" / "dot") _ x:expression _ "," _ y:expression { nodes("dot", vec![x, y]) }
     / ("LINE" / "line") _ x:expression _ "," _ y:expression _ "," _ x2:expression _ "," _ y2:expression { nodes("line", vec![x, y, x2, y2]) }
+    / ("CLEAR" / "clear") _ color:expression _ { nodes("clear", vec![color]) }
+    / ("SRAND" / "srand") _ x:expression _ { nodes("srand", vec![x]) }
 
     / ("NEXT" / "next" ) _ v:(variable ++ (_ "," _) ) {
         let mut vec = vec![];
@@ -84,6 +86,7 @@ function -> NodeElement
     / ("INT(" / "int(") _ e:expression _ ")" { node("int", vec![e]) }
     / ("VAL(" / "val(") _ e:expression _ ")" { node("val", vec![e]) }
     / ("STR(" / "str(") _ e:expression _ ")" { node("str", vec![e]) }
+    / ("TIME()" / "time()") { node("time", vec![]) }
 
 expression -> NodeElement
     = #infix<term> {
@@ -103,6 +106,7 @@ expression -> NodeElement
            l "-"  r { node("sub", vec![l, r]) }
         #L l "*"  r { node("mul", vec![l, r]) }
            l "/"  r { node("div", vec![l, r]) }
+           l "%"  r { node("mod", vec![l, r]) }
         #R l "^"  r { node("pow", vec![l, r]) }
     }
 

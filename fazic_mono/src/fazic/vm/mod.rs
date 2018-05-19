@@ -194,6 +194,14 @@ pub fn step(fazic: &mut ::fazic::Fazic) {
             commands::color(var, fazic);
             fazic.vm.step()
         }
+        Instruction::Clear(var) => {
+            commands::clear(var, fazic);
+            fazic.vm.step()
+        }
+        Instruction::Srand(var) => {
+            commands::srand(var, fazic);
+            fazic.vm.step()
+        }
         Instruction::Dot(x, y) => {
             commands::dot(x, y, fazic);
             fazic.vm.step()
@@ -230,6 +238,10 @@ pub fn step(fazic: &mut ::fazic::Fazic) {
             expressions::div(a, b, dst, fazic);
             fazic.vm.step()
         }
+        Instruction::Mod(a, b, dst) => {
+            expressions::mod_(a, b, dst, fazic);
+            fazic.vm.step()
+        }
         Instruction::Pow(a, b, dst) => {
             expressions::pow(a, b, dst, fazic);
             fazic.vm.step()
@@ -262,8 +274,8 @@ pub fn step(fazic: &mut ::fazic::Fazic) {
             expressions::not(a, dst, fazic);
             fazic.vm.step()
         }
-        Instruction::Rng(a, dst) => {
-            functions::rng(a, dst, fazic);
+        Instruction::Rnd(a, dst) => {
+            functions::rnd(a, dst, fazic);
             fazic.vm.step()
         }
         Instruction::Abs(a, dst) => {
@@ -324,6 +336,10 @@ pub fn step(fazic: &mut ::fazic::Fazic) {
         }
         Instruction::Str(a, dst) => {
             functions::str(a, dst, fazic);
+            fazic.vm.step()
+        }
+        Instruction::Time(dst) => {
+            functions::time(dst, fazic);
             fazic.vm.step()
         }
         Instruction::Next => match fazic.stack.last() {

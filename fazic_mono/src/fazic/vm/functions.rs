@@ -1,16 +1,27 @@
 use fazic::enums::Value;
 use std::char;
 
-pub fn rng(_: usize, dst: usize, fazic: &mut ::fazic::Fazic) {
-    // let ret = match fazic.variables.get(a) {
-    //     &Value::Integer(l) => Value::Integer(l.abs()),
-    //     &Value::Float(l) => Value::Float(l.abs()),
-    //     _ => {
-    //         ::fazic::vm::error(fazic, "TYPE MISMATCH");
-    //         Value::Null
-    //     }
-    // };
-    fazic.variables.set(dst, Value::Number(0.0));
+use rand::Rng;
+
+pub fn rnd(max: usize, dst: usize, fazic: &mut ::fazic::Fazic) {
+    let ret = match fazic.variables.get(max) {
+        &Value::Number(max) if max == 0.0 => {
+            Value::Number(0.0)
+        }
+        &Value::Number(max) if max > 0.0 => {
+            let rng = fazic.rng.gen_range(0, max as i32) as f64;
+            Value::Number(rng)
+        }
+        &Value::Number(max) if max < 0.0 => {
+            let rng = fazic.rng.gen_range(max as i32, 0) as f64;
+            Value::Number(rng)
+        }
+        _ => {
+            ::fazic::vm::error(fazic, "TYPE MISMATCH");
+            Value::Null
+        }
+    };
+    fazic.variables.set(dst, ret);
 }
 
 pub fn abs(a: usize, dst: usize, fazic: &mut ::fazic::Fazic) {
@@ -189,4 +200,9 @@ pub fn str(a: usize, dst: usize, fazic: &mut ::fazic::Fazic) {
         }
     };
     fazic.variables.set(dst, ret);
+}
+
+pub fn time(dst: usize, fazic: &mut ::fazic::Fazic) {
+    let elapsed = fazic.instant.elapsed();
+    fazic.variables.set(dst, Value::Number(elapsed.as_secs() as f64 + elapsed.subsec_nanos() as f64 * 1e-9));
 }

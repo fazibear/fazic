@@ -102,6 +102,22 @@ pub fn div(a: usize, b: usize, dst: usize, fazic: &mut ::fazic::Fazic) {
     fazic.variables.set(dst, ret);
 }
 
+pub fn mod_(a: usize, b: usize, dst: usize, fazic: &mut ::fazic::Fazic) {
+    let ret = match (fazic.variables.get(a), fazic.variables.get(b)) {
+        (&Value::Number(l), &Value::Number(r)) => Value::Number(l % r),
+        // (&Value::String(ref l), &Value::String(ref r)) => {
+        //     let mut str = l.clone();
+        //     str.push_str(r);
+        //     Value::String(str)
+        // }
+        (_, _) => {
+            ::fazic::vm::error(fazic, "TYPE MISMATCH");
+            Value::Null
+        }
+    };
+    fazic.variables.set(dst, ret);
+}
+
 pub fn pow(a: usize, b: usize, dst: usize, fazic: &mut ::fazic::Fazic) {
     let ret = match (fazic.variables.get(a), fazic.variables.get(b)) {
         (&Value::Number(l), &Value::Number(r)) => Value::Number(l.powf(r)),
