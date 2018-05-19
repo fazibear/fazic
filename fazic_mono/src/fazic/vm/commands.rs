@@ -55,26 +55,26 @@ pub fn dot(x: usize, y: usize, fazic: &mut ::fazic::Fazic) {
     fazic.screen.put_pixel(x, y, color);
 }
 
-pub fn line(x: usize, y: usize, x2: usize, y2: usize, fazic: &mut ::fazic::Fazic) {
+pub fn line(x1: usize, y1: usize, x2: usize, y2: usize, fazic: &mut ::fazic::Fazic) {
     let color = fazic.screen.current_color;
-    let x = match *fazic.variables.get(x) {
-        Value::Number(x) => x as u16,
+    let x1 = match *fazic.variables.get(x1) {
+        Value::Number(x1) => x1 as i32,
         _ => 0,
     };
-    let y = match *fazic.variables.get(y) {
-        Value::Number(y) => y as u16,
+    let y1 = match *fazic.variables.get(y1) {
+        Value::Number(y1) => y1 as i32,
         _ => 0,
     };
     let x2 = match *fazic.variables.get(x2) {
-        Value::Number(x2) => x2 as u16,
+        Value::Number(x2) => x2 as i32,
         _ => 0,
     };
     let y2 = match *fazic.variables.get(y2) {
-        Value::Number(y2) => y2 as u16,
+        Value::Number(y2) => y2 as i32,
         _ => 0,
     };
-
-    fazic.screen.line(x, y, x2, y2, color);
+    //debug!("LINE: {} {} {} {}", x1,y1,x2,y2);
+    fazic.screen.line(x1, y1, x2, y2, color);
 }
 
 pub fn flip(fazic: &mut ::fazic::Fazic) {

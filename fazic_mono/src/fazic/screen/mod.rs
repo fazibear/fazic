@@ -99,7 +99,7 @@ impl Screen {
         }
     }
 
-    pub fn line(&mut self, x: u16, y: u16, x2: u16, y2: u16, color: u8) {
+    pub fn line(&mut self, x: i32, y: i32, x2: i32, y2: i32, color: u8) {
         let mut x1 = x as i32;
         let mut y1 = y as i32;
         let mut y_longer = false;
@@ -151,6 +151,28 @@ impl Screen {
             self.put_pixel(x1 as u16, (j >> 16) as u16, color);
             j -= dec_inc;
             x1 -= 1;
+        }
+    }
+
+    pub fn line2(&mut self, x0: u16, y0: u16, x1: u16, y1: u16, color: u8) {
+        let dx = x1 as i32 - x0 as i32;
+        let dy = y1 as i32 - y0 as i32;
+
+        let mut x = x0 as i32;
+        let mut y = y0 as i32;
+
+        let mut p = 2 * dy - dx;
+
+        while x < x1 as i32 {
+            if p >= 0 {
+                self.put_pixel(x as u16, y as u16, color);
+                y = y + 1;
+                p = p + 2 * dy - 2 * dx;
+            } else {
+                self.put_pixel(x as u16, y as u16, color);
+                p = p + 2 * dy;
+            }
+            x = x + 1;
         }
     }
 }
