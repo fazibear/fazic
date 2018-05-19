@@ -153,26 +153,4 @@ impl Screen {
             x1 -= 1;
         }
     }
-
-    pub fn line2(&mut self, x0: u16, y0: u16, x1: u16, y1: u16, color: u8) {
-        let dx = x1 as i32 - x0 as i32;
-        let dy = y1 as i32 - y0 as i32;
-
-        let mut x = x0 as i32;
-        let mut y = y0 as i32;
-
-        let mut p = 2 * dy - dx;
-
-        while x < x1 as i32 {
-            if p >= 0 {
-                self.put_pixel(x as u16, y as u16, color);
-                y = y + 1;
-                p = p + 2 * dy - 2 * dx;
-            } else {
-                self.put_pixel(x as u16, y as u16, color);
-                p = p + 2 * dy;
-            }
-            x = x + 1;
-        }
-    }
 }
