@@ -2,6 +2,7 @@ mod chars;
 mod palette;
 
 use fazic::config::*;
+use std::mem;
 
 pub struct Screen {
     pub pixels: [u8; SCREEN_PIXELS as usize],
@@ -95,6 +96,61 @@ impl Screen {
                 color,
                 is_cursor,
             );
+        }
+    }
+
+    pub fn line(&mut self, x: u16, y: u16, x2: u16, y2: u16, color: u8) {
+        let mut x1 = x as i32;
+        let mut y1 = y as i32;
+        let mut y_longer = false;
+        let mut short_len = y2 as i32 - y1;
+        let mut long_len = x2 as i32 - x1;
+
+        if short_len.abs() > long_len.abs() {
+            mem::swap(&mut short_len, &mut long_len);
+            y_longer = true;
+        }
+
+        let dec_inc = if long_len == 0 {
+            0
+        } else {
+            ((short_len << 16) / long_len)
+        };
+
+        if y_longer {
+            let mut j = 0x8000 + (x1 << 16);
+            if long_len > 0 {
+                long_len += y1;
+                while y1 <= long_len {
+                    self.put_pixel((j >> 16) as u16, y1 as u16, color);
+                    j += dec_inc;
+                    y1 += 1;
+                }
+                return;
+            }
+            long_len += y1;
+            while y1 >= long_len {
+                self.put_pixel((j >> 16) as u16, y1 as u16, color);
+                j -= dec_inc;
+                y1 -= 1;
+            }
+            return;
+        }
+        let mut j = 0x8000 + (y1 << 16);
+        if long_len > 0 {
+            long_len += x1;
+            while x1 <= long_len {
+                self.put_pixel(x1 as u16, (j >> 16) as u16, color);
+                j += dec_inc;
+                x1 += 1;
+            }
+            return;
+        }
+        long_len += x1;
+        while x1 >= long_len {
+            self.put_pixel(x1 as u16, (j >> 16) as u16, color);
+            j -= dec_inc;
+            x1 -= 1;
         }
     }
 }

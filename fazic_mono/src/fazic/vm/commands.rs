@@ -1,5 +1,4 @@
 use fazic::vm::Value;
-use std::mem;
 
 pub fn print(var: usize, fazic: &mut ::fazic::Fazic) {
     let string = match *fazic.variables.get(var) {
@@ -40,72 +39,24 @@ pub fn dot(x: usize, y: usize, fazic: &mut ::fazic::Fazic) {
 
 pub fn line(x: usize, y: usize, x2: usize, y2: usize, fazic: &mut ::fazic::Fazic) {
     let color = fazic.screen.current_color;
-    let mut x = match *fazic.variables.get(x) {
-        Value::Number(x) => x as i32,
+    let x = match *fazic.variables.get(x) {
+        Value::Number(x) => x as u16,
         _ => 0,
     };
-    let mut y = match *fazic.variables.get(y) {
-        Value::Number(y) => y as i32,
+    let y = match *fazic.variables.get(y) {
+        Value::Number(y) => y as u16,
         _ => 0,
     };
     let x2 = match *fazic.variables.get(x2) {
-        Value::Number(x2) => x2 as i32,
+        Value::Number(x2) => x2 as u16,
         _ => 0,
     };
     let y2 = match *fazic.variables.get(y2) {
-        Value::Number(y2) => y2 as i32,
+        Value::Number(y2) => y2 as u16,
         _ => 0,
     };
 
-    let mut y_longer = false;
-    let mut short_len = y2 - y;
-    let mut long_len = x2 - x;
-    if short_len.abs() > long_len.abs() {
-        mem::swap(&mut short_len, &mut long_len);
-        y_longer = true;
-    }
-
-    let dec_inc = if long_len == 0 {
-        0
-    } else {
-        (short_len << 16) / long_len
-    };
-
-    if y_longer {
-        let mut j = 0x8000 + (x << 16);
-        if long_len > 0 {
-            long_len += y;
-            while y <= long_len {
-                fazic.screen.put_pixel((j >> 16) as u16, y as u16, color);
-                j += dec_inc;
-                y += 1;
-            }
-            return;
-        }
-        long_len += y;
-        while y >= long_len {
-            fazic.screen.put_pixel((j >> 16) as u16, y as u16, color);
-            j -= dec_inc;
-            y -= 1;
-        }
-        return;
-    }
-    let mut j = 0x8000 + (y << 16);
-    if long_len > 0 {
-        long_len += x;
-        while x <= long_len {
-            fazic.screen.put_pixel(x as u16, (j >> 16) as u16, color);
-            j += dec_inc;
-            x += 1;
-        }
-        return;
-    }
-    long_len += x;
-    while x >= long_len {
-        fazic.screen.put_pixel(x as u16, (j >> 16) as u16, color);
-        j -= dec_inc;
-        x -= 1;
-    }
+    fazic.screen.line(x, y, x2, y2, color);
 }
 
 pub fn flip(fazic: &mut ::fazic::Fazic) {
