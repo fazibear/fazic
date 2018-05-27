@@ -33,7 +33,7 @@ impl Screen {
     //     }
     // }
 
-    pub fn put_char(&mut self, char: char, x: u16, y: u16, color: u8, reverse: bool) {
+    pub fn put_char(&mut self, char: char, x: i32, y: i32, color: u8, reverse: bool) {
         let data = chars::get_char(char);
 
         for xx in 0..64 {
@@ -64,8 +64,8 @@ impl Screen {
         }
     }
 
-    pub fn put_pixel(&mut self, x: u16, y: u16, color: u8) {
-        if x < SCREEN_WIDTH && y < SCREEN_HEIGHT {
+    pub fn put_pixel(&mut self, x: i32, y: i32, color: u8) {
+        if x >= 0 && y>=0 && x < SCREEN_WIDTH && y < SCREEN_HEIGHT {
             let i = x as usize + y as usize * SCREEN_WIDTH as usize;
             let i3 = i * 3;
             let (r, g, b) = palette::rgb_for(color);
@@ -122,7 +122,7 @@ impl Screen {
             if long_len > 0 {
                 long_len += y1;
                 while y1 <= long_len {
-                    self.put_pixel((j >> 16) as u16, y1 as u16, color);
+                    self.put_pixel(j >> 16, y1, color);
                     j += dec_inc;
                     y1 += 1;
                 }
@@ -130,7 +130,7 @@ impl Screen {
             }
             long_len += y1;
             while y1 >= long_len {
-                self.put_pixel((j >> 16) as u16, y1 as u16, color);
+                self.put_pixel(j >> 16, y1, color);
                 j -= dec_inc;
                 y1 -= 1;
             }
@@ -140,7 +140,7 @@ impl Screen {
         if long_len > 0 {
             long_len += x1;
             while x1 <= long_len {
-                self.put_pixel(x1 as u16, (j >> 16) as u16, color);
+                self.put_pixel(x1, j >> 16, color);
                 j += dec_inc;
                 x1 += 1;
             }
@@ -148,7 +148,7 @@ impl Screen {
         }
         long_len += x1;
         while x1 >= long_len {
-            self.put_pixel(x1 as u16, (j >> 16) as u16, color);
+            self.put_pixel(x1, j >> 16, color);
             j -= dec_inc;
             x1 -= 1;
         }

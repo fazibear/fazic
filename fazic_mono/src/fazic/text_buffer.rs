@@ -3,17 +3,17 @@ use fazic::config::*;
 pub struct TextBuffer {
     pub chars: [char; TEXT_BUFFER_CHARS as usize],
     pub colors: [u8; TEXT_BUFFER_CHARS as usize],
-    pub cursor: u16,
-    pub cursor_line: u16,
-    pub cursor_char: u16,
+    pub cursor: i32,
+    pub cursor_line: i32,
+    pub cursor_char: i32,
     pub current_color: u8,
     pub background_color: u8,
     pub changed: bool,
     pub show_cursor: bool,
     pub lines: Vec<Vec<(char, u8)>>,
     pub insert_mode: bool,
-    pub line_offset: u16,
-    pub additional_lines: u16,
+    pub line_offset: i32,
+    pub additional_lines: i32,
 }
 
 impl Default for TextBuffer {
@@ -114,7 +114,7 @@ impl TextBuffer {
     }
 
     pub fn right(&mut self) {
-        if self.cursor_char != self.lines[self.cursor_line as usize].len() as u16 {
+        if self.cursor_char != self.lines[self.cursor_line as usize].len() as i32 {
             self.cursor_char += 1;
             self.update_cursor();
         }
@@ -124,7 +124,7 @@ impl TextBuffer {
         if self.cursor_line != 0 {
             self.cursor_line -= 1;
             if self.cursor_char as usize > self.lines[self.cursor_line as usize].len() {
-                self.cursor_char = self.lines[self.cursor_line as usize].len() as u16;
+                self.cursor_char = self.lines[self.cursor_line as usize].len() as i32;
             }
             if self.cursor_line < self.line_offset {
                 self.line_offset -= 1;
@@ -135,10 +135,10 @@ impl TextBuffer {
     }
 
     pub fn down(&mut self) {
-        if self.cursor_line + 1 != self.lines.len() as u16 {
+        if self.cursor_line + 1 != self.lines.len() as i32 {
             self.cursor_line += 1;
             if self.cursor_char as usize > self.lines[self.cursor_line as usize].len() {
-                self.cursor_char = self.lines[self.cursor_line as usize].len() as u16;
+                self.cursor_char = self.lines[self.cursor_line as usize].len() as i32;
             }
             if self.cursor_line > self.line_offset + TEXT_BUFFER_LINES - 1 - self.additional_lines {
                 self.line_offset += 1;
@@ -162,7 +162,7 @@ impl TextBuffer {
     pub fn insert_string(&mut self, string: String) {
         for char in string.chars() {
             if self.insert_mode
-                || self.cursor_char == self.lines[self.cursor_line as usize].len() as u16
+                || self.cursor_char == self.lines[self.cursor_line as usize].len() as i32
             {
                 self.lines[self.cursor_line as usize]
                     .insert(self.cursor_char as usize, (char, self.current_color));
@@ -202,9 +202,9 @@ impl TextBuffer {
     /* private */
 
     fn update_cursor(&mut self) {
-        let mut pos: u16 = 0;
+        let mut pos = 0;
         for line in self.line_offset..self.cursor_line {
-            pos += self.lines[line as usize].len() as u16;
+            pos += self.lines[line as usize].len() as i32;
             pos += TEXT_BUFFER_CHARS_PER_LINE;
             pos -= pos % TEXT_BUFFER_CHARS_PER_LINE;
         }
@@ -229,7 +229,7 @@ impl TextBuffer {
 
         self.additional_lines = 0;
         for line in self.lines[start..end].iter() {
-            self.additional_lines += line.len() as u16 / TEXT_BUFFER_CHARS_PER_LINE;
+            self.additional_lines += line.len() as i32 / TEXT_BUFFER_CHARS_PER_LINE;
             for &(char, color) in line {
                 if pos >= TEXT_BUFFER_CHARS {
                     break;

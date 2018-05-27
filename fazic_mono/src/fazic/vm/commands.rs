@@ -41,12 +41,12 @@ pub fn srand(var: usize, fazic: &mut ::fazic::Fazic) {
 
 pub fn dot(x: usize, y: usize, fazic: &mut ::fazic::Fazic) {
     let x = match *fazic.variables.get(x) {
-        Value::Number(x) => x as u16,
+        Value::Number(x) => x as i32,
         _ => 0,
     };
 
     let y = match *fazic.variables.get(y) {
-        Value::Number(y) => y as u16,
+        Value::Number(y) => y as i32,
         _ => 0,
     };
 

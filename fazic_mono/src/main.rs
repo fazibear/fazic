@@ -19,9 +19,9 @@ use sdl2::keyboard::*;
 use sdl2::pixels::PixelFormatEnum;
 use std::process;
 
-const SCALE: u16 = 2;
-const WIDTH: u32 = (SCREEN_WIDTH * SCALE) as u32;
-const HEIGHT: u32 = (SCREEN_HEIGHT * SCALE) as u32;
+const SCALE: u32 = 2;
+const WIDTH: u32 = SCREEN_WIDTH as u32 * SCALE;
+const HEIGHT: u32 = SCREEN_HEIGHT as u32 * SCALE;
 const RGB_WIDTH: usize = SCREEN_WIDTH as usize * 3;
 
 pub fn main() {
