@@ -58,6 +58,7 @@ pub enum Instruction {
     Print(usize),
     Dot(usize, usize),
     Line(usize, usize, usize, usize),
+    Circle(usize, usize, usize),
     Mode(u8),
     Color(usize),
     Clear(usize),

@@ -77,6 +77,24 @@ pub fn line(x1: usize, y1: usize, x2: usize, y2: usize, fazic: &mut ::fazic::Faz
     fazic.screen.line(x1, y1, x2, y2, color);
 }
 
+pub fn circle(x1: usize, y1: usize, r: usize, fazic: &mut ::fazic::Fazic) {
+    let color = fazic.screen.current_color;
+    let x1 = match *fazic.variables.get(x1) {
+        Value::Number(x1) => x1 as i32,
+        _ => 0,
+    };
+    let y1 = match *fazic.variables.get(y1) {
+        Value::Number(y1) => y1 as i32,
+        _ => 0,
+    };
+    let r = match *fazic.variables.get(r) {
+        Value::Number(x2) => x2 as i32,
+        _ => 0,
+    };
+
+    fazic.screen.circle(x1, y1, r, color);
+}
+
 pub fn flip(fazic: &mut ::fazic::Fazic) {
     fazic.redraw = true;
 }
