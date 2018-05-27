@@ -99,12 +99,12 @@ impl Screen {
         }
     }
 
-    pub fn line(&mut self, x: i32, y: i32, x2: i32, y2: i32, color: u8) {
-        let mut x1 = x as i32;
-        let mut y1 = y as i32;
+    pub fn line(&mut self, x0: i32, y0: i32, x1: i32, y1: i32, color: u8) {
+        let mut x = x0 as i32;
+        let mut y = y0 as i32;
         let mut y_longer = false;
-        let mut short_len = y2 as i32 - y1;
-        let mut long_len = x2 as i32 - x1;
+        let mut short_len = y1 as i32 - y;
+        let mut long_len = x1 as i32 - x;
 
         if short_len.abs() > long_len.abs() {
             mem::swap(&mut short_len, &mut long_len);
@@ -118,39 +118,70 @@ impl Screen {
         };
 
         if y_longer {
-            let mut j = 0x8000 + (x1 << 16);
+            let mut j = 0x8000 + (x << 16);
             if long_len > 0 {
-                long_len += y1;
-                while y1 <= long_len {
-                    self.put_pixel(j >> 16, y1, color);
+                long_len += y;
+                while y <= long_len {
+                    self.put_pixel(j >> 16, y, color);
                     j += dec_inc;
-                    y1 += 1;
+                    y += 1;
                 }
                 return;
             }
-            long_len += y1;
-            while y1 >= long_len {
-                self.put_pixel(j >> 16, y1, color);
+            long_len += y;
+            while y >= long_len {
+                self.put_pixel(j >> 16, y, color);
                 j -= dec_inc;
-                y1 -= 1;
+                y -= 1;
             }
             return;
         }
-        let mut j = 0x8000 + (y1 << 16);
+        let mut j = 0x8000 + (y << 16);
         if long_len > 0 {
-            long_len += x1;
-            while x1 <= long_len {
-                self.put_pixel(x1, j >> 16, color);
+            long_len += x;
+            while x <= long_len {
+                self.put_pixel(x, j >> 16, color);
                 j += dec_inc;
-                x1 += 1;
+                x += 1;
             }
             return;
         }
-        long_len += x1;
-        while x1 >= long_len {
-            self.put_pixel(x1, j >> 16, color);
+        long_len += x;
+        while x >= long_len {
+            self.put_pixel(x, j >> 16, color);
             j -= dec_inc;
-            x1 -= 1;
+            x -= 1;
+        }
+    }
+
+    pub fn circle(&mut self, x0: i32, y0: i32, radius: i32, color: u8) {
+        let mut x = radius - 1;
+        let mut y = 0;
+        let mut dx = 1;
+        let mut dy = 1;
+        let mut err = dx - (radius << 1);
+
+        while x >= y{
+            self.put_pixel(x0 + x, y0 + y, color);
+            self.put_pixel(x0 + y, y0 + x, color);
+            self.put_pixel(x0 - y, y0 + x, color);
+            self.put_pixel(x0 - x, y0 + y, color);
+            self.put_pixel(x0 - x, y0 - y, color);
+            self.put_pixel(x0 - y, y0 - x, color);
+            self.put_pixel(x0 + y, y0 - x, color);
+            self.put_pixel(x0 + x, y0 - y, color);
+
+            if err <= 0 {
+                y += 1;
+                err += dy;
+                dy += 2;
+            }
+
+            if err > 0 {
+                x -= 1;
+                dx += 2;
+                err += dx - (radius << 1);
+            }
         }
     }
 }
