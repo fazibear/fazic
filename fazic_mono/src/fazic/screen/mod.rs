@@ -65,7 +65,7 @@ impl Screen {
     }
 
     pub fn put_pixel(&mut self, x: i32, y: i32, color: u8) {
-        if x >= 0 && y>=0 && x < SCREEN_WIDTH && y < SCREEN_HEIGHT {
+        if x >= 0 && y >= 0 && x < SCREEN_WIDTH && y < SCREEN_HEIGHT {
             let i = x as usize + y as usize * SCREEN_WIDTH as usize;
             let i3 = i * 3;
             let (r, g, b) = palette::rgb_for(color);
@@ -161,7 +161,7 @@ impl Screen {
         let mut dy = 1;
         let mut err = dx - (radius << 1);
 
-        while x >= y{
+        while x >= y {
             self.put_pixel(x0 + x, y0 + y, color);
             self.put_pixel(x0 + y, y0 + x, color);
             self.put_pixel(x0 - y, y0 + x, color);

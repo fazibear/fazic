@@ -5,9 +5,7 @@ use rand::Rng;
 
 pub fn rnd(max: usize, dst: usize, fazic: &mut ::fazic::Fazic) {
     let ret = match fazic.variables.get(max) {
-        &Value::Number(max) if max == 0.0 => {
-            Value::Number(0.0)
-        }
+        &Value::Number(max) if max == 0.0 => Value::Number(0.0),
         &Value::Number(max) if max > 0.0 => {
             let rng = fazic.rng.gen_range(0, max as i32) as f64;
             Value::Number(rng)
@@ -204,6 +202,8 @@ pub fn str(a: usize, dst: usize, fazic: &mut ::fazic::Fazic) {
 
 pub fn time(dst: usize, fazic: &mut ::fazic::Fazic) {
     let elapsed = fazic.instant.elapsed();
-    fazic.variables.set(dst, Value::Number(elapsed.as_secs() as f64 + elapsed.subsec_nanos() as f64 * 1e-9));
-
+    fazic.variables.set(
+        dst,
+        Value::Number(elapsed.as_secs() as f64 + elapsed.subsec_nanos() as f64 * 1e-9),
+    );
 }

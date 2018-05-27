@@ -12,8 +12,8 @@ pub mod nodes;
 
 use std::time::Instant;
 
-use rand::XorShiftRng;
 use rand::SeedableRng;
+use rand::XorShiftRng;
 
 #[cfg(test)]
 mod tests;
@@ -75,7 +75,7 @@ impl Default for Fazic {
             stack: Vec::with_capacity(100),
             lines: lines::Lines::new(),
             instant: Instant::now(),
-            rng: SeedableRng::from_seed([0,1,2,3]),
+            rng: SeedableRng::from_seed([0, 1, 2, 3]),
         }
     }
 }

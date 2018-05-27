@@ -35,9 +35,8 @@ pub fn srand(var: usize, fazic: &mut ::fazic::Fazic) {
         Value::Number(i) => i as u32,
         _ => 0,
     };
-    fazic.rng = SeedableRng::from_seed([val, val+1, val+2, val+3])
+    fazic.rng = SeedableRng::from_seed([val, val + 1, val + 2, val + 3])
 }
-
 
 pub fn dot(x: usize, y: usize, fazic: &mut ::fazic::Fazic) {
     let x = match *fazic.variables.get(x) {
