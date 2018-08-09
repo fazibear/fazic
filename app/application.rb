@@ -27,7 +27,7 @@ class Application
         h2 "fantasy retro computer"
         div.social do
           a class: "fa fa-twitter", href: "https://twitter.com/fazic1"
-          a class: "bold", href: "https://www.patreon.com/fazic" do
+          a class: "bold", href: "https://www.patreon.com/fazibear" do
             "P"
           end
           a class: "bold", href: "https://fazibear.itch.io/fazic" do
