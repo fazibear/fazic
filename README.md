@@ -5,3 +5,7 @@ FAZIC is a fantasy retro computer. You can create, share, and play tiny games or
 ![fazic](https://raw.githubusercontent.com/fazibear/fazic/master/static/images/fazic.jpg)
 
 https://fazic.io
+
+## Thank you!
+
+[![Become Patreon](https://c5.patreon.com/external/logo/become_a_patron_button.png)](https://www.patreon.com/bePatron?u=6912974)
