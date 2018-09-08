@@ -4,8 +4,8 @@ class Patreons
   def render
     h3 "Patreon"
     p "If you like it. Want more. You can support me on patreon!"
-    a href: "https://www.patreon.com/fazic" do
-      "https://www.patreon.com/fazic"
+    a href: "https://www.patreon.com/fazibear" do
+      "https://www.patreon.com/fazibear"
     end
     p "Thanks!"
     h3 "itch.io"
