@@ -7,7 +7,7 @@ GEM
     ffi (1.9.25)
     hike (1.2.3)
     htmlcompressor (0.4.0)
-    inesita (0.8.1)
+    inesita (0.8.2)
       listen (~> 3.0)
       opal (>= 0.10.4, < 0.12)
       opal-sprockets (~> 0)
@@ -29,7 +29,7 @@ GEM
       hike (~> 1.2)
       parser (= 2.3.3.1)
       sourcemap (~> 0.1.0)
-    opal-sprockets (0.4.1.0.11.0.3.1)
+    opal-sprockets (0.4.2.0.11.0.3.1)
       opal (~> 0.11.0)
       sprockets (~> 3.1)
       tilt (>= 1.4)
@@ -70,7 +70,6 @@ DEPENDENCIES
   inesita (~> 0.8.0)
   inesita-livereload (~> 0.1.0)
   inesita-router (~> 0.2.0)
-  opal-sprockets (~> 0.4.1.0.11.0.3.1)
   sass
   slim
   uglifier
