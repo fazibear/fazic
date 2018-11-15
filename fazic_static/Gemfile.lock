@@ -37,7 +37,7 @@ GEM
       opal (~> 0)
     parser (2.3.3.1)
       ast (~> 2.2)
-    rack (2.0.5)
+    rack (2.0.6)
     rack-rewrite (1.5.1)
     rb-fsevent (0.10.3)
     rb-inotify (0.9.10)
@@ -75,4 +75,4 @@ DEPENDENCIES
   uglifier
 
 BUNDLED WITH
-   1.16.1
+   1.17.1
