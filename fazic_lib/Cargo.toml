@@ -1,0 +1,13 @@
+[package]
+name = "fazic"
+version = "0.1.0"
+authors = ["Michał Kalbarczyk <fazibear@gmail.com>"]
+build = "build.rs"
+
+[build-dependencies]
+peg = { version = "0.5.0" }
+
+[dependencies]
+rand = "0.5.5"
+simple_logger = "0.5.0"
+log = "0.4.3"
