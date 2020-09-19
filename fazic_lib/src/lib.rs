@@ -1,10 +1,12 @@
 #[macro_use]
 extern crate log;
+extern crate peg;
 extern crate rand;
 extern crate simple_logger;
 
 mod compiler;
 mod lines;
+mod parser;
 mod program;
 mod screen;
 mod text_buffer;
@@ -22,12 +24,8 @@ use std::time::Instant;
 #[cfg(test)]
 mod tests;
 
-mod parser {
-    include!(concat!(env!("OUT_DIR"), "/parser.rs"));
-}
-
 pub fn parse(fazic: &mut ::Fazic, input: &str) {
-    match parser::parse_all(input) {
+    match parser::parser::parse_all(input) {
         Ok(nodes::Entry(None, nodes)) => {
             fazic.vm.start(
                 true,
@@ -45,7 +43,7 @@ pub fn parse(fazic: &mut ::Fazic, input: &str) {
             debug!("Parse error!: {:?}", e);
             fazic
                 .text_buffer
-                .insert_line(&format!("{: >1$}", "^", e.column));
+                .insert_line(&format!("{: >1$}", "^", e.location.column));
             fazic.text_buffer.insert_line("?SYNTAX ERROR");
             fazic.text_buffer.prompt();
         }

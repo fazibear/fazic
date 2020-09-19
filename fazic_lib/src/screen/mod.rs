@@ -9,7 +9,7 @@ pub struct Screen {
     pub pixels: [u8; SCREEN_PIXELS as usize],
     pub rgb_pixels: [u8; SCREEN_RGB_PIXELS as usize],
     pub current_color: u8,
-    pub callback_draw: Option<Box<FnMut(DrawAction)>>,
+    pub callback_draw: Option<Box<dyn FnMut(DrawAction)>>,
     pub redraw: bool,
 }
 
