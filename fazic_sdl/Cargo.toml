@@ -1,0 +1,11 @@
+[package]
+name = "fazic_sdl"
+version = "0.1.0"
+authors = ["Michał Kalbarczyk <fazibear@gmail.com>"]
+
+[dependencies]
+rand = "*"
+simple_logger = "*"
+log = "*"
+fazic = { path = "../fazic_lib" }
+sdl2 = "*"
