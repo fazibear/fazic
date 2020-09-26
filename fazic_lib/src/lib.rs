@@ -2,7 +2,6 @@
 extern crate log;
 extern crate peg;
 extern crate rand;
-extern crate simple_logger;
 
 mod compiler;
 mod lines;

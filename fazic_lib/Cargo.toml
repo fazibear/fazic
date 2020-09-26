@@ -3,10 +3,7 @@ name = "fazic"
 version = "0.1.0"
 authors = ["Michał Kalbarczyk <fazibear@gmail.com>"]
 
-[build-dependencies]
-
 [dependencies]
 rand = "0.5.5"
-simple_logger = "0.5.0"
 log = "0.4.3"
 peg = "*"
