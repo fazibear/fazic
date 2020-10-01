@@ -6,8 +6,6 @@ use std::mem;
 use DrawAction;
 
 pub struct Screen {
-    pub pixels: [u8; SCREEN_PIXELS as usize],
-    pub rgb_pixels: [u8; SCREEN_RGB_PIXELS as usize],
     pub current_color: u8,
     pub callback_draw: Option<Box<dyn FnMut(DrawAction)>>,
     pub redraw: bool,
@@ -16,8 +14,6 @@ pub struct Screen {
 impl Default for Screen {
     fn default() -> Screen {
         Screen {
-            pixels: [0; SCREEN_PIXELS as usize],
-            rgb_pixels: [0; SCREEN_RGB_PIXELS as usize],
             current_color: 0,
             callback_draw: None,
             redraw: true,
@@ -41,14 +37,6 @@ impl Screen {
         self.callback_draw = Some(c);
     }
 
-    // pub fn put_string(&mut self, string: String, mut x: u16, y: u16, color: u8) {
-    //
-    //     for char in string.chars() {
-    //         self.put_char(char, x, y, color, true);
-    //         x += 8;
-    //     }
-    // }
-
     pub fn put_char(&mut self, char: char, x: i32, y: i32, color: u8, reverse: bool) {
         let data = chars::get_char(char);
 
@@ -63,38 +51,14 @@ impl Screen {
         }
     }
 
-    // pub fn set_current_color(&mut self, color: u8) {
-    //     self.current_color = color;
-    // }
-
     pub fn clear(&mut self, color: u8) {
         let (r, g, b) = palette::rgb_for(color);
         self.draw_action(DrawAction::Clear(r, g, b));
-
-        // for i in 0..SCREEN_PIXELS {
-        //     let i3 = i * 3;
-        //
-        //     self.pixels[i] = self.current_color;
-        //     self.rgb_pixels[i3] = r;
-        //     self.rgb_pixels[i3 + 1] = g;
-        //     self.rgb_pixels[i3 + 2] = b;
-        // }
     }
 
     pub fn put_pixel(&mut self, x: i32, y: i32, color: u8) {
         let (r, g, b) = palette::rgb_for(color);
         self.draw_action(DrawAction::PutPixel(x, y, r, g, b));
-
-        // if x >= 0 && y >= 0 && x < SCREEN_WIDTH && y < SCREEN_HEIGHT {
-        //     let i = x as usize + y as usize * SCREEN_WIDTH as usize;
-        //     let i3 = i * 3;
-        //     let (r, g, b) = palette::rgb_for(color);
-        //
-        //     self.pixels[i] = color;
-        //     self.rgb_pixels[i3] = r;
-        //     self.rgb_pixels[i3 + 1] = g;
-        //     self.rgb_pixels[i3 + 2] = b;
-        // }
     }
 
     pub fn draw_text_buffer(&mut self, text: &::text_buffer::TextBuffer) {
