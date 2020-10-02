@@ -48,10 +48,15 @@ pub fn parse(fazic: &mut ::Fazic, input: &str) {
         }
     };
 }
-pub enum DrawAction {
+pub enum DrawCallback {
     PutPixel(i32, i32, u8, u8, u8),
     Clear(u8, u8, u8),
     Redraw(),
+}
+
+pub enum FileSystemCallback {
+    Load(String),
+    Save(String),
 }
 
 pub struct Fazic {
@@ -65,7 +70,8 @@ pub struct Fazic {
     instant: Instant,
     rng: XorShiftRng,
     current_color: u8,
-    callback_draw: Option<Box<dyn FnMut(DrawAction)>>,
+    draw_callback: Option<Box<dyn FnMut(DrawCallback)>>,
+    file_system_callback: Option<Box<dyn FnMut(FileSystemCallback)>>,
     redraw: bool,
 }
 
@@ -82,7 +88,8 @@ impl Default for Fazic {
             instant: Instant::now(),
             rng: SeedableRng::from_seed([0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15]),
             current_color: 0,
-            callback_draw: None,
+            draw_callback: None,
+            file_system_callback: None,
             redraw: true,
         }
     }
@@ -95,8 +102,19 @@ impl Fazic {
 
     // Callbacks
 
-    pub fn set_draw_callback(&mut self, c: Box<dyn FnMut(DrawAction)>) {
-        ::screen::set_draw_callback(self, c);
+    pub fn set_draw_callback(&mut self, c: Box<dyn FnMut(DrawCallback)>) {
+        self.draw_callback = Some(c);
+    }
+
+    pub fn draw_callback(&mut self, action: DrawCallback) {
+        match self.draw_callback {
+            Some(ref mut draw) => draw(action),
+            None => (),
+        };
+    }
+
+    pub fn set_file_system_callback(&mut self, c: Box<dyn FnMut(FileSystemCallback)>) {
+        self.file_system_callback = Some(c);
     }
 
     fn text_mode(&mut self) -> bool {
@@ -188,10 +206,7 @@ impl Fazic {
         if self.text_mode() && self.text_buffer.changed {
             ::screen::draw_text_buffer(self);
             self.text_buffer.refreshed();
-            match self.callback_draw {
-                Some(ref mut draw) => draw(DrawAction::Redraw()),
-                None => (),
-            };
+            self.draw_callback(DrawCallback::Redraw())
         };
     }
 }

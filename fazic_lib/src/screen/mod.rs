@@ -3,18 +3,7 @@ mod palette;
 
 use config::*;
 use std::mem;
-use DrawAction;
-
-pub fn draw_action(fazic: &mut ::Fazic, action: DrawAction) {
-    match fazic.callback_draw {
-        Some(ref mut draw) => draw(action),
-        None => (),
-    };
-}
-
-pub fn set_draw_callback(fazic: &mut ::Fazic, c: Box<dyn FnMut(DrawAction)>) {
-    fazic.callback_draw = Some(c);
-}
+use DrawCallback;
 
 pub fn put_char(fazic: &mut ::Fazic, char: char, x: i32, y: i32, color: u8, reverse: bool) {
     let data = chars::get_char(char);
@@ -32,12 +21,12 @@ pub fn put_char(fazic: &mut ::Fazic, char: char, x: i32, y: i32, color: u8, reve
 
 pub fn clear(fazic: &mut ::Fazic, color: u8) {
     let (r, g, b) = palette::rgb_for(color);
-    draw_action(fazic, DrawAction::Clear(r, g, b));
+    fazic.draw_callback(DrawCallback::Clear(r, g, b));
 }
 
 pub fn put_pixel(fazic: &mut ::Fazic, x: i32, y: i32, color: u8) {
     let (r, g, b) = palette::rgb_for(color);
-    draw_action(fazic, DrawAction::PutPixel(x, y, r, g, b));
+    fazic.draw_callback(DrawCallback::PutPixel(x, y, r, g, b));
 }
 
 pub fn draw_text_buffer(fazic: &mut ::Fazic) {
