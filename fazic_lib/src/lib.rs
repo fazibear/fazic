@@ -56,7 +56,8 @@ pub enum DrawCallback {
 
 pub enum FileSystemCallback {
     Load(String),
-    Save(String),
+    Save(String, String),
+    Dir(),
 }
 
 pub struct Fazic {
@@ -70,8 +71,8 @@ pub struct Fazic {
     instant: Instant,
     rng: XorShiftRng,
     current_color: u8,
-    draw_callback: Option<Box<dyn FnMut(DrawCallback)>>,
-    file_system_callback: Option<Box<dyn FnMut(FileSystemCallback)>>,
+    draw_callback: Option<Box<dyn FnMut(DrawCallback) -> ()>>,
+    file_system_callback: Option<Box<dyn FnMut(FileSystemCallback) -> Result<String, String>>>,
     redraw: bool,
 }
 
@@ -113,8 +114,18 @@ impl Fazic {
         };
     }
 
-    pub fn set_file_system_callback(&mut self, c: Box<dyn FnMut(FileSystemCallback)>) {
+    pub fn set_file_system_callback(
+        &mut self,
+        c: Box<dyn FnMut(FileSystemCallback) -> Result<String, String>>,
+    ) {
         self.file_system_callback = Some(c);
+    }
+
+    pub fn file_system_callback(&mut self, action: FileSystemCallback) -> Result<String, String> {
+        match self.file_system_callback {
+            Some(ref mut fs) => fs(action),
+            None => Err("CALLBACK ERROR".to_string()),
+        }
     }
 
     fn text_mode(&mut self) -> bool {

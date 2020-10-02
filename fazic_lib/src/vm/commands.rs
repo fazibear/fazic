@@ -1,5 +1,6 @@
 use rand::SeedableRng;
 use vm::Value;
+use FileSystemCallback;
 
 pub fn print(var: usize, fazic: &mut ::Fazic) {
     let string = match *fazic.variables.get(var) {
@@ -126,9 +127,17 @@ pub fn list(fazic: &mut ::Fazic) {
 }
 
 pub fn dir(fazic: &mut ::Fazic) {
-    // for line in ::targets::dir() {
-    //     fazic.text_buffer.insert_line(&line);
-    // }
+    match fazic.file_system_callback(FileSystemCallback::Dir()) {
+        Ok(resp) => {
+            for line in resp.lines() {
+                fazic.text_buffer.insert_line(&line);
+            }
+        }
+        Err(resp) => {
+            let msg = format!("? {}", resp.to_uppercase());
+            fazic.text_buffer.insert_line(&msg);
+        }
+    }
 }
 
 pub fn load(name: usize, fazic: &mut ::Fazic) {
@@ -137,23 +146,22 @@ pub fn load(name: usize, fazic: &mut ::Fazic) {
         _ => "".to_string(),
     };
 
-    fazic.program = ::program::Program::new();
+    match fazic.file_system_callback(FileSystemCallback::Load(name)) {
+        Ok(resp) => {
+            fazic.program = ::program::Program::new();
+            // new(fazic);
 
-    // match ::targets::load(&name) {
-    //     Ok(resp) => {
-    //         // new(fazic);
-    //
-    //         for line in resp.lines() {
-    //             ::parse(fazic, line);
-    //         }
-    //
-    //         fazic.text_buffer.insert_line("LOADED");
-    //     }
-    //     Err(resp) => {
-    //         let msg = format!("? {}", resp.to_uppercase());
-    //         fazic.text_buffer.insert_line(&msg);
-    //     }
-    // }
+            for line in resp.lines() {
+                ::parse(fazic, line);
+            }
+
+            fazic.text_buffer.insert_line("LOADED");
+        }
+        Err(resp) => {
+            let msg = format!("? {}", resp.to_uppercase());
+            fazic.text_buffer.insert_line(&msg);
+        }
+    }
 }
 
 pub fn save(name: usize, fazic: &mut ::Fazic) {
@@ -169,13 +177,13 @@ pub fn save(name: usize, fazic: &mut ::Fazic) {
         program.push_str("\n");
     }
 
-    // match ::targets::save(&name, &program) {
-    //     Ok(resp) => {
-    //         fazic.text_buffer.insert_line(&resp);
-    //     }
-    //     Err(resp) => {
-    //         let msg = format!("? {}", resp.to_uppercase());
-    //         fazic.text_buffer.insert_line(&msg);
-    //     }
-    // }
+    match fazic.file_system_callback(FileSystemCallback::Save(name, program)) {
+        Ok(resp) => {
+            fazic.text_buffer.insert_line(&resp);
+        }
+        Err(resp) => {
+            let msg = format!("? {}", resp.to_uppercase());
+            fazic.text_buffer.insert_line(&msg);
+        }
+    }
 }
