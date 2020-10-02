@@ -55,7 +55,6 @@ pub enum DrawAction {
 }
 
 pub struct Fazic {
-    screen: screen::Screen,
     text_buffer: text_buffer::TextBuffer,
     program: program::Program,
     mode: u8,
@@ -65,12 +64,14 @@ pub struct Fazic {
     lines: lines::Lines,
     instant: Instant,
     rng: XorShiftRng,
+    current_color: u8,
+    callback_draw: Option<Box<dyn FnMut(DrawAction)>>,
+    redraw: bool,
 }
 
 impl Default for Fazic {
     fn default() -> Fazic {
         Fazic {
-            screen: screen::Screen::new(),
             text_buffer: text_buffer::TextBuffer::new(),
             program: program::Program::new(),
             mode: 0,
@@ -80,6 +81,9 @@ impl Default for Fazic {
             lines: lines::Lines::new(),
             instant: Instant::now(),
             rng: SeedableRng::from_seed([0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15]),
+            current_color: 0,
+            callback_draw: None,
+            redraw: true,
         }
     }
 }
@@ -92,7 +96,7 @@ impl Fazic {
     // Callbacks
 
     pub fn set_draw_callback(&mut self, c: Box<dyn FnMut(DrawAction)>) {
-        self.screen.set_draw_callback(c);
+        ::screen::set_draw_callback(self, c);
     }
 
     fn text_mode(&mut self) -> bool {
@@ -171,10 +175,6 @@ impl Fazic {
         }
     }
 
-    pub fn get_rgb_pixels(&mut self) -> &mut [u8] {
-        &mut self.screen.rgb_pixels
-    }
-
     //pub fn redraw(&mut self) {
     //    if self.instant_mode() {
     //        self.screen.redraw = true;
@@ -186,9 +186,9 @@ impl Fazic {
             vm::step(self);
         }
         if self.text_mode() && self.text_buffer.changed {
-            self.screen.draw_text_buffer(&self.text_buffer);
+            ::screen::draw_text_buffer(self);
             self.text_buffer.refreshed();
-            match self.screen.callback_draw {
+            match self.callback_draw {
                 Some(ref mut draw) => draw(DrawAction::Redraw()),
                 None => (),
             };
