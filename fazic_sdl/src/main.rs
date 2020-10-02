@@ -3,6 +3,11 @@
 //#![feature(alloc_system)]
 //extern crate alloc_system;
 
+use std::fs;
+use std::fs::File;
+use std::io::prelude::*;
+use std::path::Path;
+
 #[macro_use]
 extern crate log;
 extern crate simple_logger;
@@ -54,22 +59,70 @@ pub fn main() {
 
     let draw_callback = move |action| {
         match action {
-            fazic::DrawAction::PutPixel(x, y, r, g, b) => {
+            fazic::DrawCallback::PutPixel(x, y, r, g, b) => {
                 //debug!("pix: {} {} {} {} {}", x, y, r, g, b);
-                canvas.set_draw_color(Color::RGB(r,g,b));
-                let _ = canvas.draw_point(Point::new(x,y));
+                canvas.set_draw_color(Color::RGB(r, g, b));
+                let _ = canvas.draw_point(Point::new(x, y));
             }
-            fazic::DrawAction::Redraw() => {
+            fazic::DrawCallback::Redraw() => {
                 canvas.present();
             }
-            fazic::DrawAction::Clear(r, g, b) => {
-                canvas.set_draw_color(Color::RGB(r,g,b));
+            fazic::DrawCallback::Clear(r, g, b) => {
+                canvas.set_draw_color(Color::RGB(r, g, b));
                 canvas.clear();
             }
         };
     };
 
     fazic.set_draw_callback(Box::new(draw_callback));
+
+    let file_systen_callback = move |action| match action {
+        fazic::FileSystemCallback::Load(name) => {
+            let with_path = format!("../programs/{}.bas", name);
+            let path = Path::new(&with_path);
+            let mut result = String::new();
+
+            match File::open(&path) {
+                Ok(mut file) => match file.read_to_string(&mut result) {
+                    Ok(_) => Ok(result),
+                    _ => Err("NOT FOUND".to_string()),
+                },
+                _ => Err("NOT_FOUND".to_string()),
+            }
+        }
+        fazic::FileSystemCallback::Save(name, program) => {
+            let with_path = format!("../programs/{}.bas", name);
+            let path = Path::new(&with_path);
+
+            match File::create(&path) {
+                Ok(mut file) => match file.write_all(program.as_bytes()) {
+                    Ok(_) => Ok("OK".to_string()),
+                    _ => Err("NOT SAVED".to_string()),
+                },
+                _ => Err("NOT SAVED".to_string()),
+            }
+        }
+        fazic::FileSystemCallback::Dir() => {
+            let mut result = "".to_string();
+
+            let paths = fs::read_dir("../programs/").unwrap();
+
+            for path in paths {
+                let file = path.unwrap().file_name();
+                let mut name = file.to_string_lossy().to_string();
+                let len = name.len() - 4;
+
+                if name.ends_with(".bas") {
+                    name.truncate(len);
+                    result.push_str(format!("LOAD \"{}\"\n", name).as_str())
+                };
+            }
+
+            Ok(result)
+        }
+    };
+
+    fazic.set_file_system_callback(Box::new(file_systen_callback));
 
     loop {
         let main_loop_time = timer.ticks();
