@@ -1,6 +1,3 @@
-#[link_args = "-g0 -O3 --llvm-opts 2 --memory-init-file 0 -s USE_SDL=2 --js-library src/targets/emscripten.js"]
-extern "C" {}
-
 use std::cell::RefCell;
 use std::ffi::CString;
 use std::os::raw::{c_char, c_int, c_void};
