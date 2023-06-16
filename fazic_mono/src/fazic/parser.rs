@@ -91,40 +91,42 @@ peg::parser!(
             / ("STR(" / "str(") _ e:expression() _ ")" { node("str", vec![e]) }
             / ("TIME()" / "time()") { node("time", vec![]) }
 
-        rule expression() -> NodeElement = precedence! {
-            l:(@)term() _ ("AND" / "and") _ r:term()@ { node("and", vec![l, r]) }
-            l:(@)term() _ ("OR" / "or") _ r:term()@ { node("or", vec![l, r]) }
+        rule expression() -> NodeElement=precedence! {
+            l:(@) ("AND" / "and") r:@ { node("and", vec![l, r]) }
+            l:(@) ("OR" / "or") r:@ { node("or", vec![l, r]) }
             --
-            l:(@)term() _ "="  _ r:term()@ { node("eq", vec![l, r]) }
-            l:(@)term() _ "==" _ r:term()@ { node("eq", vec![l, r]) }
-            l:(@)term() _ "!=" _ r:term()@ { node("neq", vec![l, r]) }
-            l:(@)term() _ "<>" _ r:term()@ { node("neq", vec![l, r]) }
-            l:(@)term() _ "<"  _ r:term()@ { node("lt", vec![l, r]) }
-            l:(@)term() _ ">"  _ r:term()@ { node("gt", vec![l, r]) }
-            l:(@)term() _ "<=" _ r:term()@ { node("lteq", vec![l, r]) }
-            l:(@)term() _ ">=" _ r:term()@ { node("gteq", vec![l, r]) }
-            l:(@)term() _ "=<" _ r:term()@ { node("lteq", vec![l, r]) }
-            l:(@)term() _ "=>" _ r:term()@ { node("gteq", vec![l, r]) }
+            l:(@) "="  r:@ { node("eq", vec![l, r]) }
+            l:(@) "==" r:@ { node("eq", vec![l, r]) }
+            l:(@) "!=" r:@ { node("neq", vec![l, r]) }
+            l:(@) "<>" r:@ { node("neq", vec![l, r]) }
+            l:(@) "<"  r:@ { node("lt", vec![l, r]) }
+            l:(@) ">"  r:@ { node("gt", vec![l, r]) }
+            l:(@) "<=" r:@ { node("lteq", vec![l, r]) }
+            l:(@) ">=" r:@ { node("gteq", vec![l, r]) }
+            l:(@) "=<" r:@ { node("lteq", vec![l, r]) }
+            l:(@) "=>" r:@ { node("gteq", vec![l, r]) }
             --
-            l:(@)term() _ "+" _ r:term()@ { node("add", vec![l, r]) }
-            l:(@)term() _ "-" _ r:term()@ { node("sub", vec![l, r]) }
+            l:(@) "+"  r:@ { node("add", vec![l, r]) }
+            l:(@) "-"  r:@ { node("sub", vec![l, r]) }
             --
-            l:(@)term() _ "*" _ r:term()@ { node("mul", vec![l, r]) }
-            l:(@)term() _ "/" _ r:term()@ { node("div", vec![l, r]) }
-            l:(@)term() _ "%" _ r:term()@ { node("mod", vec![l, r]) }
+            l:(@) "*"  r:@ { node("mul", vec![l, r]) }
+            l:(@) "/"  r:@ { node("div", vec![l, r]) }
+            l:(@) "%"  r:@ { node("mod", vec![l, r]) }
             --
-            l:@term() _ "^" _ r:term()(@) { node("pow", vec![l, r]) }
+            l:@ "^"  r:(@) { node("pow", vec![l, r]) }
+            --
+            t:term() { t }
         }
 
         rule term() -> NodeElement
-            = f:float() { f }
-            / i:integer() { i }
-            / s:string() { s }
-            / f:function() { f }
-            / "(" _ e:expression() _ ")" { e }
-            / "-" _ t:term() { node("neg", vec![t]) }
-            / ("NOT" / "not") e:expression() { node("not", vec![e]) }
-            / v:variable() { v }
+            = _ f:float() _ { f }
+            / _ i:integer() _ { i }
+            / _ s:string() _ { s }
+            / _ f:function() _ { f }
+            / _ "(" _ e:expression() _ ")" _ { e }
+            / _ "-" _ t:term() _ { node("neg", vec![t]) }
+            / _ ("NOT" / "not") _ e:expression() _ { node("not", vec![e]) }
+            / _ v:variable() _ { v }
 
         rule float() -> NodeElement
             = f:$(['0'..='9']* "." ['0'..='9']+) { number_node(f) }
