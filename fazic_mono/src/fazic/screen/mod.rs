@@ -114,7 +114,7 @@ impl Screen {
         let dec_inc = if long_len == 0 {
             0
         } else {
-            ((short_len << 16) / long_len)
+            (short_len << 16) / long_len
         };
 
         if y_longer {

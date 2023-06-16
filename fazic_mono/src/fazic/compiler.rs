@@ -33,9 +33,11 @@ fn process_node(
         "dir" => instructions.push(Instruction::Dir),
         "clr" => instructions.push(Instruction::Clr),
         "flip" => instructions.push(Instruction::Flip),
-        "goto" => if let Param::Value(Value::Number(i)) = params[0] {
-            instructions.push(Instruction::JmpLine(i as u16));
-        },
+        "goto" => {
+            if let Param::Value(Value::Number(i)) = params[0] {
+                instructions.push(Instruction::JmpLine(i as u16));
+            }
+        }
         "load" => {
             let p0 = process_param(0, &params, instructions);
             instructions.push(Instruction::Load(p0));
@@ -254,11 +256,13 @@ fn process_node(
             let p0 = process_param(0, &params, instructions);
             instructions.push(Instruction::Not(p0, dst));
         }
-        "gosub" => if let Param::Value(Value::Number(i)) = params[0] {
-            let jmp = instructions.len() + 2;
-            instructions.push(Instruction::Push(Stack::Return(jmp)));
-            instructions.push(Instruction::JmpLine(i as u16));
-        },
+        "gosub" => {
+            if let Param::Value(Value::Number(i)) = params[0] {
+                let jmp = instructions.len() + 2;
+                instructions.push(Instruction::Push(Stack::Return(jmp)));
+                instructions.push(Instruction::JmpLine(i as u16));
+            }
+        }
         "return" => instructions.push(Instruction::Return),
         "end" => instructions.push(Instruction::End),
         "stop" => instructions.push(Instruction::Stop),

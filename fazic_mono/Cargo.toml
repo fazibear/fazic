@@ -5,12 +5,13 @@ authors = ["Michał Kalbarczyk <fazibear@gmail.com>"]
 build = "build.rs"
 
 [build-dependencies]
-peg = { version = "0.5.4" }
+peg = { version = "0.8.1" }
 
 [dependencies]
 rand = "0.5.0"
 simple_logger = "*"
 log = "0.4.1"
+peg = "0.8.1"
 
 [dependencies.sdl2]
 version = "0.31"

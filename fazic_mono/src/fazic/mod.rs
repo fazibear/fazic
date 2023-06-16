@@ -1,5 +1,6 @@
 mod compiler;
 mod lines;
+mod parser;
 mod program;
 mod screen;
 mod text_buffer;
@@ -12,18 +13,15 @@ pub mod nodes;
 
 use std::time::Instant;
 
+use fazic::parser::parser::parse_all;
 use rand::SeedableRng;
 use rand::XorShiftRng;
 
 #[cfg(test)]
 mod tests;
 
-mod parser {
-    include!(concat!(env!("OUT_DIR"), "/parser.rs"));
-}
-
 pub fn parse(fazic: &mut ::fazic::Fazic, input: &str) {
-    match parser::parse_all(input) {
+    match parse_all(input) {
         Ok(nodes::Entry(None, nodes)) => {
             fazic.vm.start(
                 true,
@@ -41,7 +39,7 @@ pub fn parse(fazic: &mut ::fazic::Fazic, input: &str) {
             debug!("Parse error!: {:?}", e);
             fazic
                 .text_buffer
-                .insert_line(&format!("{: >1$}", "^", e.column));
+                .insert_line(&format!("{: >1$}", "^", e.location.column));
             fazic.text_buffer.insert_line("?SYNTAX ERROR");
             fazic.text_buffer.prompt();
         }

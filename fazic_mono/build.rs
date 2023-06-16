@@ -1,7 +1,6 @@
 extern crate peg;
 
 fn main() {
-    peg::cargo_build("src/fazic/parser.rustpeg");
     rustc_link_arg("-L");
     rustc_link_arg("/usr/local/Cellar/sdl2/2.26.5/lib");
     rustc_link_arg("-O3");
@@ -16,5 +15,5 @@ fn main() {
 }
 
 fn rustc_link_arg(arg: &str) {
-    println!("cargo:rustc-link-arg={}", arg);
+    //    println!("cargo:rustc-link-arg={}", arg);
 }

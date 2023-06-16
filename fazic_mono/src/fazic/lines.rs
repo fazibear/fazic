@@ -20,13 +20,13 @@ impl Lines {
     }
 
     pub fn reset(&mut self) {
-        &self.map.clear();
+        self.map.clear();
         self.current = 0;
     }
 
     pub fn add(&mut self, line: u16, position: usize) {
         self.current = line;
-        &self.map.insert(line, position);
+        self.map.insert(line, position);
     }
 
     pub fn current(&self) -> u16 {
