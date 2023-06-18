@@ -1,5 +1,3 @@
-#![feature(link_args)]
-
 //#![feature(alloc_system)]
 //extern crate alloc_system;
 
@@ -25,7 +23,7 @@ use sdl2::rect::Point;
 
 use std::process;
 
-const SCALE: u32 = 1;
+const SCALE: u32 = 2;
 const WIDTH: u32 = SCREEN_WIDTH as u32 * SCALE;
 const HEIGHT: u32 = SCREEN_HEIGHT as u32 * SCALE;
 
