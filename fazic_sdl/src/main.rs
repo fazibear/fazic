@@ -23,7 +23,7 @@ use sdl2::rect::Point;
 
 use std::process;
 
-const SCALE: u32 = 2;
+const SCALE: u32 = 1;
 const WIDTH: u32 = SCREEN_WIDTH as u32 * SCALE;
 const HEIGHT: u32 = SCREEN_HEIGHT as u32 * SCALE;
 
@@ -46,7 +46,7 @@ pub fn main() {
 
     let mut events = ctx.event_pump().unwrap();
 
-    let mut timer = ctx.timer().unwrap();
+    let timer = ctx.timer().unwrap();
 
     let mut fps_last_time = 0;
 
