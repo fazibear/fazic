@@ -23,9 +23,10 @@ use sdl2::rect::Point;
 
 use std::process;
 
-const SCALE: u32 = 1;
-const WIDTH: u32 = SCREEN_WIDTH as u32 * SCALE;
-const HEIGHT: u32 = SCREEN_HEIGHT as u32 * SCALE;
+const SCALE: f32 = 2.0;
+const WIDTH: u32 = SCREEN_WIDTH as u32 * SCALE as u32;
+const HEIGHT: u32 = SCREEN_HEIGHT as u32 * SCALE as u32;
+const FAZIC_FS: &str = "../fazic_fs";
 
 pub fn main() {
     #[cfg(debug_assertions)]
@@ -43,6 +44,7 @@ pub fn main() {
 
     let mut canvas = window.into_canvas().build().unwrap();
     canvas.clear();
+    let _ = canvas.set_scale(SCALE, SCALE);
 
     let mut events = ctx.event_pump().unwrap();
 
@@ -76,7 +78,7 @@ pub fn main() {
 
     let file_systen_callback = move |action| match action {
         fazic::FileSystemCallback::Load(name) => {
-            let with_path = format!("../programs/{}.bas", name);
+            let with_path = format!("{}/{}.bas", FAZIC_FS, name);
             let path = Path::new(&with_path);
             let mut result = String::new();
 
@@ -89,7 +91,7 @@ pub fn main() {
             }
         }
         fazic::FileSystemCallback::Save(name, program) => {
-            let with_path = format!("../programs/{}.bas", name);
+            let with_path = format!("{}/{}", FAZIC_FS, name);
             let path = Path::new(&with_path);
 
             match File::create(&path) {
@@ -103,7 +105,8 @@ pub fn main() {
         fazic::FileSystemCallback::Dir() => {
             let mut result = "".to_string();
 
-            let paths = fs::read_dir("../programs/").unwrap();
+            let with_path = format!("{}/", FAZIC_FS);
+            let paths = fs::read_dir(&with_path).unwrap();
 
             for path in paths {
                 let file = path.unwrap().file_name();

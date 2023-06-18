@@ -3,6 +3,8 @@ use std::fs::File;
 use std::io::prelude::*;
 use std::path::Path;
 
+const FAZIC_FS: &str = "../fazic_fs";
+
 pub fn set_main_loop_callback<F>(mut f: F)
 where
     F: FnMut(),
@@ -14,7 +16,9 @@ where
 pub fn dir() -> Vec<String> {
     let mut result = vec![];
 
-    let paths = fs::read_dir("files/").unwrap();
+    let with_path = format!("{}/", FAZIC_FS);
+
+    let paths = fs::read_dir(&with_path).unwrap();
 
     for path in paths {
         let file = path.unwrap().file_name();
@@ -31,7 +35,7 @@ pub fn dir() -> Vec<String> {
 }
 
 pub fn load(name: &String) -> Result<String, String> {
-    let with_path = format!("files/{}.bas", name);
+    let with_path = format!("{}/{}.bas", FAZIC_FS, name);
     let path = Path::new(&with_path);
     let mut result = String::new();
 
@@ -45,7 +49,7 @@ pub fn load(name: &String) -> Result<String, String> {
 }
 
 pub fn save(name: &String, body: &String) -> Result<String, String> {
-    let with_path = format!("files/{}.bas", name);
+    let with_path = format!("{}/{}.bas", FAZIC_FS, name);
     let path = Path::new(&with_path);
 
     match File::create(&path) {
