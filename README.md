@@ -13,6 +13,8 @@ https://fazic.fazibear.me
 - fazic_lib - rewrite of fazic to support different frontends
 - fazic_sdl - sdl frontent for fazic
 - fazic_wasm - wasm based frontend for fazic
+- fazic_term - terminal frontend for fazic
+- fazic_fs - filesystem for fazic (*.bas)
 
 ## Thank you!
 
