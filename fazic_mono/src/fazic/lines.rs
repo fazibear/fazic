@@ -1,18 +1,12 @@
 use std::collections::BTreeMap;
 
+#[derive(Default)]
 pub struct Lines {
     map: BTreeMap<u16, usize>,
     current: u16,
 }
 
-impl Default for Lines {
-    fn default() -> Lines {
-        Lines {
-            map: BTreeMap::new(),
-            current: 0,
-        }
-    }
-}
+
 
 impl Lines {
     pub fn new() -> Lines {
@@ -39,7 +33,7 @@ impl Lines {
 
     pub fn get_next(&self, line: &u16) -> Option<&usize> {
         match self.map.get(line) {
-            Some(pos) => self.map.values().skip_while(|&x| x != pos).skip(1).next(),
+            Some(pos) => self.map.values().skip_while(|&x| x != pos).nth(1),
             err => err,
         }
     }

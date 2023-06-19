@@ -220,7 +220,7 @@ impl TextBuffer {
         let mut pos = 0;
 
         let start = self.line_offset as usize;
-        let len = self.lines.len() as usize;
+        let len = self.lines.len();
         let end = if start + TEXT_BUFFER_LINES as usize > len {
             len
         } else {

@@ -71,7 +71,7 @@ pub struct Fazic {
     instant: Instant,
     rng: XorShiftRng,
     current_color: u8,
-    draw_callback: Option<Box<dyn FnMut(DrawCallback) -> ()>>,
+    draw_callback: Option<Box<dyn FnMut(DrawCallback)>>,
     file_system_callback: Option<Box<dyn FnMut(FileSystemCallback) -> Result<String, String>>>,
     redraw: bool,
 }
@@ -108,9 +108,8 @@ impl Fazic {
     }
 
     pub fn draw_callback(&mut self, action: DrawCallback) {
-        match self.draw_callback {
-            Some(ref mut draw) => draw(action),
-            None => (),
+        if let Some(ref mut draw) = self.draw_callback {
+            draw(action)
         };
     }
 

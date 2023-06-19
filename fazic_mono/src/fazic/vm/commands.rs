@@ -120,7 +120,7 @@ pub fn mode(mode: u8, fazic: &mut ::fazic::Fazic) {
 }
 
 pub fn list(fazic: &mut ::fazic::Fazic) {
-    for &(_, ref string, _) in &fazic.program.lines {
+    for (_, string, _) in &fazic.program.lines {
         fazic.text_buffer.insert_line(string);
     }
 }
@@ -164,9 +164,9 @@ pub fn save(name: usize, fazic: &mut ::fazic::Fazic) {
 
     let mut program = String::new();
 
-    for &(_, ref string, _) in &fazic.program.lines {
+    for (_, string, _) in &fazic.program.lines {
         program.push_str(string);
-        program.push_str("\n");
+        program.push('\n');
     }
 
     match ::targets::save(&name, &program) {

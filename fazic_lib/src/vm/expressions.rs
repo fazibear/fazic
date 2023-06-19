@@ -190,9 +190,9 @@ pub fn gteq(a: usize, b: usize, dst: usize, fazic: &mut ::Fazic) {
 }
 
 pub fn not(a: usize, dst: usize, fazic: &mut ::Fazic) {
-    let ret = match fazic.variables.get(a) {
-        &Value::Number(l) => Value::Number(!(l as i64) as f64),
-        &Value::Bool(l) => Value::Bool(!l),
+    let ret = match *fazic.variables.get(a) {
+        Value::Number(l) => Value::Number(!(l as i64) as f64),
+        Value::Bool(l) => Value::Bool(!l),
         _ => {
             ::vm::error(fazic, "TYPE MISMATCH");
             Value::Null

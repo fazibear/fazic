@@ -5,16 +5,16 @@ use fazic::config::*;
 use std::mem;
 
 pub struct Screen {
-    pub pixels: [u8; SCREEN_PIXELS as usize],
-    pub rgb_pixels: [u8; SCREEN_RGB_PIXELS as usize],
+    pub pixels: [u8; SCREEN_PIXELS],
+    pub rgb_pixels: [u8; SCREEN_RGB_PIXELS],
     pub current_color: u8,
 }
 
 impl Default for Screen {
     fn default() -> Screen {
         Screen {
-            pixels: [0; SCREEN_PIXELS as usize],
-            rgb_pixels: [0; SCREEN_RGB_PIXELS as usize],
+            pixels: [0; SCREEN_PIXELS],
+            rgb_pixels: [0; SCREEN_RGB_PIXELS],
             current_color: 0,
         }
     }
@@ -100,11 +100,11 @@ impl Screen {
     }
 
     pub fn line(&mut self, x0: i32, y0: i32, x1: i32, y1: i32, color: u8) {
-        let mut x = x0 as i32;
-        let mut y = y0 as i32;
+        let mut x = x0;
+        let mut y = y0;
         let mut y_longer = false;
-        let mut short_len = y1 as i32 - y;
-        let mut long_len = x1 as i32 - x;
+        let mut short_len = y1 - y;
+        let mut long_len = x1 - x;
 
         if short_len.abs() > long_len.abs() {
             mem::swap(&mut short_len, &mut long_len);

@@ -309,11 +309,11 @@ fn process_nodes(
 pub fn process_gotos(instruction: Instruction, lines: &Lines) -> Instruction {
     match instruction {
         Instruction::JmpLine(ref line) => match lines.get(line) {
-            Some(pos) => Instruction::Jmp(*pos as usize),
+            Some(pos) => Instruction::Jmp(*pos),
             None => Instruction::Error("UNDEF'D STATEMENT ERROR".to_string()),
         },
         Instruction::JmpIfNotNextLine(var, ref line) => match lines.get_next(line) {
-            Some(pos) => Instruction::JmpIfNot(var, *pos as usize),
+            Some(pos) => Instruction::JmpIfNot(var, *pos),
             None => Instruction::Error("UNDEF'D STATEMENT ERROR".to_string()),
         },
         _ => instruction,
@@ -323,7 +323,7 @@ pub fn process_gotos(instruction: Instruction, lines: &Lines) -> Instruction {
 pub fn compile(
     nodes: &[NodeElement],
     variables: &mut Variables,
-    mut lines: &mut Lines,
+    lines: &mut Lines,
     tmp: bool,
 ) -> Vec<Instruction> {
     let mut instructions: Vec<Instruction> = vec![];
@@ -334,7 +334,7 @@ pub fn compile(
         lines.reset();
     }
 
-    process_nodes(&mut instructions, nodes, variables, &mut lines, 0);
+    process_nodes(&mut instructions, nodes, variables, lines, 0);
 
     if !tmp {
         let end_line = lines.current() + 1;

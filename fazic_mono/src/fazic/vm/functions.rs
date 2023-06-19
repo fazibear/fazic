@@ -4,13 +4,13 @@ use std::char;
 use rand::Rng;
 
 pub fn rnd(max: usize, dst: usize, fazic: &mut ::fazic::Fazic) {
-    let ret = match fazic.variables.get(max) {
-        &Value::Number(max) if max == 0.0 => Value::Number(0.0),
-        &Value::Number(max) if max > 0.0 => {
+    let ret = match *fazic.variables.get(max) {
+        Value::Number(max) if max == 0.0 => Value::Number(0.0),
+        Value::Number(max) if max > 0.0 => {
             let rng = fazic.rng.gen_range(0, max as i32) as f64;
             Value::Number(rng)
         }
-        &Value::Number(max) if max < 0.0 => {
+        Value::Number(max) if max < 0.0 => {
             let rng = fazic.rng.gen_range(max as i32, 0) as f64;
             Value::Number(rng)
         }
@@ -100,8 +100,8 @@ pub fn log(a: usize, dst: usize, fazic: &mut ::fazic::Fazic) {
 }
 
 pub fn sqr(a: usize, dst: usize, fazic: &mut ::fazic::Fazic) {
-    let ret = match fazic.variables.get(a) {
-        &Value::Number(l) => Value::Number(l.sqrt()),
+    let ret = match *fazic.variables.get(a) {
+        Value::Number(l) => Value::Number(l.sqrt()),
         _ => {
             ::fazic::vm::error(fazic, "TYPE MISMATCH");
             Value::Null
@@ -111,9 +111,9 @@ pub fn sqr(a: usize, dst: usize, fazic: &mut ::fazic::Fazic) {
 }
 
 pub fn sgn(a: usize, dst: usize, fazic: &mut ::fazic::Fazic) {
-    let ret = match fazic.variables.get(a) {
-        &Value::Number(l) if l == 0.0 => Value::Number(0.0),
-        &Value::Number(l) => Value::Number(if l < 0.0 { -1.0 } else { 1.0 }),
+    let ret = match *fazic.variables.get(a) {
+        Value::Number(l) if l == 0.0 => Value::Number(0.0),
+        Value::Number(l) => Value::Number(if l < 0.0 { -1.0 } else { 1.0 }),
         _ => {
             ::fazic::vm::error(fazic, "TYPE MISMATCH");
             Value::Null
@@ -135,7 +135,7 @@ pub fn len(a: usize, dst: usize, fazic: &mut ::fazic::Fazic) {
 
 pub fn asc(a: usize, dst: usize, fazic: &mut ::fazic::Fazic) {
     let ret = match fazic.variables.get(a).clone() {
-        Value::String(ref l) => Value::Number(l.chars().nth(0).unwrap() as u32 as f64),
+        Value::String(ref l) => Value::Number(l.chars().next().unwrap() as u32 as f64),
         _ => {
             ::fazic::vm::error(fazic, "TYPE MISMATCH");
             Value::Null
@@ -179,8 +179,8 @@ pub fn val(a: usize, dst: usize, fazic: &mut ::fazic::Fazic) {
 }
 
 pub fn int(a: usize, dst: usize, fazic: &mut ::fazic::Fazic) {
-    let ret = match fazic.variables.get(a) {
-        &Value::Number(l) => Value::Number(l.round() as f64),
+    let ret = match *fazic.variables.get(a) {
+        Value::Number(l) => Value::Number(l.round()),
         _ => {
             ::fazic::vm::error(fazic, "TYPE MISMATCH");
             Value::Null
@@ -190,8 +190,8 @@ pub fn int(a: usize, dst: usize, fazic: &mut ::fazic::Fazic) {
 }
 
 pub fn str(a: usize, dst: usize, fazic: &mut ::fazic::Fazic) {
-    let ret = match fazic.variables.get(a) {
-        &Value::Number(l) => Value::String(l.to_string()),
+    let ret = match *fazic.variables.get(a) {
+        Value::Number(l) => Value::String(l.to_string()),
         _ => {
             ::fazic::vm::error(fazic, "TYPE MISMATCH");
             Value::Null

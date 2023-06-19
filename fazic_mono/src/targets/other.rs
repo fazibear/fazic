@@ -39,7 +39,7 @@ pub fn load(name: &String) -> Result<String, String> {
     let path = Path::new(&with_path);
     let mut result = String::new();
 
-    match File::open(&path) {
+    match File::open(path) {
         Ok(mut file) => match file.read_to_string(&mut result) {
             Ok(_) => Ok(result),
             _ => Err("NOT FOUND".to_string()),
@@ -52,7 +52,7 @@ pub fn save(name: &String, body: &String) -> Result<String, String> {
     let with_path = format!("{}/{}.bas", FAZIC_FS, name);
     let path = Path::new(&with_path);
 
-    match File::create(&path) {
+    match File::create(path) {
         Ok(mut file) => match file.write_all(body.as_bytes()) {
             Ok(_) => Ok("OK".to_string()),
             _ => Err("NOT SAVED".to_string()),

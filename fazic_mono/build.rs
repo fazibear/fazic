@@ -14,6 +14,6 @@ fn main() {
     rustc_link_arg("src/targets/emscripten.js");
 }
 
-fn rustc_link_arg(arg: &str) {
+fn rustc_link_arg(_arg: &str) {
     //    println!("cargo:rustc-link-arg={}", arg);
 }
