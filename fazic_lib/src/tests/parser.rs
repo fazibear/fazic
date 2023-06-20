@@ -1,4 +1,4 @@
-use parser::parse_all;
+use parser::parser::parse_all;
 
 #[test]
 fn expression() {

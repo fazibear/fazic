@@ -1,4 +1,4 @@
-use fazic::*;
+use Fazic;
 
 #[test]
 fn add() {

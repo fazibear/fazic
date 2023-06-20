@@ -1,4 +1,4 @@
-use fazic::parser::parse_all;
+use fazic::parser::parser::parse_all;
 
 #[test]
 fn expression() {
