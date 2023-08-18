@@ -28,7 +28,7 @@ GEM
       opal (> 0)
     parser (3.2.2.1)
       ast (~> 2.4.1)
-    puma (6.2.2)
+    puma (6.3.1)
       nio4r (~> 2.0)
     rack (2.2.7)
     rake (13.0.6)
@@ -52,6 +52,7 @@ GEM
 
 PLATFORMS
   x86_64-darwin-22
+  x86_64-linux
 
 DEPENDENCIES
   htmlcompressor
