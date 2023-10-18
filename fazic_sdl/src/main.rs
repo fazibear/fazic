@@ -18,8 +18,7 @@ extern crate fazic;
 use fazic::config::*;
 use sdl2::event::Event;
 use sdl2::keyboard::*;
-use sdl2::pixels::Color;
-use sdl2::rect::Point;
+use sdl2::pixels::PixelFormatEnum;
 
 use std::process;
 
@@ -27,6 +26,7 @@ const SCALE: f32 = 2.0;
 const WIDTH: u32 = SCREEN_WIDTH as u32 * SCALE as u32;
 const HEIGHT: u32 = SCREEN_HEIGHT as u32 * SCALE as u32;
 const FAZIC_FS: &str = "../fazic_fs";
+const RGB_WIDTH: usize = SCREEN_WIDTH as usize * 3;
 
 pub fn main() {
     #[cfg(debug_assertions)]
@@ -41,10 +41,17 @@ pub fn main() {
         .opengl()
         .build()
         .unwrap();
-
+    
     let mut canvas = window.into_canvas().build().unwrap();
-    canvas.clear();
-    let _ = canvas.set_scale(SCALE, SCALE);
+    let texture_creator = canvas.texture_creator();
+
+    let mut texture = texture_creator
+        .create_texture_streaming(
+            PixelFormatEnum::RGB24,
+            SCREEN_WIDTH as u32,
+            SCREEN_HEIGHT as u32,
+        )
+        .unwrap();
 
     let mut events = ctx.event_pump().unwrap();
 
@@ -56,25 +63,6 @@ pub fn main() {
     let mut tps = 0;
 
     let mut fazic = fazic::Fazic::new();
-
-    let draw_callback = move |action| {
-        match action {
-            fazic::DrawCallback::PutPixel(x, y, r, g, b) => {
-                //debug!("pix: {} {} {} {} {}", x, y, r, g, b);
-                canvas.set_draw_color(Color::RGB(r, g, b));
-                let _ = canvas.draw_point(Point::new(x, y));
-            }
-            fazic::DrawCallback::Redraw() => {
-                canvas.present();
-            }
-            fazic::DrawCallback::Clear(r, g, b) => {
-                canvas.set_draw_color(Color::RGB(r, g, b));
-                canvas.clear();
-            }
-        };
-    };
-
-    fazic.set_draw_callback(Box::new(draw_callback));
 
     let file_systen_callback = move |action| match action {
         fazic::FileSystemCallback::Load(name) => {
@@ -176,7 +164,15 @@ pub fn main() {
         if fps == 1 || fps == 30 {
             fazic.blink_cursor();
         }
+            
+        if fazic.need_to_redraw() {
+            texture
+                .update(None, fazic.get_rgb_pixels(), RGB_WIDTH)
+                .unwrap();
 
+            let _ = canvas.copy(&texture, None, None);
+            canvas.present();
+        }
         if timer.ticks() - fps_last_time > 1000 {
             debug!("FPS: {}", fps);
             fps_last_time = timer.ticks();
@@ -189,7 +185,9 @@ pub fn main() {
 
         while timer.ticks() - main_loop_time < 16 {
             tps += 1;
-            fazic.tick();
+            if fazic.tick() {
+                break;
+            };
         }
     }
 }

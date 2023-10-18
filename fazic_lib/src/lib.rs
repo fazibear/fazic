@@ -48,11 +48,6 @@ pub fn parse(fazic: &mut ::Fazic, input: &str) {
         }
     };
 }
-pub enum DrawCallback {
-    PutPixel(i32, i32, u8, u8, u8),
-    Clear(u8, u8, u8),
-    Redraw(),
-}
 
 pub enum FileSystemCallback {
     Load(String),
@@ -61,37 +56,37 @@ pub enum FileSystemCallback {
 }
 
 pub struct Fazic {
-    text_buffer: text_buffer::TextBuffer,
-    program: program::Program,
-    mode: u8,
-    vm: vm::VM,
-    variables: variables::Variables,
-    stack: Vec<enums::Stack>,
-    lines: lines::Lines,
-    instant: Instant,
-    rng: XorShiftRng,
     current_color: u8,
-    draw_callback: Option<Box<dyn FnMut(DrawCallback)>>,
     file_system_callback: Option<Box<dyn FnMut(FileSystemCallback) -> Result<String, String>>>,
+    instant: Instant,
+    lines: lines::Lines,
+    mode: u8,
+    program: program::Program,
     redraw: bool,
+    rng: XorShiftRng,
+    screen: screen::Screen,
+    stack: Vec<enums::Stack>,
+    text_buffer: text_buffer::TextBuffer,
+    variables: variables::Variables,
+    vm: vm::VM,
 }
 
 impl Default for Fazic {
     fn default() -> Fazic {
         Fazic {
-            text_buffer: text_buffer::TextBuffer::new(),
-            program: program::Program::new(),
-            mode: 0,
-            vm: vm::VM::new(),
-            variables: variables::Variables::new(),
-            stack: Vec::with_capacity(100),
-            lines: lines::Lines::new(),
-            instant: Instant::now(),
-            rng: SeedableRng::from_seed([0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15]),
             current_color: 0,
-            draw_callback: None,
             file_system_callback: None,
+            instant: Instant::now(),
+            lines: lines::Lines::new(),
+            mode: 0,
+            program: program::Program::new(),
             redraw: true,
+            rng: SeedableRng::from_seed([0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15]),
+            screen: screen::Screen::new(),
+            stack: Vec::with_capacity(100),
+            text_buffer: text_buffer::TextBuffer::new(),
+            variables: variables::Variables::new(),
+            vm: vm::VM::new(),
         }
     }
 }
@@ -102,16 +97,6 @@ impl Fazic {
     }
 
     // Callbacks
-
-    pub fn set_draw_callback(&mut self, c: Box<dyn FnMut(DrawCallback)>) {
-        self.draw_callback = Some(c);
-    }
-
-    pub fn draw_callback(&mut self, action: DrawCallback) {
-        if let Some(ref mut draw) = self.draw_callback {
-            draw(action)
-        };
-    }
 
     pub fn set_file_system_callback(
         &mut self,
@@ -127,56 +112,56 @@ impl Fazic {
         }
     }
 
-    fn text_mode(&mut self) -> bool {
+    fn is_text_mode(&mut self) -> bool {
         self.mode == 0
     }
 
-    // fn flip_mode(&mut self) -> bool {
+    // fn is_flip_mode(&mut self) -> bool {
     //     self.mode == 1
     // }
 
-    //fn instant_mode(&mut self) -> bool {
+    // fn is_instant_mode(&mut self) -> bool {
     //    self.mode == 2
-    //}
+    // }
 
     pub fn set_current_text_color(&mut self, color: u8) {
-        if self.text_mode() {
+        if self.is_text_mode() {
             self.text_buffer.set_current_color(color);
         }
     }
 
     pub fn up_key(&mut self) {
-        if self.text_mode() {
+        if self.is_text_mode() {
             self.text_buffer.up()
         }
     }
 
     pub fn down_key(&mut self) {
-        if self.text_mode() {
+        if self.is_text_mode() {
             self.text_buffer.down()
         }
     }
 
     pub fn left_key(&mut self) {
-        if self.text_mode() {
+        if self.is_text_mode() {
             self.text_buffer.left()
         }
     }
 
     pub fn right_key(&mut self) {
-        if self.text_mode() {
+        if self.is_text_mode() {
             self.text_buffer.right()
         }
     }
 
     pub fn backspace_key(&mut self) {
-        if self.text_mode() {
+        if self.is_text_mode() {
             self.text_buffer.backspace()
         }
     }
 
     pub fn enter_key(&mut self) {
-        if self.text_mode() {
+        if self.is_text_mode() {
             let input = self.text_buffer.get_current_line_string();
             if input.is_empty() {
                 self.text_buffer.insert_line("");
@@ -192,31 +177,40 @@ impl Fazic {
     }
 
     pub fn insert_string(&mut self, string: String) {
-        if self.text_mode() {
+        if self.is_text_mode() {
             self.text_buffer.insert_string(string)
         }
     }
 
     pub fn blink_cursor(&mut self) {
-        if self.text_mode() {
+        if self.is_text_mode() {
             self.text_buffer.blink_cursor()
         }
     }
+    
+    pub fn get_rgb_pixels(&mut self) -> &mut [u8] {
+        &mut self.screen.rgb_pixels
+    }
+    
+    pub fn need_to_redraw(&mut self) -> bool {
+        if self.redraw {
+            self.redraw = false;
+            true
+        } else {
+            false
+        }
+    }
 
-    //pub fn redraw(&mut self) {
-    //    if self.instant_mode() {
-    //        self.screen.redraw = true;
-    //    }
-    //}
-
-    pub fn tick(&mut self) {
+    pub fn tick(&mut self) -> bool {
         if self.vm.running {
             vm::step(self);
         }
-        if self.text_mode() && self.text_buffer.changed {
-            ::screen::draw_text_buffer(self);
+        if self.is_text_mode() && self.text_buffer.changed {
+            self.screen.draw_text_buffer(&self.text_buffer);
             self.text_buffer.refreshed();
-            self.draw_callback(DrawCallback::Redraw())
-        };
+            self.redraw = true;
+        }
+        self.redraw
+
     }
 }

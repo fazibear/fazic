@@ -6,8 +6,6 @@ pub struct Lines {
     current: u16,
 }
 
-
-
 impl Lines {
     pub fn new() -> Lines {
         Lines::default()

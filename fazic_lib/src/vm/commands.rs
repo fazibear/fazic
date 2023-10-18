@@ -28,7 +28,7 @@ pub fn clear(var: usize, fazic: &mut ::Fazic) {
         Value::Number(i) => i as u8,
         _ => 0,
     };
-    ::screen::clear(fazic, color);
+    fazic.screen.clear(color);
 }
 
 pub fn srand(var: usize, fazic: &mut ::Fazic) {
@@ -69,7 +69,7 @@ pub fn dot(x: usize, y: usize, fazic: &mut ::Fazic) {
 
     let color = fazic.current_color;
 
-    ::screen::put_pixel(fazic, x, y, color);
+    fazic.screen.put_pixel(x, y, color);
 }
 
 pub fn line(x1: usize, y1: usize, x2: usize, y2: usize, fazic: &mut ::Fazic) {
@@ -91,7 +91,7 @@ pub fn line(x1: usize, y1: usize, x2: usize, y2: usize, fazic: &mut ::Fazic) {
         _ => 0,
     };
     //debug!("LINE: {} {} {} {}", x1,y1,x2,y2);
-    ::screen::line(fazic, x1, y1, x2, y2, color);
+    fazic.screen.line(x1, y1, x2, y2, color);
 }
 
 pub fn circle(x1: usize, y1: usize, r: usize, fazic: &mut ::Fazic) {
@@ -109,7 +109,7 @@ pub fn circle(x1: usize, y1: usize, r: usize, fazic: &mut ::Fazic) {
         _ => 0,
     };
 
-    ::screen::circle(fazic, x1, y1, r, color);
+    fazic.screen.circle(x1, y1, r, color);
 }
 
 pub fn flip(fazic: &mut ::Fazic) {
