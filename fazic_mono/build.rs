@@ -2,7 +2,7 @@ extern crate peg;
 
 fn main() {
     rustc_link_arg("-L");
-    rustc_link_arg("/usr/local/Cellar/sdl2/2.26.5/lib");
+    rustc_link_arg("/opt/homebrew/Cellar/sdl2/2.28.4/lib");
     rustc_link_arg("-O3");
     rustc_link_arg("--llvm-opts");
     rustc_link_arg("2");

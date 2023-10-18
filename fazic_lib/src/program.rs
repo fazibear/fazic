@@ -1,6 +1,6 @@
 use enums::*;
 
-#[derive(Default)]
+#[derive(Default, Clone)]
 pub struct Program {
     pub lines: Vec<(u16, String, Vec<NodeElement>)>,
 }
@@ -25,5 +25,14 @@ impl Program {
             nodes.push(NodeElement::LineNo(line));
             nodes.extend(node.clone());
         }
+    }
+
+    pub fn to_string(&self) -> String {
+        let mut program = String::new();
+        for &(_, ref string, _) in &self.lines {
+            program.push_str(string);
+            program.push('\n');
+        }
+        program
     }
 }

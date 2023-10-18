@@ -1,6 +1,5 @@
 use rand::SeedableRng;
 use vm::Value;
-use FileSystemCallback;
 
 pub fn print(var: usize, fazic: &mut ::Fazic) {
     let string = match *fazic.variables.get(var) {
@@ -28,7 +27,7 @@ pub fn clear(var: usize, fazic: &mut ::Fazic) {
         Value::Number(i) => i as u8,
         _ => 0,
     };
-    ::screen::clear(fazic, color);
+    fazic.screen.clear(color);
 }
 
 pub fn srand(var: usize, fazic: &mut ::Fazic) {
@@ -69,7 +68,7 @@ pub fn dot(x: usize, y: usize, fazic: &mut ::Fazic) {
 
     let color = fazic.current_color;
 
-    ::screen::put_pixel(fazic, x, y, color);
+    fazic.screen.put_pixel(x, y, color);
 }
 
 pub fn line(x1: usize, y1: usize, x2: usize, y2: usize, fazic: &mut ::Fazic) {
@@ -91,7 +90,7 @@ pub fn line(x1: usize, y1: usize, x2: usize, y2: usize, fazic: &mut ::Fazic) {
         _ => 0,
     };
     //debug!("LINE: {} {} {} {}", x1,y1,x2,y2);
-    ::screen::line(fazic, x1, y1, x2, y2, color);
+    fazic.screen.line(x1, y1, x2, y2, color);
 }
 
 pub fn circle(x1: usize, y1: usize, r: usize, fazic: &mut ::Fazic) {
@@ -109,7 +108,7 @@ pub fn circle(x1: usize, y1: usize, r: usize, fazic: &mut ::Fazic) {
         _ => 0,
     };
 
-    ::screen::circle(fazic, x1, y1, r, color);
+    fazic.screen.circle(x1, y1, r, color);
 }
 
 pub fn flip(fazic: &mut ::Fazic) {
@@ -127,10 +126,10 @@ pub fn list(fazic: &mut ::Fazic) {
 }
 
 pub fn dir(fazic: &mut ::Fazic) {
-    match fazic.file_system_callback(FileSystemCallback::Dir()) {
+    match fazic.file_system.dir() {
         Ok(resp) => {
-            for line in resp.lines() {
-                fazic.text_buffer.insert_line(line);
+            for line in resp {
+                fazic.text_buffer.insert_line(&format!("LOAD \"{}\"", line));
             }
         }
         Err(resp) => {
@@ -146,11 +145,8 @@ pub fn load(name: usize, fazic: &mut ::Fazic) {
         _ => "".to_string(),
     };
 
-    match fazic.file_system_callback(FileSystemCallback::Load(name)) {
+    match fazic.file_system.load(&name) {
         Ok(resp) => {
-            fazic.program = ::program::Program::new();
-            // new(fazic);
-
             for line in resp.lines() {
                 ::parse(fazic, line);
             }
@@ -169,17 +165,10 @@ pub fn save(name: usize, fazic: &mut ::Fazic) {
         Value::String(ref s) => s.to_string(), //format!("{}", s),
         _ => "".to_string(),
     };
-
-    let mut program = String::new();
-
-    for (_, string, _) in &fazic.program.lines {
-        program.push_str(string);
-        program.push('\n');
-    }
-
-    match fazic.file_system_callback(FileSystemCallback::Save(name, program)) {
-        Ok(resp) => {
-            fazic.text_buffer.insert_line(&resp);
+    
+    match fazic.file_system.save(&name, fazic.program.to_string()) {
+        Ok(()) => {
+            fazic.text_buffer.insert_line("SAVED");
         }
         Err(resp) => {
             let msg = format!("? {}", resp.to_uppercase());
