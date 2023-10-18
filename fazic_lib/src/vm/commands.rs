@@ -1,6 +1,5 @@
 use rand::SeedableRng;
 use vm::Value;
-use FileSystemCallback;
 
 pub fn print(var: usize, fazic: &mut ::Fazic) {
     let string = match *fazic.variables.get(var) {
@@ -127,10 +126,10 @@ pub fn list(fazic: &mut ::Fazic) {
 }
 
 pub fn dir(fazic: &mut ::Fazic) {
-    match fazic.file_system_callback(FileSystemCallback::Dir()) {
+    match fazic.file_system.dir() {
         Ok(resp) => {
-            for line in resp.lines() {
-                fazic.text_buffer.insert_line(line);
+            for line in resp {
+                fazic.text_buffer.insert_line(&format!("LOAD \"{}\"", line));
             }
         }
         Err(resp) => {
@@ -146,11 +145,8 @@ pub fn load(name: usize, fazic: &mut ::Fazic) {
         _ => "".to_string(),
     };
 
-    match fazic.file_system_callback(FileSystemCallback::Load(name)) {
+    match fazic.file_system.load(&name) {
         Ok(resp) => {
-            fazic.program = ::program::Program::new();
-            // new(fazic);
-
             for line in resp.lines() {
                 ::parse(fazic, line);
             }
@@ -169,17 +165,10 @@ pub fn save(name: usize, fazic: &mut ::Fazic) {
         Value::String(ref s) => s.to_string(), //format!("{}", s),
         _ => "".to_string(),
     };
-
-    let mut program = String::new();
-
-    for (_, string, _) in &fazic.program.lines {
-        program.push_str(string);
-        program.push('\n');
-    }
-
-    match fazic.file_system_callback(FileSystemCallback::Save(name, program)) {
-        Ok(resp) => {
-            fazic.text_buffer.insert_line(&resp);
+    
+    match fazic.file_system.save(&name, fazic.program.to_string()) {
+        Ok(()) => {
+            fazic.text_buffer.insert_line("SAVED");
         }
         Err(resp) => {
             let msg = format!("? {}", resp.to_uppercase());

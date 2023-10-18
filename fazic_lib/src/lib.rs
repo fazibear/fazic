@@ -6,15 +6,16 @@ extern crate rand;
 mod compiler;
 mod lines;
 mod parser;
-mod program;
 mod screen;
 mod text_buffer;
 mod variables;
 mod vm;
+mod enums;
+mod nodes;
+mod program;
 
 pub mod config;
-pub mod enums;
-pub mod nodes;
+pub mod file_system;
 
 use rand::SeedableRng;
 use rand::XorShiftRng;
@@ -49,19 +50,13 @@ pub fn parse(fazic: &mut ::Fazic, input: &str) {
     };
 }
 
-pub enum FileSystemCallback {
-    Load(String),
-    Save(String, String),
-    Dir(),
-}
-
 pub struct Fazic {
     current_color: u8,
-    file_system_callback: Option<Box<dyn FnMut(FileSystemCallback) -> Result<String, String>>>,
     instant: Instant,
     lines: lines::Lines,
     mode: u8,
     program: program::Program,
+    file_system: Box<dyn file_system::FileSystem>,
     redraw: bool,
     rng: XorShiftRng,
     screen: screen::Screen,
@@ -74,8 +69,8 @@ pub struct Fazic {
 impl Default for Fazic {
     fn default() -> Fazic {
         Fazic {
+            file_system: Box::new(file_system::MemoryFileSystem::new()),
             current_color: 0,
-            file_system_callback: None,
             instant: Instant::now(),
             lines: lines::Lines::new(),
             mode: 0,
@@ -95,25 +90,13 @@ impl Fazic {
     pub fn new() -> Fazic {
         Fazic::default()
     }
-
-    // Callbacks
-
-    pub fn set_file_system_callback(
-        &mut self,
-        c: Box<dyn FnMut(FileSystemCallback) -> Result<String, String>>,
-    ) {
-        self.file_system_callback = Some(c);
-    }
-
-    pub fn file_system_callback(&mut self, action: FileSystemCallback) -> Result<String, String> {
-        match self.file_system_callback {
-            Some(ref mut fs) => fs(action),
-            None => Err("CALLBACK ERROR".to_string()),
-        }
-    }
-
+    
     fn is_text_mode(&mut self) -> bool {
         self.mode == 0
+    }
+    
+    pub fn set_file_system(&mut self, fs: Box<dyn file_system::FileSystem>) {
+        self.file_system = fs;
     }
 
     // fn is_flip_mode(&mut self) -> bool {
