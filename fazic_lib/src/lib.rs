@@ -4,15 +4,15 @@ extern crate peg;
 extern crate rand;
 
 mod compiler;
+mod enums;
 mod lines;
+mod nodes;
 mod parser;
+mod program;
 mod screen;
 mod text_buffer;
 mod variables;
 mod vm;
-mod enums;
-mod nodes;
-mod program;
 
 pub mod config;
 pub mod file_system;
@@ -90,11 +90,11 @@ impl Fazic {
     pub fn new() -> Fazic {
         Fazic::default()
     }
-    
+
     fn is_text_mode(&mut self) -> bool {
         self.mode == 0
     }
-    
+
     pub fn set_file_system(&mut self, fs: Box<dyn file_system::FileSystem>) {
         self.file_system = fs;
     }
@@ -170,11 +170,11 @@ impl Fazic {
             self.text_buffer.blink_cursor()
         }
     }
-    
+
     pub fn get_rgb_pixels(&mut self) -> &mut [u8] {
         &mut self.screen.rgb_pixels
     }
-    
+
     pub fn need_to_redraw(&mut self) -> bool {
         if self.redraw {
             self.redraw = false;
@@ -194,6 +194,5 @@ impl Fazic {
             self.redraw = true;
         }
         self.redraw
-
     }
 }

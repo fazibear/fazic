@@ -5,8 +5,6 @@ pub struct Program {
     pub lines: Vec<(u16, String, Vec<NodeElement>)>,
 }
 
-
-
 impl Program {
     pub fn new() -> Program {
         Program::default()

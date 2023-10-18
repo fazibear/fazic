@@ -145,6 +145,8 @@ pub fn load(name: usize, fazic: &mut ::Fazic) {
         _ => "".to_string(),
     };
 
+    fazic.program = ::program::Program::new();
+
     match fazic.file_system.load(&name) {
         Ok(resp) => {
             for line in resp.lines() {
@@ -165,7 +167,7 @@ pub fn save(name: usize, fazic: &mut ::Fazic) {
         Value::String(ref s) => s.to_string(), //format!("{}", s),
         _ => "".to_string(),
     };
-    
+
     match fazic.file_system.save(&name, fazic.program.to_string()) {
         Ok(()) => {
             fazic.text_buffer.insert_line("SAVED");
