@@ -16,10 +16,10 @@ mod vm;
 
 pub mod config;
 pub mod file_system;
+pub mod rtc;
 
 use rand::SeedableRng;
 use rand::XorShiftRng;
-use std::time::Instant;
 
 #[cfg(test)]
 mod tests;
@@ -52,7 +52,7 @@ pub fn parse(fazic: &mut ::Fazic, input: &str) {
 
 pub struct Fazic {
     current_color: u8,
-    instant: Instant,
+    rtc: Box<dyn rtc::Rtc>,
     lines: lines::Lines,
     mode: u8,
     program: program::Program,
@@ -70,8 +70,8 @@ impl Default for Fazic {
     fn default() -> Fazic {
         Fazic {
             file_system: Box::new(file_system::MemoryFileSystem::new()),
+            rtc: Box::new(rtc::DummyRtc::new()),
             current_color: 0,
-            instant: Instant::now(),
             lines: lines::Lines::new(),
             mode: 0,
             program: program::Program::new(),
@@ -97,6 +97,10 @@ impl Fazic {
 
     pub fn set_file_system(&mut self, fs: Box<dyn file_system::FileSystem>) {
         self.file_system = fs;
+    }
+    
+    pub fn set_rtc(&mut self, rtc: Box<dyn rtc::Rtc>) {
+        self.rtc = rtc;
     }
 
     // fn is_flip_mode(&mut self) -> bool {

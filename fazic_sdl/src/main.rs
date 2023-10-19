@@ -8,6 +8,7 @@ extern crate simple_logger;
 mod events;
 mod file_system;
 mod window;
+mod instant_rtc;
 
 pub fn main() {
     #[cfg(debug_assertions)]
@@ -28,6 +29,7 @@ pub fn main() {
     let mut fazic = fazic::Fazic::new();
 
     fazic.set_file_system(Box::new(file_system::DiskFileSystem::new()));
+    fazic.set_rtc(Box::new(instant_rtc::InstantRtc::new()));
 
     loop {
         let main_loop_time = timer.ticks();
