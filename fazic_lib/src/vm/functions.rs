@@ -201,9 +201,9 @@ pub fn str(a: usize, dst: usize, fazic: &mut ::Fazic) {
 }
 
 pub fn time(dst: usize, fazic: &mut ::Fazic) {
-    let elapsed = fazic.instant.elapsed();
+    let elapsed = fazic.rtc.elapsed() as f64;
     fazic.variables.set(
         dst,
-        Value::Number(elapsed.as_secs() as f64 + elapsed.subsec_nanos() as f64 * 1e-9),
+        Value::Number(elapsed),
     );
 }

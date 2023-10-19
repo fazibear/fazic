@@ -1,5 +1,4 @@
 use enums::*;
-use std::time::Instant;
 
 mod commands;
 mod expressions;
@@ -11,7 +10,6 @@ pub struct VM {
     pub position: usize,
 
     pub running: bool,
-    pub instant: Instant,
 
     pub tmp_instructions: Vec<Instruction>,
     pub tmp_position: usize,
@@ -25,7 +23,6 @@ impl Default for VM {
             position: 0,
 
             running: false,
-            instant: Instant::now(),
 
             tmp_instructions: vec![],
             tmp_position: 0,
@@ -40,7 +37,6 @@ impl VM {
     }
 
     pub fn start(&mut self, tmp: bool, instructions: Vec<Instruction>) {
-        self.instant = Instant::now();
         self.tmp_mode = tmp;
         if tmp {
             self.tmp_position = 0;
@@ -102,7 +98,6 @@ pub fn stop(fazic: &mut ::Fazic) {
 
         fazic.text_buffer.insert_line(&message);
         fazic.text_buffer.prompt();
-        debug!("{:?}", fazic.vm.instant.elapsed());
     }
 }
 
@@ -110,7 +105,6 @@ pub fn end(fazic: &mut ::Fazic) {
     fazic.vm.running = false;
     fazic.mode = 0;
     fazic.text_buffer.prompt();
-    debug!("{:?}", fazic.vm.instant.elapsed());
 }
 
 pub fn onerror(fazic: &mut ::Fazic) {
@@ -127,7 +121,6 @@ pub fn error(fazic: &mut ::Fazic, msg: &str) {
     fazic.vm.running = false;
     fazic.mode = 0;
     fazic.text_buffer.prompt();
-    debug!("{:?}", fazic.vm.instant.elapsed());
 }
 
 pub fn step(fazic: &mut ::Fazic) {
