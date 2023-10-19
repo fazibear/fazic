@@ -11,7 +11,7 @@ pub struct Screen {
 impl Default for Screen {
     fn default() -> Screen {
         Screen {
-            pixels: [5; SCREEN_PIXELS],
+            pixels: [0; SCREEN_PIXELS],
             current_color: 0,
         }
     }
