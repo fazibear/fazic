@@ -53,13 +53,7 @@ pub fn parse(fazic: &mut ::Fazic, input: &str) {
 
 pub struct Fazic {
     current_color: u8,
-<<<<<<< HEAD
     rtc: Box<dyn rtc::Rtc>,
-||||||| parent of 2a329d5 (disable time for now)
-    instant: Instant,
-=======
-    //instant: Instant,
->>>>>>> 2a329d5 (disable time for now)
     lines: lines::Lines,
     mode: u8,
     program: program::Program,
@@ -79,12 +73,6 @@ impl Default for Fazic {
             file_system: Box::new(file_system::MemoryFileSystem::new()),
             rtc: Box::new(rtc::DummyRtc::new()),
             current_color: 0,
-<<<<<<< HEAD
-||||||| parent of 2a329d5 (disable time for now)
-            instant: Instant::now(),
-=======
-  //          instant: Instant::now(),
->>>>>>> 2a329d5 (disable time for now)
             lines: lines::Lines::new(),
             mode: 0,
             program: program::Program::new(),
