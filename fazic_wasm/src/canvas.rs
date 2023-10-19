@@ -1,6 +1,6 @@
-use wasm_bindgen::prelude::*;
-use web_sys::{window, CanvasRenderingContext2d, HtmlCanvasElement};
 use fazic::config::*;
+use wasm_bindgen::{prelude::*, Clamped};
+use web_sys::{window, CanvasRenderingContext2d, HtmlCanvasElement, ImageData};
 
 const SCALE: f32 = 2.0;
 const WIDTH: u32 = SCREEN_WIDTH as u32 * SCALE as u32;
@@ -18,13 +18,13 @@ impl Canvas {
         context_attributes.will_read_frequently(true);
 
         let canvas = document
-            .create_element("canvas")
+            .get_element_by_id("canvas")
             .unwrap()
             .dyn_into::<HtmlCanvasElement>()
             .unwrap();
 
-        canvas.set_width(WIDTH.into());
-        canvas.set_height(HEIGHT.into());
+        canvas.set_width(SCREEN_WIDTH as u32);
+        canvas.set_height(SCREEN_HEIGHT as u32);
 
         let context = canvas
             .get_context_with_context_options("2d", &context_attributes)
@@ -34,5 +34,12 @@ impl Canvas {
             .unwrap();
 
         Self { context }
+    }
+
+    pub fn draw(&self, rgb: &[u8]) {
+        let image_data =
+            ImageData::new_with_u8_clamped_array(Clamped(rgb), SCREEN_WIDTH as u32).unwrap();
+
+        self.context.put_image_data(&image_data, 0.0, 0.0).unwrap();
     }
 }

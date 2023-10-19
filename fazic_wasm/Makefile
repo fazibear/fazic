@@ -1,6 +1,6 @@
 DST_DIR = build
 WASM_PACK_TARGET = no-modules
-WASM_PACK_BUILD_OPTS = --target $(WASM_PACK_TARGET) --out-dir $(DST_DIR) --release
+WASM_PACK_BUILD_OPTS = --target $(WASM_PACK_TARGET) --out-dir $(DST_DIR)
 STATIC_FILES = $(wildcard static/*)
 
 all: static build
