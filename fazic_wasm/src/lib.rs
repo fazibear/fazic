@@ -28,38 +28,38 @@ async fn run() -> Result<(), JsValue> {
     
     let mut fazic = fazic::Fazic::new();
     let context = canvas::Canvas::new();
-    //let perf = window().unwrap().performance().unwrap();
+    let perf = window().unwrap().performance().unwrap();
 
     let f = Rc::new(RefCell::new(None));
     let g = f.clone();
 
-    //let mut fps_last_time = perf.now();
+    let mut fps_last_time = perf.now();
     
     let mut fps = 0;
     let mut tps = 0;
 
     *g.borrow_mut() = Some(Closure::new(move || {
-       // let main_loop_time = perf.now();
+        let main_loop_time = perf.now();
         request_animation_frame(f.borrow().as_ref().unwrap());
-        context.draw(&fazic.get_rgb_pixels());
+        context.draw(&fazic.get_pixels());
         
-        // if perf.now() - fps_last_time > 1000.0 {
-        //     debug!("FPS: {}", fps);
-        //     fps_last_time = perf.now();
-        //     fps = 0;
-        //
-        //     debug!("TPS: {}", tps);
-        //     tps = 0;
-        // }
-        // 
+        if perf.now() - fps_last_time > 1000.0 {
+            debug!("FPS: {}", fps);
+            fps_last_time = perf.now();
+            fps = 0;
+
+            debug!("TPS: {}", tps);
+            tps = 0;
+        }
+
         fps += 1;
         
-        // while perf.now() - main_loop_time < 16.0 {
-        //     tps += 1;
-        //     if fazic.tick() {
-        //         break;
-        //     };
-        // }
+        while perf.now() - main_loop_time < 16.0 {
+            tps += 1;
+            if fazic.tick() {
+                break;
+            };
+        }
 
     }));
 

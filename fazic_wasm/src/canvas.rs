@@ -36,9 +36,19 @@ impl Canvas {
         Self { context }
     }
 
-    pub fn draw(&self, rgb: &[u8]) {
+    pub fn draw(&self, pixels: &[u8]) {
+        let mut rgba = Vec::with_capacity(pixels.len() * 4);
+
+        for color in pixels {
+            let (r, g, b) = fazic::colors::rgb_for(color);
+            rgba.push(r);
+            rgba.push(g);
+            rgba.push(b);
+            rgba.push(255);
+        }
+
         let image_data =
-            ImageData::new_with_u8_clamped_array(Clamped(rgb), SCREEN_WIDTH as u32).unwrap();
+            ImageData::new_with_u8_clamped_array(Clamped(rgba.as_slice()), SCREEN_WIDTH as u32).unwrap();
 
         self.context.put_image_data(&image_data, 0.0, 0.0).unwrap();
     }
