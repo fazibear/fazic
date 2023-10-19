@@ -43,7 +43,7 @@ pub fn main() {
         }
 
         if fazic.need_to_redraw() {
-            window.update(fazic.get_rgb_pixels());
+            window.update(fazic.get_pixels());
         }
 
         if timer.ticks() - fps_last_time > 1000 {

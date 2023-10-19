@@ -17,6 +17,7 @@ mod vm;
 pub mod config;
 pub mod file_system;
 pub mod rtc;
+pub mod colors;
 
 use rand::SeedableRng;
 use rand::XorShiftRng;
@@ -175,9 +176,13 @@ impl Fazic {
         }
     }
 
-    pub fn get_rgb_pixels(&mut self) -> &mut [u8] {
-        &mut self.screen.rgb_pixels
+    pub fn get_pixels(&mut self) -> &mut [u8] {
+        &mut self.screen.pixels
     }
+    
+    // pub fn get_rgb_for_color(&mut self, color: u8) -> (u8, u8, u8) {
+    //     ::screen::colors::rgb_for(color)
+    // }
 
     pub fn need_to_redraw(&mut self) -> bool {
         if self.redraw {

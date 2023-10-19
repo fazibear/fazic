@@ -1,7 +1,6 @@
 pub const SCREEN_WIDTH: i32 = 320;
 pub const SCREEN_HEIGHT: i32 = 240;
 pub const SCREEN_PIXELS: usize = SCREEN_WIDTH as usize * SCREEN_HEIGHT as usize;
-pub const SCREEN_RGB_PIXELS: usize = SCREEN_PIXELS * 3;
 
 pub const TEXT_BUFFER_CHARS_PER_LINE: i32 = SCREEN_WIDTH / 8;
 pub const TEXT_BUFFER_LINES: i32 = SCREEN_HEIGHT / 8;

@@ -26,7 +26,7 @@ impl Window {
         }
     }
 
-    pub fn update(&mut self, rgb: &[u8]) {
+    pub fn update(&mut self, pixels: &[u8]) {
         let texture_creator = self.canvas.texture_creator();
         let mut texture = texture_creator
             .create_texture_streaming(
@@ -35,8 +35,17 @@ impl Window {
                 SCREEN_HEIGHT as u32,
             )
             .unwrap();
+        
+        let mut rgb = Vec::with_capacity(pixels.len() * 3);
 
-        texture.update(None, rgb, RGB_WIDTH).unwrap();
+        for color in pixels {
+            let (r, g, b) = fazic::colors::rgb_for(color);
+            rgb.push(r);
+            rgb.push(g);
+            rgb.push(b);
+        }
+
+        texture.update(None, rgb.as_slice(), RGB_WIDTH).unwrap();
         self.canvas.copy(&texture, None, None).unwrap();
         self.canvas.present();
     }

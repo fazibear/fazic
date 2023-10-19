@@ -1,12 +1,10 @@
 mod chars;
-mod palette;
 
 use config::*;
 use std::mem;
 
 pub struct Screen {
     pub pixels: [u8; SCREEN_PIXELS],
-    pub rgb_pixels: [u8; SCREEN_RGB_PIXELS],
     pub current_color: u8,
 }
 
@@ -14,7 +12,6 @@ impl Default for Screen {
     fn default() -> Screen {
         Screen {
             pixels: [0; SCREEN_PIXELS],
-            rgb_pixels: [0; SCREEN_RGB_PIXELS],
             current_color: 0,
         }
     }
@@ -52,28 +49,15 @@ impl Screen {
     // }
 
     pub fn clear(&mut self, color: u8) {
-        let (r, g, b) = palette::rgb_for(color);
-
         for i in 0..SCREEN_PIXELS {
-            let i3 = i * 3;
-
-            self.pixels[i] = self.current_color;
-            self.rgb_pixels[i3] = r;
-            self.rgb_pixels[i3 + 1] = g;
-            self.rgb_pixels[i3 + 2] = b;
+            self.pixels[i] = color;
         }
     }
 
     pub fn put_pixel(&mut self, x: i32, y: i32, color: u8) {
         if x >= 0 && y >= 0 && x < SCREEN_WIDTH && y < SCREEN_HEIGHT {
             let i = x as usize + y as usize * SCREEN_WIDTH as usize;
-            let i3 = i * 3;
-            let (r, g, b) = palette::rgb_for(color);
-
             self.pixels[i] = color;
-            self.rgb_pixels[i3] = r;
-            self.rgb_pixels[i3 + 1] = g;
-            self.rgb_pixels[i3 + 2] = b;
         }
     }
 

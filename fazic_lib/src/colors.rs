@@ -95,7 +95,7 @@ pub const LIGHT_GREY: (u8, u8, u8) = (192, 192, 192);
 //     }
 // }
 //
-pub fn rgb_for(color: u8) -> (u8, u8, u8) {
+pub fn rgb_for(color: &u8) -> (u8, u8, u8) {
     match color {
         1 => WHITE,
         2 => RED,
