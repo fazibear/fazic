@@ -1,11 +1,46 @@
 mod utils;
 
-
-use fazic::*;
 use fazic::config::*;
+use fazic::file_system::FileSystem;
+use fazic::*;
 use log::*;
 use wasm_bindgen::{prelude::*, Clamped};
-use web_sys::{CanvasRenderingContext2d, Performance, ImageData, KeyboardEvent};
+use web_sys::{CanvasRenderingContext2d, ImageData, KeyboardEvent, Performance, Storage};
+
+struct StorageFileSystem {
+    storage: Storage,
+}
+
+impl StorageFileSystem {
+    pub fn new(storage: Storage) -> StorageFileSystem {
+        StorageFileSystem { storage }
+    }
+}
+
+impl FileSystem for StorageFileSystem {
+    fn dir(&self) -> Result<Vec<String>, String> {
+        let mut dir = vec![];
+        let len = self.storage.length().unwrap();
+        for i in 0..len {
+            let item = self.storage.key(i).unwrap().unwrap();
+            dir.push(item);
+        }
+        Ok(dir)
+    }
+
+    fn load(&self, filename: &str) -> Result<String, String> {
+        if let Ok(Some(item)) = self.storage.get_item(filename) {
+            return Ok(item);
+        } else {
+            return Err(format!("{} not found", filename));
+        }
+    }
+
+    fn save(&mut self, filename: &str, program: String) -> Result<(), String> {
+        self.storage.set_item(filename, program.as_str()).unwrap();
+        Ok(())
+    }
+}
 
 #[wasm_bindgen]
 pub fn initialise() {
@@ -54,14 +89,32 @@ impl JSFazic {
         self.perf.as_ref().expect("perf is not set")
     }
 
+    pub fn set_storage(&mut self, storage: Storage) {
+        self.fazic.set_file_system(Box::new(StorageFileSystem::new(storage)));
+    }
+
     pub fn on_keydown(&mut self, event: KeyboardEvent) {
-        if event.key() == "ArrowUp" { self.fazic.up_key(); }
-        if event.key() == "ArrowDown" { self.fazic.down_key(); }
-        if event.key() == "ArrowLeft" { self.fazic.left_key(); }
-        if event.key() == "ArrowRight" { self.fazic.right_key(); }
-        if event.key() == "Enter" { self.fazic.enter_key(); }
-        if event.key() == "Backspace" { self.fazic.backspace_key(); }
-        if event.key().len() == 1 { self.fazic.insert_string(event.key()) }
+        if event.key() == "ArrowUp" {
+            self.fazic.up_key();
+        }
+        if event.key() == "ArrowDown" {
+            self.fazic.down_key();
+        }
+        if event.key() == "ArrowLeft" {
+            self.fazic.left_key();
+        }
+        if event.key() == "ArrowRight" {
+            self.fazic.right_key();
+        }
+        if event.key() == "Enter" {
+            self.fazic.enter_key();
+        }
+        if event.key() == "Backspace" {
+            self.fazic.backspace_key();
+        }
+        if event.key().len() == 1 {
+            self.fazic.insert_string(event.key())
+        }
         debug!("on_key_down: {:?}", event);
     }
 

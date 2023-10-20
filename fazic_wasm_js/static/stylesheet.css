@@ -32,10 +32,6 @@ body {
   left: 350px;
 }
 
-#flick:checked ~ .canvas::after {
-  animation: flicker 0.15s infinite; 
-}
-
 .overlay {
   background-image: url("tv.jpg");
   background-size: 1140px 698px;
@@ -85,6 +81,11 @@ body {
   0% {
     background-position: 0 50%;
   }
+}
+
+#flick:checked ~ .flicker::after {
+  animation: flicker 0.15s infinite; 
+}
 
 @keyframes flicker {
   0% {
@@ -129,6 +130,4 @@ body {
     opacity: 0.2075235633; }
   100% {
     opacity: 0.4839037745; } 
-}
-
 }

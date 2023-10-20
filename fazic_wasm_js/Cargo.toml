@@ -17,21 +17,15 @@ fazic = { path = "../fazic_lib" }
 console_log = { version = "1", features = ['color']}
 log = "0.4"
 web-sys = { version = "0.3.4", features = [
-  'Document',
-  'Element',
-  'GetUserMediaRequest',
   'HtmlCanvasElement',
-  'HtmlBodyElement',
-  'HtmlElement',
-  'Navigator',
   'Node',
-  'Window',
   'CanvasRenderingContext2d',
   'ImageData',
   'console',
   'ContextAttributes2d',
   'Performance',
   'KeyboardEvent',
+  'Storage',
 ]}
 
 # The `console_error_panic_hook` crate provides better debugging of panics by

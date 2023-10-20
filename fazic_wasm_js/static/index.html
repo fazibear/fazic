@@ -13,8 +13,8 @@
       <label id="flick-label" for="flick" class="controls">flicker effect!</label>
       <input type="checkbox" id="scanlines" checked="checked" class="controls"/>
       <label id="scanlines-label" for="scanlines" class="controls">scanlines effect!</label>
-      <div class="canvas scanlines">
-        <canvas id="canvas" oncontextmenu="event.preventDefault()">
+      <div class="canvas scanlines flicker">
+        <canvas id="canvas">
         </canvas>
       </div>
     </div>
@@ -31,6 +31,7 @@
 
         fazic.set_ctx(ctx);
         fazic.set_perf(window.performance);
+        fazic.set_storage(window.localStorage);
 
         canvas.width = 320;
         canvas.height = 240;
@@ -39,7 +40,10 @@
 
         window.addEventListener("keydown", function(e) {
           fazic.on_keydown(e);
-           e.preventDefault();
+          var keys = {37: 1, 38: 1, 39: 1, 40: 1, 32: 1};
+          if (keys[e.keyCode]) {
+            e.preventDefault();
+          }
         });
 
         window.requestAnimationFrame(function loop() {
