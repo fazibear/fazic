@@ -2,29 +2,35 @@ use log::*;
 use std::cell::{Ref, RefCell, RefMut, UnsafeCell};
 use std::rc::Rc;
 use wasm_bindgen::prelude::*;
-use web_sys::{window, HtmlBodyElement, Event};
+use web_sys::{window, HtmlBodyElement, KeyboardEvent};
 
 #[derive(Debug)]
 pub struct Body {
-    pub events: Vec<String>
+    pub events: Rc<RefCell<Vec<String>>>,
 }
 
 impl Body {
     pub fn new() -> Self {
         Self {
-            events: vec![]
+            events: Rc::new(RefCell::new(Vec::new())),
         }
     }
 
     pub fn pop(&mut self) -> String {
-        self.events.pop().unwrap()
+//         let mut vecs = self.events.borrow_mut();
+ //       vecs.pop().unwrap()
+        "qwe".to_string()
     }
 
-    pub fn attach_events(&mut self) {
-        let handler = Closure::wrap(Box::new(|e: Event| {
-            //self.events.push("wer".to_string());
-            debug!("event: {:?}", e);
-        }) as Box<dyn FnMut(_)>);
+    pub fn attach_events(&mut self, events: &mut Box<Vec<String>>) {
+        let vec = Box::new(events);
+
+        let handler = Box::new(|e: KeyboardEvent| {
+//            vec.push("wer".to_string());
+            debug!("event: {:?}", e.key_code());
+        });
+        
+        let closure = Closure::new(handler as Box<dyn FnMut(_)>);
 
         window()
             .unwrap()
@@ -34,9 +40,9 @@ impl Body {
             .unwrap()
             .dyn_into::<HtmlBodyElement>()
             .unwrap()
-            .add_event_listener_with_callback("keydown", &handler.as_ref().unchecked_ref())
+            .add_event_listener_with_callback("keydown", &closure.as_ref().unchecked_ref())
             .unwrap();
 
-        handler.forget();
+        closure.forget();
     }
 }
