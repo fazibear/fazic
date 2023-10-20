@@ -41,12 +41,12 @@ async fn run() -> Result<(), JsValue> {
 
 
 
-        let mut vec = vec!["sdsdf"];
-        
-        let events = RefCell::new(&mut vec);
-        let mut events1 = events.borrow_mut();
-        let mut events2 = events.borrow_mut();
-
+        // let mut vec = vec!["sdsdf"];
+        // 
+        // let events = RefCell::new(&mut vec);
+        // let mut events1 = events.borrow_mut();
+        // let mut events2 = events.borrow_mut();
+        //
         // let handler = Box::new(move |e: KeyboardEvent| {
         //     events1.push("wer");
         //     debug!("event: {:?}", e.key_code());
@@ -98,8 +98,6 @@ async fn run() -> Result<(), JsValue> {
         // main loop
         // 
             
-        debug!("ev size: {}", events2.len());
-
         let main_loop_time = perf.now();
         
         if fps % 5 == 0 {
