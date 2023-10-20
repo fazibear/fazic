@@ -2,7 +2,7 @@
 name = "fazic_wasm"
 version = "0.1.0"
 authors = ["Michał Kalbarczyk <fazibear@gmail.com>"]
-edition = "2018"
+edition = "2021"
 
 [lib]
 crate-type = ["cdylib", "rlib"]
@@ -27,6 +27,7 @@ web-sys = { version = "0.3.4", features = [
   'Element',
   'GetUserMediaRequest',
   'HtmlCanvasElement',
+  'HtmlBodyElement',
   'HtmlElement',
   'Navigator',
   'Node',
@@ -36,6 +37,7 @@ web-sys = { version = "0.3.4", features = [
   'console',
   'ContextAttributes2d',
   'Performance',
+  'Event',
 ]}
 
 # The `console_error_panic_hook` crate provides better debugging of panics by
