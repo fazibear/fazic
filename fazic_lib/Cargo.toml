@@ -3,7 +3,11 @@ name = "fazic"
 version = "0.1.0"
 authors = ["Michał Kalbarczyk <fazibear@gmail.com>"]
 
+[features]
+wasm = ["wasm-bindgen"]
+
 [dependencies]
+wasm-bindgen = { version = "0.2.84", optional = true }
 rand = "0.5.5"
 log = "0.4.3"
 peg = "*"

@@ -1,0 +1,134 @@
+body {
+  background-color: #181914;
+  color: #d3d9cd;
+  font-family: "Tahoma";
+  font-weight: 0px; 
+}
+
+.fazic {
+  position: relative;
+  background-color: #000;
+  width: 1140px;
+  height: 698px;
+  margin-left: auto;
+  margin-right: auto; 
+}
+
+.canvas {
+  position: absolute;
+  left: 163px;
+  top: 112px;
+  image-rendering: optimizeSpeed;
+  image-rendering: -moz-crisp-edges;
+  image-rendering: -webkit-optimize-contrast;
+  image-rendering: optimize-contrast;
+  image-rendering: pixelated;
+  -ms-interpolation-mode: nearest-neighbor; 
+}
+
+.controls {
+  position: relative;
+  top: 630px;
+  left: 350px;
+}
+
+#flick:checked ~ .canvas::after {
+  animation: flicker 0.15s infinite; 
+}
+
+.overlay {
+  background-image: url("tv.jpg");
+  background-size: 1140px 698px;
+  width: 1140px;
+  height: 698px;
+  position: absolute;
+  top: 0px;
+  left: 0px; 
+}
+
+#scanlines:checked ~ .scanlines:before, #scanlines:checked ~ .scanlines:after {
+  display: block;
+  pointer-events: none;
+  content: "";
+  position: absolute;
+}
+
+#scanlines:checked ~ .scanlines:before {
+  width: 100%;
+  height: 2px;
+  z-index: 2147483649;
+  background: rgba(0, 0, 0, 0.3);
+  opacity: 0.75;
+  -webkit-animation: scanline 6s linear infinite;
+          animation: scanline 6s linear infinite;
+}
+
+#scanlines:checked ~ .scanlines:after {
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  z-index: 2147483648;
+  background: linear-gradient(to bottom, transparent 50%, rgba(0, 0, 0, 0.3) 51%);
+  background-size: 100% 4px;
+  -webkit-animation: scanlines 1s steps(60) infinite;
+          animation: scanlines 1s steps(60) infinite;
+}
+
+@keyframes scanline {
+  0% {
+    transform: translate3d(0, 200000%, 0);
+  }
+}
+
+@keyframes scanlines {
+  0% {
+    background-position: 0 50%;
+  }
+
+@keyframes flicker {
+  0% {
+    opacity: 0.3302013094; }
+  5% {
+    opacity: 0.2587007501; }
+  10% {
+    opacity: 0.1499576938; }
+  15% {
+    opacity: 0.5395220323; }
+  20% {
+    opacity: 0.5550897697; }
+  25% {
+    opacity: 0.4927837954; }
+  30% {
+    opacity: 0.7397757289; }
+  35% {
+    opacity: 0.5363872042; }
+  40% {
+    opacity: 0.4844579609; }
+  45% {
+    opacity: 0.0885856587; }
+  50% {
+    opacity: 0.8167079492; }
+  55% {
+    opacity: 0.6280533824; }
+  60% {
+    opacity: 0.803599133; }
+  65% {
+    opacity: 0.6571343719; }
+  70% {
+    opacity: 0.226597469; }
+  75% {
+    opacity: 0.1670602756; }
+  80% {
+    opacity: 0.8144180579; }
+  85% {
+    opacity: 0.3169936485; }
+  90% {
+    opacity: 0.3486361339; }
+  95% {
+    opacity: 0.2075235633; }
+  100% {
+    opacity: 0.4839037745; } 
+}
+
+}

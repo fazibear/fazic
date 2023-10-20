@@ -150,7 +150,7 @@ pub fn load(name: usize, fazic: &mut ::Fazic) {
     match fazic.file_system.load(&name) {
         Ok(resp) => {
             for line in resp.lines() {
-                ::parse(fazic, line);
+                fazic.parse(line);
             }
 
             fazic.text_buffer.insert_line("LOADED");
