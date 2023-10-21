@@ -1,4 +1,4 @@
-name: Go
+name: Test fazic_lib
 
 on: [push]
 
@@ -12,7 +12,7 @@ jobs:
       - uses: actions/checkout@master
       - name: Compile and release
         uses: Swatinem/rust-cache@v2.7.0
-      - name: Test fazic_lib
+      - name: Testing fazic_lib
         run: |
           cd fazic_lib
           cargo test
