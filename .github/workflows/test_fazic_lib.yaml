@@ -1,0 +1,18 @@
+name: Go
+
+on: [push]
+
+jobs:
+  release:
+    name: release ${{ matrix.target }}
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+    steps:
+      - uses: actions/checkout@master
+      - name: Compile and release
+        uses: Swatinem/rust-cache@v2.7.0
+      - name: Test fazic_lib
+        run: |
+          cargo test
+

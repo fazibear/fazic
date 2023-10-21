@@ -24,14 +24,14 @@ jobs:
         uses: ruby/setup-ruby@v1
         with:
           ruby-version: '3.2.1'
-      - name: Install ruby dependencies
+      - name: Build fazic_site
         run: |
           cd fazic_static
           bundle install
-      - name: Build
-        run: |
-          cd fazic_static
           bundle exec rake
+      - name: Build fazic_wasm_js
+        uses: jetli/wasm-pack-action@v0.4.0
+        run: make
       - name: Setup Pages
         uses: actions/configure-pages@v3
       - name: Upload artifact
