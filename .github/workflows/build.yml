@@ -39,9 +39,9 @@ jobs:
         uses: actions/configure-pages@v3
       - name: Build final sire
         run: |
-          cp -r fazic_site/dist .
-          cp -r fazic_static dist/fazic
-          cp -r fazic_wasm_js/build dist/test
+          cp -rv fazic_site/dist .
+          cp -rv fazic_static dist/fazic
+          cp -rv fazic_wasm_js/build dist/test
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v1
         with:
