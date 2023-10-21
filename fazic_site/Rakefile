@@ -1,0 +1,20 @@
+require 'digest'
+
+task default: [:build, :css, :copy]
+
+desc 'build'
+task :build do
+  sh 'bundle exec inesita build -f'
+end
+
+desc 'build css'
+task :css do
+  sh 'mkdir -p dist/static'
+  sh 'sass stylesheet.css.scss > dist/static/stylesheet.css'
+end
+
+desc 'copy files'
+task :copy do
+  sh 'mkdir -p dist/itch'
+  sh 'cp itch.html dist/itch/index.html'
+end
