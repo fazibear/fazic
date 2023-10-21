@@ -8,13 +8,13 @@ FAZIC is a fantasy retro computer. You can create, share, and play tiny games or
 
 https://fazic.fazibear.me
 
-- fazic_static - static app to serve fazic on the we
-- fazic_mono - mono repo to generate fazic.js file
+- fazic_mono - mono repo if fazic, sdl/js version
+- fazic_static - static app to serve fazic on the web
 - fazic_lib - rewrite of fazic to support different frontends
 - fazic_sdl - sdl frontent for fazic
 - fazic_wasm - wasm based frontend for fazic
-- fazic_term - terminal frontend for fazic
-- fazic_fs - filesystem for fazic (*.bas)
+- fazic_wasm_js - wasm based with little of js frontend for fazic
+- fazic_fs - filesystem for fazic
 
 ## Thank you!
 
