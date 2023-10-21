@@ -6,7 +6,7 @@ class About
     p do
       p class: "image" do
         a href: "/fazic" do
-          img src: "/static/images/fazic.jpg"
+          img src: "/assets/fazic.jpg"
         end
       end
       a href: "/fazic" do

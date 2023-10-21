@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8" />
+    <meta content="IE=edge,chrome=1" http-equiv="X-UA-Compatible" />
+    <meta charset="utf-8" />
+    <meta content="width=device-width,initial-scale=1.0,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no" name="viewport" />
+    <title>fazic</title>
+    <link rel="stylesheet" type="text/css" href="stylesheet.css">
+  </head>
+  <body>
+    <div class="fazic">
+      <input type="checkbox" id="flick" checked="checked"/>
+      <label id="flick-label" for="flick">flicker effect!</label>
+      <div class="overlay">
+        <div id="status">
+        </div>
+      </div>
+      <div class="canvas">
+        <canvas id="canvas" oncontextmenu="event.preventDefault()">
+        </canvas>
+      </div>
+      <script>
+        var Module = {
+          print: function(text) { console.log(text) },
+          printErr: function(text) { console.error(text) },
+          canvas: document.getElementById('canvas'),
+          setStatus: function(status) {
+            document.getElementById('status').innerHTML = status;
+          }
+        };
+
+        var fazic = document.createElement("script");
+        fazic.type = "text/javascript";
+        fazic.src = "fazic.js?hash=2b6da255ed8c2d4d53599f49d97c2459";
+
+        Module.setStatus('Downloading...');
+        document.body.appendChild(fazic);
+      </script>
+    </div>
+  </body>
+</html>
