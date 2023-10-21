@@ -1,5 +1,6 @@
 body {
   background-color: #000;
+  color: #fff;
   margin: 0;
   padding: 0; }
 
@@ -9,7 +10,9 @@ body {
   width: 1140px;
   height: 698px;
   margin-left: auto;
-  margin-right: auto; }
+  margin-right: auto; 
+  margin-top: 50px;
+}
 
 .canvas {
   position: absolute;
@@ -20,7 +23,8 @@ body {
   image-rendering: -webkit-optimize-contrast;
   image-rendering: optimize-contrast;
   image-rendering: pixelated;
-  -ms-interpolation-mode: nearest-neighbor; }
+  -ms-interpolation-mode: nearest-neighbor; 
+}
 
 /* scanlines */
 .canvas::before {
@@ -33,7 +37,8 @@ body {
   right: 0;
   background: linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.25) 50%), linear-gradient(90deg, rgba(255, 0, 0, 0.06), rgba(0, 255, 0, 0.02), rgba(0, 0, 255, 0.06));
   background-size: 100% 2px, 3px 100%;
-  pointer-events: none; }
+  pointer-events: none; 
+}
 
 .canvas::after {
   content: " ";
@@ -45,20 +50,24 @@ body {
   right: 0;
   background: rgba(18, 16, 16, 0.1);
   opacity: 0;
-  pointer-events: none; }
+  pointer-events: none; 
+}
 
 #flick {
   position: relative;
-  top: 695px; }
+  top: 695px; 
+}
 
 #flick-label {
   font-family: 'Strasua';
   position: relative;
   top: 695px;
-  font-size: 10px; }
+  font-size: 10px; 
+}
 
 #flick:checked ~ .canvas::after {
-  animation: flicker 0.15s infinite; }
+  animation: flicker 0.15s infinite; 
+}
 
 .overlay {
   background-image: url("tv.jpg");
