@@ -1,0 +1,58 @@
+<html>
+  <head>
+    <meta content="text/html;charset=utf-8" http-equiv="Content-Type"/>
+    <link rel="stylesheet" href="stylesheet.css">
+  </head>
+  <body>
+    <div class="fazic">
+      <div class="overlay">
+        <div id="status">
+        </div>
+      </div>
+      <input type="checkbox" id="flick" checked="checked" class="controls"/>
+      <label id="flick-label" for="flick" class="controls">flicker effect!</label>
+      <input type="checkbox" id="scanlines" checked="checked" class="controls"/>
+      <label id="scanlines-label" for="scanlines" class="controls">scanlines effect!</label>
+      <div class="canvas scanlines flicker">
+        <canvas id="canvas">
+        </canvas>
+      </div>
+    </div>
+    <script type="module">
+      import init, { initialise, JSFazic } from './fazic_wasm_js.js';
+
+      async function run() {
+        await init();
+        initialise();
+
+        let canvas = document.getElementById("canvas");
+        let ctx = canvas.getContext("2d", { will_read_frequently: true })
+        let fazic = JSFazic.new();
+
+        fazic.set_ctx(ctx);
+        fazic.set_perf(window.performance);
+        fazic.set_storage(window.localStorage);
+
+        canvas.width = 320;
+        canvas.height = 240;
+        canvas.style.width = "640px";
+        canvas.style.height = "480px";
+
+        window.addEventListener("keydown", function(e) {
+          fazic.on_keydown(e);
+          var keys = {37: 1, 38: 1, 39: 1, 40: 1, 32: 1};
+          if (keys[e.keyCode]) {
+            e.preventDefault();
+          }
+        });
+
+        window.requestAnimationFrame(function loop() {
+          fazic.animation_loop();
+          window.requestAnimationFrame(loop);
+        });
+      }
+
+      run();
+    </script>
+  </body>
+</html>

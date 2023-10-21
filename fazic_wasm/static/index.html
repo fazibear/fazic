@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <title>fazic</title>
+    <style>
+      body{background-color:#000}pre{text-align:center}header{color:#daa520;font-size:18px;font-weight:700;text-shadow:0 0 3px gold}section{margin-top:30px;color:#32cd32;text-shadow:0 0 15px #0f0;font-size:14px}footer,footer a{margin-top:30px;color:red;text-shadow:0 0 15px tomato;font-size:14px}
+    </style>
+    <script src='fazic_wasm.js'></script>
+    <script>
+        wasm_bindgen('fazic_wasm_bg.wasm');
+    </script>
+  </head>
+  <body id="body">
+    <div>
+      <header>
+        hej
+      </header>
+      <section>
+        <canvas id="canvas"></canvas>
+      </section>
+      <footer>
+        <pre>Made with RUST by <a href="https://github.com/fazibear">fazibear</a></pre>
+      </footer>
+    </div>
+  </body>
+</html>

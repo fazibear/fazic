@@ -3,6 +3,12 @@ extern crate log;
 extern crate peg;
 extern crate rand;
 
+#[cfg(feature = "wasm")]
+extern crate wasm_bindgen;
+
+#[cfg(feature = "wasm")]
+use wasm_bindgen::prelude::*;
+
 mod compiler;
 mod enums;
 mod lines;
@@ -25,32 +31,7 @@ use rand::XorShiftRng;
 #[cfg(test)]
 mod tests;
 
-pub fn parse(fazic: &mut ::Fazic, input: &str) {
-    match parser::parser::parse_all(input) {
-        Ok(nodes::Entry(None, nodes)) => {
-            fazic.vm.start(
-                true,
-                ::compiler::compile(&nodes, &mut fazic.variables, &mut fazic.lines, true),
-            );
-        }
-        Ok(nodes::Entry(Some(line), nodes)) => {
-            if nodes.is_empty() {
-                fazic.program.remove_line(line as u16);
-            } else {
-                fazic.program.add_line(line as u16, nodes, input);
-            }
-        }
-        Err(e) => {
-            debug!("Parse error!: {:?}", e);
-            fazic
-                .text_buffer
-                .insert_line(&format!("{: >1$}", "^", e.location.column));
-            fazic.text_buffer.insert_line("?SYNTAX ERROR");
-            fazic.text_buffer.prompt();
-        }
-    };
-}
-
+#[cfg_attr(feature = "wasm", wasm_bindgen)]
 pub struct Fazic {
     current_color: u8,
     rtc: Box<dyn rtc::Rtc>,
@@ -87,6 +68,7 @@ impl Default for Fazic {
     }
 }
 
+#[cfg_attr(feature = "wasm", wasm_bindgen)]
 impl Fazic {
     pub fn new() -> Fazic {
         Fazic::default()
@@ -156,7 +138,7 @@ impl Fazic {
                 return;
             }
             self.text_buffer.enter();
-            parse(self, &input)
+            self.parse(&input)
         }
     }
 
@@ -180,10 +162,6 @@ impl Fazic {
         &mut self.screen.pixels
     }
     
-    // pub fn get_rgb_for_color(&mut self, color: u8) -> (u8, u8, u8) {
-    //     ::screen::colors::rgb_for(color)
-    // }
-
     pub fn need_to_redraw(&mut self) -> bool {
         if self.redraw {
             self.redraw = false;
@@ -203,5 +181,31 @@ impl Fazic {
             self.redraw = true;
         }
         self.redraw
+    }
+    
+    pub fn parse(&mut self, input: &str) {
+        match parser::parser::parse_all(input) {
+            Ok(nodes::Entry(None, nodes)) => {
+                self.vm.start(
+                    true,
+                    ::compiler::compile(&nodes, &mut self.variables, &mut self.lines, true),
+                );
+            }
+            Ok(nodes::Entry(Some(line), nodes)) => {
+                if nodes.is_empty() {
+                    self.program.remove_line(line as u16);
+                } else {
+                    self.program.add_line(line as u16, nodes, input);
+                }
+            }
+            Err(e) => {
+                debug!("Parse error!: {:?}", e);
+                self
+                    .text_buffer
+                    .insert_line(&format!("{: >1$}", "^", e.location.column));
+                self.text_buffer.insert_line("?SYNTAX ERROR");
+                self.text_buffer.prompt();
+            }
+        };
     }
 }
