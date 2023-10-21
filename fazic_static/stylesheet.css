@@ -1,8 +1,9 @@
 body {
-  background-color: #000;
-  color: #fff;
-  margin: 0;
-  padding: 0; }
+  background-color: #181914;
+  color: #d3d9cd;
+  font-family: "Tahoma";
+  font-weight: 0px; 
+}
 
 .fazic {
   position: relative;
