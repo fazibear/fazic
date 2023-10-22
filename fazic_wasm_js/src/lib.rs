@@ -118,7 +118,6 @@ impl JSFazic {
         if event.key().len() == 1 {
             self.fazic.insert_string(event.key())
         }
-        debug!("on_key_down: {:?}", event);
     }
 
     pub fn animation_loop(&mut self) {
