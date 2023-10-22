@@ -41,7 +41,7 @@ jobs:
         run: |
           cp -rv fazic_site/dist .
           cp -rv fazic_static dist/fazic
-          cp -rv fazic_wasm_js/build dist/test
+          cp -rv fazic_wasm_js/build dist/wasm
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v1
         with:
