@@ -19,7 +19,7 @@ pub fn main() {
     let mut window = window::Window::new(&ctx);
     let mut events = events::Events::new(&ctx);
 
-    let timer = ctx.timer().unwrap();
+    let mut timer = ctx.timer().unwrap();
 
     let mut fps_last_time = 0;
 

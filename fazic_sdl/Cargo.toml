@@ -8,4 +8,4 @@ rand = "*"
 simple_logger = "*"
 log = "*"
 fazic = { path = "../fazic_lib" }
-sdl2 = "*"
+sdl2 = { version = "0.32.0", features = ["image"] }
