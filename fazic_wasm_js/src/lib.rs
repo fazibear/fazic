@@ -112,6 +112,9 @@ impl JSFazic {
         if event.key() == "Backspace" {
             self.fazic.backspace_key();
         }
+        if event.key() == "Escape" {
+            self.fazic.stop_key();
+        }
         if event.key().len() == 1 {
             self.fazic.insert_string(event.key())
         }
