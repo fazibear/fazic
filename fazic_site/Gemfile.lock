@@ -20,7 +20,7 @@ GEM
     listen (3.8.0)
       rb-fsevent (~> 0.10, >= 0.10.3)
       rb-inotify (~> 0.9, >= 0.9.10)
-    nio4r (2.5.9)
+    nio4r (2.7.0)
     opal (1.7.4)
       ast (>= 2.3.0)
       parser (~> 3.0, >= 3.0.3.2)
@@ -29,7 +29,7 @@ GEM
     parser (3.2.2.4)
       ast (~> 2.4.1)
       racc
-    puma (6.4.0)
+    puma (6.4.2)
       nio4r (~> 2.0)
     racc (1.7.1)
     rack (2.2.8)
@@ -55,6 +55,7 @@ GEM
 PLATFORMS
   arm64-darwin-22
   x86_64-darwin-22
+  x86_64-linux
 
 DEPENDENCIES
   htmlcompressor
