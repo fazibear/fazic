@@ -1,5 +1,5 @@
 <p align="center">
-<img src="https://github.com/fazibear/fazic/blob/master/fazic_static/static/images/fazic.jpg?raw=true"/>
+<img src="https://github.com/fazibear/fazic/blob/master/fazic_site/assets/fazic.jpg?raw=true"/>
 <h1> FAZIC </h1>
 </p>
 
