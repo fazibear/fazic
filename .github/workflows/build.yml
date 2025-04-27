@@ -40,6 +40,7 @@ jobs:
       - name: Build final sire
         run: |
           cp -rv fazic_site/dist .
+          cp -rv fazic_site/dist/index.html fazic_site/dist/404.html
           cp -rv fazic_static dist/fazic
           cp -rv fazic_wasm_js/build dist/wasm
       - name: Upload artifact
