@@ -43,7 +43,7 @@ jobs:
           cp -rv fazic_static dist/fazic
           cp -rv fazic_wasm_js/build dist/wasm
       - name: Upload artifact
-        uses: actions/upload-pages-artifact@v1
+        uses: actions/upload-pages-artifact@v4
         with:
           path: 'dist'
       - name: Deploy to GitHub Pages
