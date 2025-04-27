@@ -37,12 +37,12 @@ jobs:
           make
       - name: Setup Pages
         uses: actions/configure-pages@v5
-      - name: Build final sire
+      - name: Build final site
         run: |
           cp -rv fazic_site/dist .
-          cp -rv fazic_site/dist/index.html fazic_site/dist/404.html
           cp -rv fazic_static dist/fazic
           cp -rv fazic_wasm_js/build dist/wasm
+          cp -v fazic_site/dist/index.html fazic_site/dist/404.html
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
         with:
