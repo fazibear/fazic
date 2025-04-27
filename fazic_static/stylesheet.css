@@ -70,6 +70,15 @@ body {
   animation: flicker 0.15s infinite; 
 }
 
+#wasm {
+  font-family: 'Strasua';
+  position: relative;
+  top: 695px;
+  font-size: 10px; 
+  display: block;
+  text-align: right;
+}
+
 .overlay {
   background-image: url("tv.jpg");
   background-size: 1140px 698px;
